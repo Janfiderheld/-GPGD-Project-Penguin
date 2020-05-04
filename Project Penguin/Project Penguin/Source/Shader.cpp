@@ -48,9 +48,9 @@ const char* Shader::addCurrentDirectory(std::string fileName)
 	return directory.c_str();
 }
 
-Shader::Shader(const char* vertexFileName, const char* fragmentFileName, const char* geometryFileName = nullptr)
+Shader::Shader(const char* vertexFileName, const char* fragmentFileName, const char* geometryFileName)
 {
-	bool hasGeometry = geometryFileName != nullptr;
+	bool hasGeometry = (geometryFileName != nullptr);
 
 	std::string vertexCodeString, fragmentCodeString, geometryCodeString;
 	std::ifstream vertexFile, fragmentFile, geometryFile;
