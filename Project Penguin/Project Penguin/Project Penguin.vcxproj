@@ -151,9 +151,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Game.h" />
+    <ClInclude Include="Header\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicFragmentShader.glsl" />
