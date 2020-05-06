@@ -358,8 +358,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-glfw-3.3.2.bin.WIN64
-glfw-3.3.2
+
+# specifically for Project Penguin
 *.zip
-glfw-3.3.2.bin.WIN32
-glew-2.1.0
+Libraries
