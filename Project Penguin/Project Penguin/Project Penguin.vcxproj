@@ -151,11 +151,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\stb_image_implementation.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Camera.h" />
     <ClInclude Include="Header\Game.h" />
     <ClInclude Include="Header\Shader.h" />
     <ClInclude Include="Header\stb_image.h" />

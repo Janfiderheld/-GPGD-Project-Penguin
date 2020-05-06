@@ -1,45 +1,34 @@
+#ifndef GAME_HEADER
+#define GAME_HEADER
+
 #include <GLEW/glew.h>
 #include <GLEW/wglew.h>
 #include <GLFW/glfw3.h>
+#include <Camera.h>
 #include <iostream>
 
 class Game {
 private:
-
-    const int WINDOW_WIDTH = 800;
-    const int WINDOW_HEIGHT = 600;
     const char TITLE[16] = "Project Penguin";
-    GLFWwindow* window;
+    GLFWwindow* _window;
+
+    int _width = 800;
+    int _height = 600;    
+    
+    float _lastFrame = 0.0f;
 
 public:
+    float deltaTime = 0.0f;
 
-    GLFWwindow* GetWindowPointer() {
-        return window;
-    }
+    bool Initialize();
 
-    bool Initialize() {
-        // Initialize the GLFW library
-        if (!glfwInit()) {
-            return false;
-        }
+    void processInput(Camera* cam);
 
-        // Create a windowed mode window & its OpenGL context and make the context current
-        window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, TITLE, NULL, NULL);
-        if (!window)
-        {
-            glfwTerminate();
-            return false;
-        }
-        glfwMakeContextCurrent(window);
+    GLFWwindow* getWindowPointer();
+    int getHeight();
+    int getWidth();
 
-        // Initialize the GLEW library
-        GLenum err = glewInit();
-        if (err != GLEW_OK) {
-            fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
-            return false;
-        }
-
-        glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        return true;
-    }
+    void calculateDeltaTime();
 };
+
+#endif // GAME_HEADER

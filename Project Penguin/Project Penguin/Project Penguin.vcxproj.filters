@@ -5,12 +5,15 @@
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\stb_image_implementation.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Game.h" />
     <ClInclude Include="Header\Shader.h" />
     <ClInclude Include="Header\Texture.h" />
     <ClInclude Include="Header\stb_image.h" />
+    <ClInclude Include="Header\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

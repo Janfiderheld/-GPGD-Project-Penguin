@@ -2,6 +2,7 @@
 #define SHADER_HEADER
 
 #include <GLEW/glew.h>
+#include <GLM/glm.hpp>
 #include <windows.h>
 #include <string>
 #include <fstream>
@@ -26,6 +27,7 @@ public:
     void setBoolUniform(const std::string& name, bool value) const;
     void setIntUniform(const std::string& name, int value) const;
     void setFloatUniform(const std::string& name, float value) const;
+    void setMat4Uniform(const std::string& name, glm::mat4 value) const;
 };
 
 #endif // SHADER_HEADER

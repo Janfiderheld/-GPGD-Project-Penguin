@@ -16,12 +16,17 @@ int main(void)
     texture.changeWrapping(GL_REPEAT, GL_REPEAT);
     texture.changeFiltering(GL_LINEAR, GL_LINEAR);
 
-    // 3x Positions     3x Color        2x Texture
+    glm::vec3 examplePos = glm::vec3(0.0f);
+
+    // Camera
+    Camera cam = Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    // 3x Positions 2x Texture
     float vertices[] = {
-         0.5f,  0.5f, 0.0f,     1.0f, 0.0f, 0.0f,       1.0f, 1.0f,
-         0.5f, -0.5f, 0.0f,     0.0f, 1.0f, 0.0f,       1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f,       0.0f, 0.0f,
-        -0.5f,  0.5f, 0.0f,     1.0f, 1.0f, 0.0f,       0.0f, 1.0f      
+         0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f      
     };
 
     unsigned int indices[] = {
@@ -43,27 +48,41 @@ int main(void)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    // color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
     // textures
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(game.GetWindowPointer()))
+    while (!glfwWindowShouldClose(game.getWindowPointer()))
     {
+        game.calculateDeltaTime();
+        game.processInput(&cam);
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // model transform
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, examplePos);
+
+        // view transform
+        glm::mat4 view = cam.getViewMatrix();
+
+        // projection transform
+        glm::mat4 projection = glm::mat4(1.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float)game.getWidth() / (float)game.getHeight(), 0.1f, 100.0f);
+
         shader.changeStatus(true);
+        shader.setMat4Uniform("model", model);
+        shader.setMat4Uniform("view", view);
+        shader.setMat4Uniform("projection", projection);
         glBindTexture(GL_TEXTURE_2D, texture.TextureId);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        glfwSwapBuffers(game.GetWindowPointer());
+        glfwSwapBuffers(game.getWindowPointer());
         glfwPollEvents();
     }
 
