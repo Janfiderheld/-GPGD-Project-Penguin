@@ -20,9 +20,19 @@ glm::vec3 Camera::getPosition()
 	return _position;
 }
 
-glm::vec3 Camera::getDirection()
+glm::vec3 Camera::getFrontVector()
 {
 	return _front;
+}
+
+glm::vec3 Camera::getUpVector()
+{
+	return _up;
+}
+
+glm::vec3 Camera::getRightVector()
+{
+	return _right;
 }
 
 glm::mat4 Camera::getViewMatrix()
