@@ -12,10 +12,8 @@ int main(void)
 
     Shader shader("BasicVertexShader.vert", "BasicFragmentShader.frag");
     Texture texture("GenericExampleTexture.png", GL_RGBA);
-    texture.changeWrapping(GL_REPEAT, GL_REPEAT);
-    texture.changeFiltering(GL_LINEAR, GL_LINEAR);
-
-    glm::vec3 examplePos = glm::vec3(0.0f);
+    texture.changeWrapping(GL_REPEAT);
+    texture.changeFiltering(GL_LINEAR);
 
     // Camera
     Camera cam = Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -64,7 +62,7 @@ int main(void)
 
         // model transform
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, examplePos);
+        model = glm::translate(model, glm::vec3(0.0f));
 
         // view transform
         glm::mat4 view = cam.getViewMatrix();

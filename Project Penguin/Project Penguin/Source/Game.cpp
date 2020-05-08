@@ -1,12 +1,11 @@
 #include <Game.h>
 
+// Initializes the Window using the GLFW library
 bool Game::Initialize() {
-    // Initialize the GLFW library
     if (!glfwInit()) {
         return false;
     }
 
-    // Create a windowed mode window & its OpenGL context and make the context current
     _window = glfwCreateWindow(_width, _height, TITLE, NULL, NULL);
     if (!_window)
     {
@@ -15,7 +14,6 @@ bool Game::Initialize() {
     }
     glfwMakeContextCurrent(_window);
 
-    // Initialize the GLEW library
     GLenum err = glewInit();
     if (err != GLEW_OK) {
         fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
@@ -26,14 +24,17 @@ bool Game::Initialize() {
     return true;
 }
 
+// returns the height of the game
 int Game::getHeight() {
     return _height;
 }
 
+// returns the width of the game
 int Game::getWidth() {
     return _width;
 }
 
+// calculates the time between the last two frames
 void Game::calculateDeltaTime()
 {
     float currentFrame = glfwGetTime();
@@ -41,10 +42,12 @@ void Game::calculateDeltaTime()
     _lastFrame = currentFrame;
 }
 
+// returns the pointer to the current window
 GLFWwindow* Game::getWindowPointer() {
     return _window;
 }
 
+// processes keyboard inputs 
 void Game::processInput(Camera* cam)
 {
     if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {

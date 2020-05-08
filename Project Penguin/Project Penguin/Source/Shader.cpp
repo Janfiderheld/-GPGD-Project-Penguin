@@ -1,6 +1,8 @@
 #include <Shader.h>
 #include <Windows.h>
 
+// Takes the given id and checks for shader compilation problems when checkCompilation = true,
+// or checks for problems with the linking if checkCompilation = false
 void Shader::checkAndPrintErrors(unsigned int id, bool checkCompilation)
 {
 	char infoLog[512];
@@ -48,6 +50,7 @@ const char* Shader::addCurrentDirectory(std::string fileName)
 	return directory.c_str();
 }
 
+// Constructor which opens, compiles and links the given shader files
 Shader::Shader(const char* vertexFileName, const char* fragmentFileName, const char* geometryFileName)
 {
 	bool hasGeometry = (geometryFileName != nullptr);
@@ -128,6 +131,7 @@ Shader::Shader(const char* vertexFileName, const char* fragmentFileName, const c
 	}
 }
 
+// Activates / Deactivates this ShaderProgram
 void Shader::changeStatus(bool activate)
 {
 	if (activate) {
@@ -137,21 +141,25 @@ void Shader::changeStatus(bool activate)
 	}	
 }
 
+// sets a bool uniform with the given name to the given value
 void Shader::setBoolUniform(const std::string& name, bool value) const
 {
 	glUniform1i(glGetUniformLocation(ProgramId, name.c_str()), (int)value);
 }
 
+// sets an int uniform with the given name to the given value
 void Shader::setIntUniform(const std::string& name, int value) const
 {
 	glUniform1i(glGetUniformLocation(ProgramId, name.c_str()), value);
 }
 
+// sets a float uniform with the given name to the given value
 void Shader::setFloatUniform(const std::string& name, float value) const
 {
 	glUniform1f(glGetUniformLocation(ProgramId, name.c_str()), value);
 }
 
+// sets a mat4 uniform with the given name to the given value
 void Shader::setMat4Uniform(const std::string& name, glm::mat4 value) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(ProgramId, name.c_str()), 1, GL_FALSE, &value[0][0]);

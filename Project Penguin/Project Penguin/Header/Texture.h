@@ -26,7 +26,9 @@ public:
 	int getNumberOfColorChannels();
 
 	// change parameters
+	void changeWrapping(GLint wrappingMode);
 	void changeWrapping(GLint wrappingModeS, GLint wrappingModeT);
+	void changeFiltering(GLint filterMode);
 	void changeFiltering(GLint minFilterMode, GLint magFilterMode);
 };
 
