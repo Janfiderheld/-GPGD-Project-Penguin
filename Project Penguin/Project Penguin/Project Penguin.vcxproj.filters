@@ -7,6 +7,10 @@
     <ClCompile Include="Source\stb_image_implementation.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\AABB.cpp" />
+    <ClCompile Include="Source\MovingObject.cpp" />
+    <ClCompile Include="Source\Level\LevelGrid.cpp" />
+    <ClCompile Include="Source\Level\LevelGridTile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Game.h" />
@@ -14,6 +18,10 @@
     <ClInclude Include="Header\Texture.h" />
     <ClInclude Include="Header\stb_image.h" />
     <ClInclude Include="Header\Camera.h" />
+    <ClInclude Include="Header\AABB.h" />
+    <ClInclude Include="Header\MovingObject.h" />
+    <ClInclude Include="Header\Level\LevelGrid.h" />
+    <ClInclude Include="Header\Level\LevelGridTile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />
