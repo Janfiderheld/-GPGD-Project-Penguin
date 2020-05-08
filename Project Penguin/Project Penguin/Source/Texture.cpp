@@ -1,11 +1,11 @@
 #include "Texture.h"
 
-Texture::Texture(const char* fileLocation, GLint format)
+Texture::Texture(const char* fileName, GLint format)
 {
 	glGenTextures(1, &TextureId);
 	glBindTexture(GL_TEXTURE_2D, TextureId);
 	
-	unsigned char* imageData = stbi_load(fileLocation, &_width, &_height, &_noColorChannels, 0);
+	unsigned char* imageData = stbi_load(_location.append(fileName).c_str(), &_width, &_height, &_noColorChannels, 0);
 	if (imageData) {
 		glTexImage2D(GL_TEXTURE_2D, 0, format, _width, _height, 0, format, GL_UNSIGNED_BYTE, imageData);
 		glGenerateMipmap(GL_TEXTURE_2D);

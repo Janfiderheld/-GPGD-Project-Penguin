@@ -4,6 +4,7 @@
 #include <GLEW/glew.h>
 #include <stb_image.h>
 #include <iostream>
+#include <string>
 
 class Texture {
 private:
@@ -11,11 +12,13 @@ private:
 	int _height;
 	int _noColorChannels;
 
+	std::string _location = "../Assets/Textures/";
+
 public:
 	unsigned int TextureId;
 
 	// Constructor to create the texture from a given file
-	Texture(const char* fileLocation, GLint format);
+	Texture(const char* fileName, GLint format);
 
 	// Getter
 	int getWidth();

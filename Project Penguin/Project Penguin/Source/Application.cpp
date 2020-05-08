@@ -10,9 +10,8 @@ int main(void)
         return -1;
     }
 
-    Shader shader("BasicVertexShader.glsl", "BasicFragmentShader.glsl");
-    // TODO: Make path relative
-    Texture texture("C:/Users/Janfi/Documents/gpgd-project-penguin/Project Penguin/Assets/Textures/GenericExampleTexture.png", GL_RGBA);
+    Shader shader("BasicVertexShader.vert", "BasicFragmentShader.frag");
+    Texture texture("GenericExampleTexture.png", GL_RGBA);
     texture.changeWrapping(GL_REPEAT, GL_REPEAT);
     texture.changeFiltering(GL_LINEAR, GL_LINEAR);
 
