@@ -3,23 +3,15 @@
 
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
+#include <IMoveable.h>
 
-enum MovementDirection {
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN
-};
-
-class Camera {
+class Camera : public IMovable {
 private:
 	glm::vec3 _position;
 	glm::vec3 _front;
 	glm::vec3 _right;
 	glm::vec3 _up;
 	glm::vec3 _worldUp;
-
-	const float speed = 2.5f;
 
 	void updateVectors();
 
@@ -36,7 +28,7 @@ public:
 	void changePosition(glm::vec3 newPos);
 	void changeWorldUp(glm::vec3 newWorldUp);
 
-	void processKeyboardInput(MovementDirection dir, float deltaTime);
+	virtual void calculatePosition(MovementDirection dir, float deltaTime);
 };
 
 #endif // CAMERA_HEADER

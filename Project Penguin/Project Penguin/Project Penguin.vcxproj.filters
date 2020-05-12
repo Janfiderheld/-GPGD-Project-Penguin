@@ -22,6 +22,7 @@
     <ClInclude Include="Header\MovingObject.h" />
     <ClInclude Include="Header\Level\LevelGrid.h" />
     <ClInclude Include="Header\Level\LevelGridTile.h" />
+    <ClInclude Include="Interfaces\IMoveable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

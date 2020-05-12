@@ -11,3 +11,7 @@ MovingObject::MovingObject(glm::vec3 pos, Texture texture) : _texture(texture), 
 void MovingObject::Update() {
 	// TODO: Add moving functionality
 }
+
+void MovingObject::calculatePosition(MovementDirection dir, float deltaTime) {
+	float velocity = getSpeed() * deltaTime;
+}

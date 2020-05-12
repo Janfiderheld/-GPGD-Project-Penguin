@@ -55,18 +55,18 @@ void Game::processInput(Camera* cam)
     }
 
     if (glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-        cam->processKeyboardInput(LEFT, deltaTime);
+        cam->calculatePosition(LEFT, deltaTime);
     }
 
     if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-        cam->processKeyboardInput(RIGHT, deltaTime);
+        cam->calculatePosition(RIGHT, deltaTime);
     }
 
     if (glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS) {
-        cam->processKeyboardInput(UP, deltaTime);
+        cam->calculatePosition(UP, deltaTime);
     }
 
     if (glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-        cam->processKeyboardInput(DOWN, deltaTime);
+        cam->calculatePosition(DOWN, deltaTime);
     }
 }

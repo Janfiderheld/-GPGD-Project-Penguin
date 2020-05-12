@@ -4,6 +4,7 @@
 #include <GLM/glm.hpp>
 #include <AABB.h>
 #include <Texture.h>
+#include <IMoveable.h>
 
 enum MovingObjectStatus {
 	STANDING,
@@ -11,10 +12,8 @@ enum MovingObjectStatus {
 	JUMPING
 };
 
-class MovingObject {
+class MovingObject : public IMovable {
 private:
-	const float Speed = 2.0f;
-
 	glm::vec3 _position;
 	AABB _hitbox;
 	Texture _texture;
@@ -24,6 +23,8 @@ public:
 	MovingObject(glm::vec3 pos, Texture texture);
 
 	void Update();
+
+	virtual void calculatePosition(MovementDirection dir, float deltaTime);
 };
 
 #endif // MOVINGOBJ_HEADER

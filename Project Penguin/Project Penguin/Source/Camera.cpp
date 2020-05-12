@@ -14,6 +14,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 worldUp)
 	_position = position;
 	_worldUp = worldUp;
 	_front = glm::vec3(0.0f, 0.0f, -1.0f);
+	setSpeed(2.5f);
 	updateVectors();
 }
 
@@ -62,9 +63,9 @@ void Camera::changeWorldUp(glm::vec3 newWorldUp)
 }
 
 // processes the Keyboard Input for a given direction by repositioning the camera 
-void Camera::processKeyboardInput(MovementDirection dir, float deltaTime)
+void Camera::calculatePosition(MovementDirection dir, float deltaTime)
 {
-	float velocity = speed * deltaTime;
+	float velocity = getSpeed() * deltaTime;
 
 	switch (dir)
 	{
