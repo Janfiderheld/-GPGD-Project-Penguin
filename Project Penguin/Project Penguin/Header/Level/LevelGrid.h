@@ -1,23 +1,40 @@
 #ifndef GRID_HEADER
 #define GRID_HEADER
 
+#include <vector>
 #include <Level/LevelGridTile.h>
+#include <Texture.h>
+#include <time.h>
 
 class LevelGrid {
 private:
-	static const int MaxLevelWidth = 20;
-	static const int MaxLevelHeight = 5;
+	static const int LevelWidth = 20;
+	static const int LevelHeight = 5;
 
 	// TODO: Refine values when movement is implemented
-	const float _friction = 2.0f;
-	const float _gravity = 2.0f;
+	const float Friction = 2.0f;
+	const float Gravity = 2.0f;
 
-	LevelGridTile _level[MaxLevelWidth][MaxLevelHeight];
-	int _actualWidth;
-	int _actualHeight;
+	// values for level generation
+	const int FilledBottomRows = 3;
+	const int StartingAreaWidth = 5;
+
+	// Access via [currentY * width + currentX]
+	std::vector<LevelGridTile> _level;
+
+	void initializeGrid();
+	void generateBorder();
+	void fillGrid();
 
 public:
-	LevelGrid(int width, int height, int tileSize);
+	LevelGrid();
+
+	void drawGrid(Texture txt);
+
+	LevelGridTile getTileFromGrid(int x, int y);
+
+	int getWidth();
+	int getHeight();	
 };
 
 #endif // GRID_HEADER
