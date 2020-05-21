@@ -1,11 +1,13 @@
 #include "Texture.h"
 
-// Constructor which loads a file in the fiven format 
+// Constructor which loads a file in the given format 
+// and enables default filtering & wrapping
 Texture::Texture(const char* fileName, GLint format)
 {
 	glGenTextures(1, &TextureId);
 	glBindTexture(GL_TEXTURE_2D, TextureId);
 	
+	stbi_set_flip_vertically_on_load(true);
 	unsigned char* imageData = stbi_load(_location.append(fileName).c_str(), &_width, &_height, &_noColorChannels, 0);
 	if (imageData) {
 		glTexImage2D(GL_TEXTURE_2D, 0, format, _width, _height, 0, format, GL_UNSIGNED_BYTE, imageData);
@@ -14,6 +16,9 @@ Texture::Texture(const char* fileName, GLint format)
 		std::cout << "Failed to load texture. Id: " << TextureId << std::endl;
 	}
 	stbi_image_free(imageData);
+
+	changeWrapping(GL_REPEAT);
+	changeFiltering(GL_LINEAR);
 }
 
 // returns the width of the texture

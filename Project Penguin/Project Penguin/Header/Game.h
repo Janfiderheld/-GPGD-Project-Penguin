@@ -12,8 +12,8 @@ private:
     const char TITLE[16] = "Project Penguin";
     GLFWwindow* _window;
 
-    int _width = 800;
-    int _height = 600;    
+    int _width = 1024;
+    int _height = 900;    
     
     float _lastFrame = 0.0f;
 
