@@ -39,12 +39,51 @@ bool LevelGridTile::isFilled() {
 	return _filled;
 }
 
-void LevelGridTile::addToPit(int pitNo) {
-	_pit = pitNo;
-}
-
 bool LevelGridTile::isGenerated() {
 	return _generated;
+}
+
+void LevelGridTile::changeLocation(Location newLoc) {
+	_loc = newLoc;
+}
+
+Location LevelGridTile::getLocation() {
+	return _loc;
+}
+
+void LevelGridTile::setLeftBorder(bool left) {
+	_left = left;
+}
+
+void LevelGridTile::setTopBorder(bool top) {
+	_top = top;
+}
+
+void LevelGridTile::setRightBorder(bool right) {
+	_right = right;
+}
+
+void LevelGridTile::setBottomBorder(bool bottom) {
+	_bottom = bottom;
+}
+
+unsigned char LevelGridTile::getBorderForTexture() {
+	unsigned char toReturn = 0;
+
+	if (_left) {
+		toReturn |= 0x08;
+	}
+	if (_right) {
+		toReturn |= 0x04;
+	}
+	if (_top) {
+		toReturn |= 0x02;
+	}
+	if (_bottom) {
+		toReturn |= 0x01;
+	}
+
+	return toReturn;
 }
 
 float* LevelGridTile::getVertices()

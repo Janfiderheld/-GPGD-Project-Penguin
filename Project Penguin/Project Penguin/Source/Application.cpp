@@ -3,8 +3,7 @@
 #include <Texture.h>
 #include <Level/LevelGrid.h>
 
-int main(void)
-{
+int main(void) {
     Game game;
 
     if (!game.Initialize()) {
@@ -12,15 +11,35 @@ int main(void)
     }
 
     Shader shader("BasicVertexShader.vert", "BasicFragmentShader.frag");
-    Texture texture("Iceberg.png", GL_RGBA);
-    texture.changeWrapping(GL_REPEAT);
-    texture.changeFiltering(GL_LINEAR);
+    Texture iceTileStart("IceTileStart.png", GL_RGBA);
+    Texture iceTileStartBorder("IceTileStartLeftBorder.png", GL_RGBA);
+
+    Texture iceTileEnd("IceTileEnd.png", GL_RGBA);
+    Texture iceTileEndBorder("IceTileEndBorderRight.png", GL_RGBA);
+
+    Texture iceTileNormal0("IceTileNormalBorder0.png", GL_RGBA);
+    Texture iceTileNormal1("IceTileNormalBorder1.png", GL_RGBA);
+    Texture iceTileNormal2("IceTileNormalBorder2.png", GL_RGBA);
+    Texture iceTileNormal3("IceTileNormalBorder3.png", GL_RGBA);
+    Texture iceTileNormal4("IceTileNormalBorder4.png", GL_RGBA);
+    Texture iceTileNormal5("IceTileNormalBorder5.png", GL_RGBA);
+    Texture iceTileNormal6("IceTileNormalBorder6.png", GL_RGBA);
+    Texture iceTileNormal7("IceTileNormalBorder7.png", GL_RGBA);
+    Texture iceTileNormal8("IceTileNormalBorder8.png", GL_RGBA);
+    Texture iceTileNormal9("IceTileNormalBorder9.png", GL_RGBA);
+    Texture iceTileNormal10("IceTileNormalBorder10.png", GL_RGBA);
+    Texture iceTileNormal11("IceTileNormalBorder11.png", GL_RGBA);
+    Texture iceTileNormal12("IceTileNormalBorder12.png", GL_RGBA);
+    Texture iceTileNormal13("IceTileNormalBorder13.png", GL_RGBA);
+    Texture iceTileNormal14("IceTileNormalBorder14.png", GL_RGBA);
+    Texture iceTileNormal15("IceTileNormalBorder15.png", GL_RGBA);
 
     // Level
     LevelGrid level;
 
     // Camera
-    Camera cam = Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
+    Camera cam = Camera(glm::vec3(5.6f, 4.9f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     // 3x Positions 2x Texture
     float vertices[] = {
@@ -75,13 +94,89 @@ int main(void)
         shader.setMat4Uniform("view", view);
         shader.setMat4Uniform("projection", projection);
 
-        glBindTexture(GL_TEXTURE_2D, texture.TextureId);
         glBindVertexArray(VAO);
+        //// Wireframe for Debugging
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         for (int x = 0; x < level.getWidth(); x++) {
             for (int y = 0; y < level.getHeight(); y++) {
                 LevelGridTile temp = level.getTileFromGrid(x, y);
                 if (temp.isFilled()) {
+                    switch (temp.getLocation()) 
+                    {
+                    case NORMAL:
+                    default:
+                        switch (temp.getBorderForTexture())
+                        {
+                        case 0x01:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal1.TextureId);
+                            break;
+                        case 0x02:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal2.TextureId);
+                            break;
+                        case 0x03:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal3.TextureId);
+                            break;
+                        case 0x04:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal4.TextureId);
+                            break;
+                        case 0x05:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal5.TextureId);
+                            break;
+                        case 0x06:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal6.TextureId);
+                            break;
+                        case 0x07:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal7.TextureId);
+                            break;
+                        case 0x08:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal8.TextureId);
+                            break;
+                        case 0x09:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal9.TextureId);
+                            break;
+                        case 0x0A:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal10.TextureId);
+                            break;
+                        case 0x0B:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal11.TextureId);
+                            break;
+                        case 0x0C:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal12.TextureId);
+                            break;
+                        case 0x0D:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal13.TextureId);
+                            break;
+                        case 0x0E:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal14.TextureId);
+                            break;
+                        case 0x0F:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal15.TextureId);
+                            break;
+                        case 0x00:
+                            glBindTexture(GL_TEXTURE_2D, iceTileNormal0.TextureId);
+                            break;
+                        }
+                        break;
+
+                    case START_AREA:
+                        if (temp.getBorderForTexture() == 0x0A) {
+                            glBindTexture(GL_TEXTURE_2D, iceTileStartBorder.TextureId);
+                        } else {
+                            glBindTexture(GL_TEXTURE_2D, iceTileStart.TextureId);
+                        }                                               
+                        break;
+
+                    case END_AREA:
+                        if (temp.getBorderForTexture() == 0x06) {
+                            glBindTexture(GL_TEXTURE_2D, iceTileEndBorder.TextureId);
+                        }
+                        else {
+                            glBindTexture(GL_TEXTURE_2D, iceTileEnd.TextureId);
+                        }
+                        break;
+                    }                                  
+
                     // model transform
                     glm::mat4 model = glm::mat4(1.0f);
                     model = glm::translate(model, temp.getPosition());
@@ -92,10 +187,6 @@ int main(void)
                 }                
             }
         }
-
-        /*glBindTexture(GL_TEXTURE_2D, texture.TextureId);
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
 
         glfwSwapBuffers(game.getWindowPointer());
         glfwPollEvents();
