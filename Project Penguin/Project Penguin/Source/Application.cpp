@@ -17,6 +17,7 @@ int main(void) {
     Texture iceTileEnd("IceTileEnd.png", GL_RGBA);
     Texture iceTileEndBorder("IceTileEndBorderRight.png", GL_RGBA);
 
+    // TODO: Instead of using 16 different textures use a shader
     Texture iceTileNormal0("IceTileNormalBorder0.png", GL_RGBA);
     Texture iceTileNormal1("IceTileNormalBorder1.png", GL_RGBA);
     Texture iceTileNormal2("IceTileNormalBorder2.png", GL_RGBA);

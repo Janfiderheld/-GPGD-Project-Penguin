@@ -9,8 +9,11 @@
 #define START		0
 #define HIGH		1
 #define HIGH_FIN	2
-#define LOW			3
-#define LOW_FIN		4
+#define HIGH_DOUB	3
+#define LOW			4
+#define LOW_FIN		5
+#define LOW_DOUB	6
+#define LVL_END		7
 
 class LevelGrid {
 private:
@@ -36,19 +39,20 @@ private:
 	const int HighGoDown = 30;
 	const int LowGoUp = 30;
 	const int LowGoDown = 20;
+	const int DoubleHigh = 20;
+	const int DoubleLow = 20;
 
 	int state = START;
 
 	// Access via [currentY * width + currentX]
 	std::vector<LevelGridTile> _level;
 
-	void initializeGrid();
+	void initializeStartingArea();
 	void generateBottom();
-	void fillTilesBelow(int x, int y);
 	void addPlattforms();
 	void addPits();
-
 	void setTileBorders();
+	void fillTilesBelow(int x, int y);
 
 public:
 	LevelGrid();

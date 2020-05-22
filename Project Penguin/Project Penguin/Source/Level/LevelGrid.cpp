@@ -1,17 +1,18 @@
 #include <Level/LevelGrid.h>
 
-// Generates the level grid based on a set of rules.
+// Generates the level grid.
 // The level has the dimension defined in its header.
 // First the Initialization is done the same way every time.
-// After that the procedural generation is based on a set of rules and defines the outline of the level.
-// Finally the inner sections are filled
+// After that the procedural generation is based on a finite state machine.
+// Then plattforms and pits are added.
+// After the level is finished, all tiles are checked if they are border tiles.
 LevelGrid::LevelGrid() {
 	srand(time(NULL));
 
 	size_t size = LevelHeight * LevelWidth;
 	_level.resize(size);	
 
-	initializeGrid();
+	initializeStartingArea();
 	generateBottom();
 	addPlattforms();
 	addPits();
@@ -19,10 +20,8 @@ LevelGrid::LevelGrid() {
 	setTileBorders();
 }
 
-// The following steps are the same for every generated grid:
-// - certain amount of bottom rows is completely filled
-// - starting area is not filled
-void LevelGrid::initializeGrid() {
+// Fills the starting Area with tiles
+void LevelGrid::initializeStartingArea() {
 	for (int y = 0; y <= FilledBottomRows; y++) {
 		for (int x = 0; x <= StartingAreaWidth; x++) {
 			size_t current = y * LevelWidth + x;
@@ -32,18 +31,10 @@ void LevelGrid::initializeGrid() {
 			}			
 		}
 	}
-
-	for (int y = 0; y <= FilledBottomRows; y++) {
-		for (int x = LevelWidth - EndAreaWidth; x < LevelWidth; x++) {
-			size_t current = y * LevelWidth + x;
-			_level.at(current) = LevelGridTile(x, y, y != FilledBottomRows);
-			if (y == FilledBottomRows - 1) {
-				_level.at(current).changeLocation(END_AREA);
-			}
-		}
-	}
 }
 
+// Generates the basic level with a finite state machine which can be found here:
+// TODO: Add diagramm
 void LevelGrid::generateBottom() {
 	int currentX = StartingAreaWidth;
 	int currentY = FilledBottomRows - 1;
@@ -56,15 +47,13 @@ void LevelGrid::generateBottom() {
 		case START:
 			if (rndm < SameGoUp && currentY < MaxBottomHeight) {
 				currentY++;
-				state = HIGH;
-			}
-			else {
+				state = HIGH_DOUB;
+			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
 					fillTilesBelow(currentX, currentY);
-				}
-				else {
-					levelEndReached = true;
+				} else {
+					state = LVL_END;
 				}
 			}
 			break;
@@ -78,9 +67,8 @@ void LevelGrid::generateBottom() {
 				currentX++;
 				countPlain--;
 				fillTilesBelow(currentX, currentY);
-			}
-			else {
-				levelEndReached = true;
+			} else {
+				state = LVL_END;
 			}			
 			break;
 
@@ -88,27 +76,43 @@ void LevelGrid::generateBottom() {
 			if (rndm < HighGoUp) {
 				if (currentY < MaxBottomHeight) {
 					currentY++;
+					state = HIGH_DOUB;
+				} else {
+					continue;
+				}
+			} else if (rndm >= HighGoUp && rndm < HighGoUp + HighGoDown) {
+				if (currentY >= FilledBottomRows) {
+					currentY--;
+					state = LOW;
+				} else {
+					continue;
+				}				
+			} else {
+				if (currentX < LevelWidth - EndAreaWidth - 1) {
+					currentX++;
+					fillTilesBelow(currentX, currentY);
+				} else {
+					state = LVL_END;
+				}
+			}
+			break;
+
+		case HIGH_DOUB:
+			if (rndm < DoubleHigh) {
+				if (currentY < MaxBottomHeight) {
+					currentY++;
 					state = HIGH;
 				} else {
 					continue;
 				}
-			}
-			else if (rndm >= HighGoUp && rndm < HighGoUp + HighGoDown) {
-				if (currentY >= FilledBottomRows) {
-					currentY--;
-					state = LOW;
-				}
-				else {
-					continue;
-				}				
-			}
-			else {
+			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
+					countPlain--;
+					state = HIGH;
 					fillTilesBelow(currentX, currentY);
-				}
-				else {
-					levelEndReached = true;
+				} else {
+					state = LVL_END;
 				}
 			}
 			break;
@@ -122,9 +126,8 @@ void LevelGrid::generateBottom() {
 				currentX++;
 				countPlain--;
 				fillTilesBelow(currentX, currentY);
-			}
-			else {
-				levelEndReached = true;
+			} else {
+				state = LVL_END;
 			}
 			break;
 
@@ -133,34 +136,61 @@ void LevelGrid::generateBottom() {
 				if (currentY < MaxBottomHeight) {
 					currentY++;
 					state = HIGH;
-				}
-				else {
+				} else {
 					continue;
 				}
-			}
-			else if (rndm >= LowGoUp && rndm < LowGoUp + LowGoDown) {
+			} else if (rndm >= LowGoUp && rndm < LowGoUp + LowGoDown) {
 				if (currentY >= FilledBottomRows) {
 					currentY--;
-					state = LOW;
-				}
-				else {
+					state = LOW_DOUB;
+				} else {
 					continue;
 				}
-			}
-			else {
+			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
 					fillTilesBelow(currentX, currentY);
+				} else {
+					state = LVL_END;
 				}
-				else {
-					levelEndReached = true;
+			}
+			break;
+
+		case LOW_DOUB:
+			if (rndm < DoubleLow) {
+				if (currentY >= FilledBottomRows) {
+					currentY--;
+					state = LOW;
+				} else {
+					continue;
 				}
+			} else {
+				if (currentX < LevelWidth - EndAreaWidth - 1) {
+					currentX++;
+					countPlain--;
+					state = LOW;
+					fillTilesBelow(currentX, currentY);
+				} else {
+					state = LVL_END;
+				}
+			}
+			break;
+
+		case LVL_END:
+			if (currentX < LevelWidth - 1) {
+				currentX++;
+				fillTilesBelow(currentX, currentY);
+			} else {
+				levelEndReached = true;
 			}
 			break;
 		}
 
 		size_t current = currentY * LevelWidth + currentX;
 		_level.at(current) = LevelGridTile(currentX, currentY, true);
+		if (state == LVL_END) {
+			_level.at(current).changeLocation(END_AREA);
+		}
 	}
 }
 
@@ -174,6 +204,9 @@ void LevelGrid::fillTilesBelow(int x, int y) {
 	}
 }
 
+// Adds a random number of plattforms to the finished level.
+// The amount is between 1 and (Width / 20).
+// All Plattforms look the same.
 void LevelGrid::addPlattforms() {
 	int noOfPlattforms = rand() % MaxPlattforms + 1;
 	std::vector<int> positions;
@@ -223,6 +256,9 @@ void LevelGrid::addPlattforms() {
 	}
 }
 
+// Adds a random number of pits to the finished level.
+// The amount is between 1 and (Width / 15).
+// All pits are two tiles long.
 void LevelGrid::addPits() {
 	int noOfPits = rand() % MaxPits + 1;
 	std::vector<int> positions;
@@ -262,6 +298,7 @@ void LevelGrid::addPits() {
 	}
 }
 
+// Iterates over the finished level and checks for each tile which borders are not surrounded.
 void LevelGrid::setTileBorders() {
 	for (int currentX = 0; currentX < LevelWidth; currentX++) {
 		for (int currentY = 0; currentY < LevelHeight; currentY++) {
@@ -309,16 +346,19 @@ void LevelGrid::drawGrid(Texture tex) {
 
 }
 
+// Returns the tile at position (x, y).
 LevelGridTile LevelGrid::getTileFromGrid(int x, int y)
 {
 	return _level.at(x + y * LevelWidth);
 }
 
+// Returns the width of the level.
 int LevelGrid::getWidth()
 {
 	return LevelWidth;
 }
 
+// Returns the height of the level.
 int LevelGrid::getHeight()
 {
 	return LevelHeight;
