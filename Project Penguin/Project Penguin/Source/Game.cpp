@@ -35,11 +35,12 @@ int Game::getWidth() {
 }
 
 // calculates the time between the last two frames
-void Game::calculateDeltaTime()
+float Game::calculateDeltaTime()
 {
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - _lastFrame;
     _lastFrame = currentFrame;
+    return deltaTime;
 }
 
 // returns the pointer to the current window
@@ -48,23 +49,33 @@ GLFWwindow* Game::getWindowPointer() {
 }
 
 // processes keyboard inputs 
-void Game::processInput(Camera* cam)
+void Game::processInput(Camera* cam, Character* character)
 {
     if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(_window, true);
     }
 
+    bool isPressed = false;
+
     if (glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS) {
         cam->calculatePosition(LEFT, deltaTime);
+        isPressed = true;
     }
+    character->setInputStatus(LEFT, isPressed);
+    isPressed = false;
 
     if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
         cam->calculatePosition(RIGHT, deltaTime);
+        isPressed = true;
     }
+    character->setInputStatus(RIGHT, isPressed);
+    isPressed = false;
 
     if (glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS) {
         cam->calculatePosition(UP, deltaTime);
+        isPressed = true;
     }
+    character->setInputStatus(UP, isPressed);
 
     if (glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_DOWN) == GLFW_PRESS) {
         cam->calculatePosition(DOWN, deltaTime);

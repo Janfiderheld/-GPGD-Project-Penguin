@@ -4,6 +4,7 @@
 #include <GLEW/glew.h>
 #include <GLEW/wglew.h>
 #include <GLFW/glfw3.h>
+#include <Character.h>
 #include <Camera.h>
 #include <iostream>
 
@@ -22,13 +23,13 @@ public:
 
     bool Initialize();
 
-    void processInput(Camera* cam);
+    void processInput(Camera* cam, Character* character);
 
     GLFWwindow* getWindowPointer();
     int getHeight();
     int getWidth();
 
-    void calculateDeltaTime();
+    float calculateDeltaTime();
 };
 
 #endif // GAME_HEADER

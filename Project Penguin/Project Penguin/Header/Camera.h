@@ -5,11 +5,10 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include <IMoveable.h>
 
-class Camera : public IMovable {
+class Camera {
 private:
 	glm::vec3 _position;
 	glm::vec3 _front;
-	glm::vec3 _right;
 	glm::vec3 _up;
 	glm::vec3 _worldUp;
 
@@ -21,14 +20,13 @@ public:
 	glm::vec3 getPosition();
 	glm::vec3 getFrontVector();
 	glm::vec3 getUpVector();
-	glm::vec3 getRightVector();
 
 	glm::mat4 getViewMatrix();
 
 	void changePosition(glm::vec3 newPos);
 	void changeWorldUp(glm::vec3 newWorldUp);
 
-	virtual void calculatePosition(MovementDirection dir, float deltaTime);
+	void calculatePosition(Direction dir, float deltaTime);
 };
 
 #endif // CAMERA_HEADER

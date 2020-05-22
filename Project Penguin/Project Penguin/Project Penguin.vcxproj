@@ -153,7 +153,9 @@
     <ClCompile Include="Source\AABB.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\Level\GridFacade.cpp" />
     <ClCompile Include="Source\Level\LevelGrid.cpp" />
     <ClCompile Include="Source\Level\LevelGridTile.cpp" />
     <ClCompile Include="Source\MovingObject.cpp" />
@@ -164,7 +166,9 @@
   <ItemGroup>
     <ClInclude Include="Header\AABB.h" />
     <ClInclude Include="Header\Camera.h" />
+    <ClInclude Include="Header\Character.h" />
     <ClInclude Include="Header\Game.h" />
+    <ClInclude Include="Header\Level\GridFacade.h" />
     <ClInclude Include="Interfaces\IMoveable.h" />
     <ClInclude Include="Header\Level\LevelGrid.h" />
     <ClInclude Include="Header\Level\LevelGridTile.h" />
@@ -174,8 +178,10 @@
     <ClInclude Include="Header\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\BasicFragmentShader.frag" />
     <None Include="Shaders\BasicFragmentShader.glsl" />
     <None Include="Shaders\BasicVertexShader.glsl" />
+    <None Include="Shaders\BasicVertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

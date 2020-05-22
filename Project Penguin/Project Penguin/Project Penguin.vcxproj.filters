@@ -11,6 +11,8 @@
     <ClCompile Include="Source\MovingObject.cpp" />
     <ClCompile Include="Source\Level\LevelGrid.cpp" />
     <ClCompile Include="Source\Level\LevelGridTile.cpp" />
+    <ClCompile Include="Source\Character.cpp" />
+    <ClCompile Include="Source\Level\GridFacade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Game.h" />
@@ -23,9 +25,13 @@
     <ClInclude Include="Header\Level\LevelGrid.h" />
     <ClInclude Include="Header\Level\LevelGridTile.h" />
     <ClInclude Include="Interfaces\IMoveable.h" />
+    <ClInclude Include="Header\Character.h" />
+    <ClInclude Include="Header\Level\GridFacade.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />
     <None Include="Shaders\BasicFragmentShader.glsl" />
+    <None Include="Shaders\BasicVertexShader.vert" />
+    <None Include="Shaders\BasicFragmentShader.frag" />
   </ItemGroup>
 </Project>

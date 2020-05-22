@@ -1,11 +1,10 @@
 #include <Level/LevelGridTile.h>
 
-LevelGridTile::LevelGridTile()
-{
+LevelGridTile::LevelGridTile() : _hitbox(getPosition(), 1) {
 	// empty constructor
 }
 
-LevelGridTile::LevelGridTile(int x, int y, bool filled) {
+LevelGridTile::LevelGridTile(int x, int y, bool filled) : _hitbox(getPosition(), 1) {
 	_x = x;
 	_y = y;
 	_filled = filled;
@@ -32,7 +31,6 @@ LevelGridTile::LevelGridTile(int x, int y, bool filled) {
 	_vertices[17] = z;
 	_vertices[18] = 0.0f;
 	_vertices[19] = 1.0f;
-
 }
 
 bool LevelGridTile::isFilled() {
@@ -93,4 +91,8 @@ float* LevelGridTile::getVertices()
 
 glm::vec3 LevelGridTile::getPosition() {
 	return glm::vec3(_x, _y, z);
+}
+
+AABB LevelGridTile::getHitbox() {
+	return _hitbox;
 }

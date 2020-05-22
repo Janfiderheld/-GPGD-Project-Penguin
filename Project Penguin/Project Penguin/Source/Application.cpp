@@ -1,7 +1,10 @@
 #include <Game.h>
 #include <Shader.h>
+#include <Character.h>
 #include <Texture.h>
+#include <AABB.h>
 #include <Level/LevelGrid.h>
+#include <Level/GridFacade.h>
 
 int main(void) {
     Game game;
@@ -35,8 +38,16 @@ int main(void) {
     Texture iceTileNormal14("IceTileNormalBorder14.png", GL_RGBA);
     Texture iceTileNormal15("IceTileNormalBorder15.png", GL_RGBA);
 
-    // Level
+    Texture charText("Penguin.png", GL_RGBA);
+
+    // Level & Characters
     LevelGrid level;
+    GridFacade levelFacade(&level); 
+    MovingObject::Facade = &levelFacade;
+
+    glm::vec3 charPos(1.0f, 3.0f, -10.0f);
+    AABB charHitbox(charPos, 1);
+    Character character(charPos, charText, charHitbox);
 
     // Camera
     // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
@@ -78,11 +89,12 @@ int main(void) {
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(game.getWindowPointer()))
     {
-        game.calculateDeltaTime();
-        game.processInput(&cam);
-
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        float delta = game.calculateDeltaTime();
+        game.processInput(&cam, &character);
+        character.calculatePosition(delta);
 
         // view transform
         glm::mat4 view = cam.getViewMatrix();
@@ -99,6 +111,7 @@ int main(void) {
         //// Wireframe for Debugging
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+        // draw Level
         for (int x = 0; x < level.getWidth(); x++) {
             for (int y = 0; y < level.getHeight(); y++) {
                 LevelGridTile temp = level.getTileFromGrid(x, y);
@@ -188,6 +201,18 @@ int main(void) {
                 }                
             }
         }
+
+        // draw character
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, character.getPosition());
+        shader.setMat4Uniform("model", model);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBindTexture(GL_TEXTURE_2D, character.getTexture().TextureId);
+        glBufferSubData(VBO, 0, sizeof(vertices), vertices);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDisable(GL_BLEND);
 
         glfwSwapBuffers(game.getWindowPointer());
         glfwPollEvents();

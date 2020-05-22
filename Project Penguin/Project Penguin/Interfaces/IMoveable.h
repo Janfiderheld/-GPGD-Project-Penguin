@@ -1,22 +1,42 @@
-enum MovementDirection {
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN
+#ifndef MOVE_INTERACE
+#define MOVE_INTERACE
+
+#include <GLM/glm.hpp>
+
+enum Direction {
+	LEFT = 0,
+	RIGHT = 1,
+	UP = 2,
+	DOWN = 3
 };
 
 class IMovable {
-private:
-	float _speed = 2.0f;
+protected:
+	glm::vec3 speed;
+	glm::vec3 oldSpeed;
 
 public:
-	virtual void calculatePosition(MovementDirection dir, float deltaTime) = 0;
+	virtual void calculatePosition(float deltaTime) = 0;
 
-	float getSpeed() {
-		return _speed;
+	glm::vec3 getCurrentSpeed() {
+		return speed;
 	}
 
-	void setSpeed(float newSpeed) {
-		_speed = newSpeed;
+	glm::vec3 getOldSpeed() {
+		return oldSpeed;
+	}
+
+	void setCompleteSpeed(glm::vec3 newSpeed) {
+		speed = newSpeed;
+	}
+
+	void setVerticalSpeed(float newSpeed) {
+		speed.y = newSpeed;
+	}
+
+	void setHorizontalSpeed(float newSpeed) {
+		speed.x = newSpeed;
 	}
 };
+
+#endif // MOVE_INTERACE

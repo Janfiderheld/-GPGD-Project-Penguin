@@ -22,7 +22,6 @@ private:
 
 	// TODO: Refine values when movement is implemented
 	const float Friction = 2.0f;
-	const float Gravity = 2.0f;
 
 	// values for level generation
 	const int FilledBottomRows = 3;

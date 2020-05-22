@@ -2,6 +2,7 @@
 #define GRIDTILE_HEADER
 
 #include <GLM/glm.hpp>
+#include <AABB.h>
 
 enum Location {
 	NORMAL,
@@ -22,7 +23,9 @@ private:
 	int _x, _y;
 	bool _filled = false;
 	bool _generated = false;
+
 	Location _loc = NORMAL;
+	AABB _hitbox;
 
 	float* _vertices = new float[VerticeAmount];
 
@@ -44,6 +47,7 @@ public:
 
 	float* getVertices();
 	glm::vec3 getPosition();
+	AABB getHitbox();
 };
 
 #endif // GRIDTILE_HEADER
