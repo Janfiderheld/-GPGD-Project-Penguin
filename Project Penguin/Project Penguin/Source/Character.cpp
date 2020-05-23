@@ -39,13 +39,15 @@ void Character::calculatePosition(float deltaTime)
 	case JUMPING:
 		setVerticalSpeed(speed.y + gravity * deltaTime);
 		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
+
 		if (getInputStatus(LEFT)) {
 			setHorizontalSpeed(hasTileLeft ? 0.0f : -_walkSpeed);
 		} else if (getInputStatus(RIGHT)) {
 			setHorizontalSpeed(hasTileRight ? 0.0f : _walkSpeed);
-		} else if (isOnGround) {
-			if (!getInputStatus(LEFT) && !getInputStatus(RIGHT))
-			{
+		} 
+
+		if (isOnGround && !wasOnGround) {
+			if (!getInputStatus(LEFT) && !getInputStatus(RIGHT)) {
 				status = STANDING;
 				setCompleteSpeed(glm::vec3(0.0f));
 			} else {
@@ -56,6 +58,5 @@ void Character::calculatePosition(float deltaTime)
 		break;
 	}
 
-	position += speed * deltaTime;
-	UpdatePhysics();
+	UpdatePhysics(deltaTime);
 }

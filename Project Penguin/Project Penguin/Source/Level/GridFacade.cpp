@@ -12,17 +12,25 @@ bool GridFacade::checkForGround(int x, int y, AABB objHitbox)
 	}
 
 	LevelGridTile bottom = _grid->getTileFromGrid(x, y - 1);
-	return objHitbox.checkCollision(bottom.getHitbox());
+	if (!bottom.isFilled()) {
+		return false;
+	} else {
+		return objHitbox.checkCollision(bottom.getHitbox());
+	}	
 }
 
 bool GridFacade::checkForLeftWall(int x, int y, AABB objHitbox)
 {
-	if (x <= 0) {
-		return false;
+	if (x < 0) {
+		return true;
 	}
 
 	LevelGridTile left = _grid->getTileFromGrid(x - 1, y);
-	return objHitbox.checkCollision(left.getHitbox());
+	if (!left.isFilled()) {
+		return false;
+	} else {
+		return objHitbox.checkCollision(left.getHitbox());
+	}
 }
 
 bool GridFacade::checkForRightWall(int x, int y, AABB objHitbox)
@@ -32,5 +40,9 @@ bool GridFacade::checkForRightWall(int x, int y, AABB objHitbox)
 	}
 
 	LevelGridTile right = _grid->getTileFromGrid(x + 1, y);
-	return objHitbox.checkCollision(right.getHitbox());
+	if (!right.isFilled()) {
+		return false;
+	} else {
+		return objHitbox.checkCollision(right.getHitbox());
+	}
 }

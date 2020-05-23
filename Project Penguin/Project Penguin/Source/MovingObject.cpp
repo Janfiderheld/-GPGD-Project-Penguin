@@ -12,21 +12,24 @@ MovingObject::MovingObject(glm::vec3 pos, Texture texture, AABB boundBox) : _tex
 	}
 }
 
-void MovingObject::UpdatePhysics()
+void MovingObject::UpdatePhysics(float deltaTime)
 {
 	oldPosition = position;
 	oldSpeed = speed;
 	wasOnGround = isOnGround;
 	hadTileLeft = hasTileLeft;
 	hadTileRight = hasTileRight;
+	_hitbox.setOrigin(position);
 
 	for (int i = 0; i < 3; i++) {
 		prevInputs[i] = currInputs[i];
 	}
 
 	isOnGround = Facade->checkForGround(floor(position.x), floor(position.y), _hitbox);
-	hasTileLeft = Facade->checkForLeftWall(floor(position.x), floor(position.y), _hitbox);;
-	hasTileRight = Facade->checkForRightWall(floor(position.x), floor(position.y), _hitbox);;
+	hasTileLeft = Facade->checkForLeftWall(floor(position.x), floor(position.y), _hitbox);
+	hasTileRight = Facade->checkForRightWall(floor(position.x), floor(position.y), _hitbox);
+
+	position += speed * deltaTime;
 }
 
 AABB MovingObject::getHitbox()

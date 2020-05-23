@@ -31,6 +31,8 @@ LevelGridTile::LevelGridTile(int x, int y, bool filled) : _hitbox(getPosition(),
 	_vertices[17] = z;
 	_vertices[18] = 0.0f;
 	_vertices[19] = 1.0f;
+
+	_hitbox = AABB(getPosition(), 1);
 }
 
 bool LevelGridTile::isFilled() {

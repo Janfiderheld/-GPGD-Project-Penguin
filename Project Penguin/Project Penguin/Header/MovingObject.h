@@ -20,7 +20,7 @@ private:
 
 protected:
 	const float gravity = -0.5;
-	const float maxFallingSpeed = 4.0f;
+	const float maxFallingSpeed = -2.0f;
 
 	glm::vec3 position;
 	glm::vec3 oldPosition;
@@ -44,7 +44,7 @@ public:
 	static GridFacade* Facade;
 
 	virtual void calculatePosition(float deltaTime) = 0;
-	void UpdatePhysics();
+	void UpdatePhysics(float deltaTime);
 
 	AABB getHitbox();
 	Texture getTexture();
