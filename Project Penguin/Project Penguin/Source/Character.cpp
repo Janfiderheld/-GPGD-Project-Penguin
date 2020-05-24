@@ -10,12 +10,14 @@ void Character::calculatePosition(float deltaTime)
 	{
 	case STANDING:
 		setCompleteSpeed(glm::vec3(0.0f));
-		if (!isOnGround) {
-			status = JUMPING;
-		} else if (getInputStatus(LEFT) || getInputStatus(RIGHT)) {
+
+		if (getInputStatus(LEFT) || getInputStatus(RIGHT)) {
 			status = WALKING;
-		} else if (getInputStatus(UP)) {
+		} else if (getInputStatus(UP) && !hasCeiling) {
 			setVerticalSpeed(_jumpSpeed);
+			status = JUMPING;
+		}
+		if (!isOnGround) {
 			status = JUMPING;
 		}
 		break;
@@ -24,14 +26,16 @@ void Character::calculatePosition(float deltaTime)
 		if (!getInputStatus(LEFT) && !getInputStatus(RIGHT)) {
 			status = STANDING;
 			setCompleteSpeed(glm::vec3(0.0f));
-		} else if (getInputStatus(LEFT)) {
+		} 
+		if (getInputStatus(LEFT)) {
 			setHorizontalSpeed(hasTileLeft ? 0.0f : -_walkSpeed);
 		} else if (getInputStatus(RIGHT)) {
 			setHorizontalSpeed(hasTileRight ? 0.0f : _walkSpeed);
-		} else if (getInputStatus(UP)) {
+		} else if (getInputStatus(UP) && !hasCeiling) {
 			setVerticalSpeed(_jumpSpeed);
 			status = JUMPING;
-		} else if (!isOnGround) {
+		} 
+		if (!isOnGround) {
 			status = JUMPING;
 		}
 		break;

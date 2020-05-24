@@ -25,9 +25,10 @@ void MovingObject::UpdatePhysics(float deltaTime)
 		prevInputs[i] = currInputs[i];
 	}
 
-	isOnGround = Facade->checkForGround(floor(position.x), floor(position.y), _hitbox);
+	isOnGround = Facade->checkForGround(round(position.x), round(position.y), _hitbox);
 	hasTileLeft = Facade->checkForLeftWall(floor(position.x), floor(position.y), _hitbox);
 	hasTileRight = Facade->checkForRightWall(floor(position.x), floor(position.y), _hitbox);
+	hasCeiling = Facade->checkForCeiling(round(position.x), round(position.y), _hitbox);
 
 	position += speed * deltaTime;
 }

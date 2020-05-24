@@ -76,7 +76,7 @@ void Camera::calculatePosition(Direction dir, float deltaTime)
 		break;
 	}
 
-	_position += add * 1.8f * deltaTime;
+	_position += add * 1.0f * deltaTime;
 
 	updateVectors();
 }

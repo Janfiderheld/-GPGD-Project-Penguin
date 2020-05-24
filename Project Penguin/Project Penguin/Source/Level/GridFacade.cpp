@@ -19,6 +19,21 @@ bool GridFacade::checkForGround(int x, int y, AABB objHitbox)
 	}	
 }
 
+bool GridFacade::checkForCeiling(int x, int y, AABB objHitbox)
+{
+	if (y >= _grid->getHeight()) {
+		return true;
+	}
+
+	LevelGridTile top = _grid->getTileFromGrid(x, y + 1);
+	if (!top.isFilled()) {
+		return false;
+	}
+	else {
+		return objHitbox.checkCollision(top.getHitbox());
+	}
+}
+
 bool GridFacade::checkForLeftWall(int x, int y, AABB objHitbox)
 {
 	if (x < 0) {

@@ -28,10 +28,10 @@ protected:
 
 	bool wasOnGround = true;
 	bool isOnGround = true;
+	bool hasCeiling = false;
 
 	bool hasTileLeft = false;
 	bool hadTileLeft = false;
-
 	bool hasTileRight = false;
 	bool hadTileRight = false;
 
