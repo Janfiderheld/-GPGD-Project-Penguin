@@ -14,14 +14,29 @@ AABB::AABB(glm::vec3 origin, float height, float width)
 	_width = width;
 }
 
-glm::vec3 AABB::getOrigin()
-{
-	return _origin;
-}
-
 void AABB::setOrigin(glm::vec3 newOrigin)
 {
 	_origin = newOrigin;
+}
+
+float AABB::getMaxX()
+{
+	return _origin.x;
+}
+
+float AABB::getMinX()
+{
+	return _origin.x + _width;
+}
+
+float AABB::getMaxY()
+{
+	return _origin.y + _height;
+}
+
+float AABB::getMinY()
+{
+	return _origin.y;
 }
 
 float AABB::getHeight()
@@ -36,12 +51,12 @@ float AABB::getWidth()
 
 bool AABB::checkCollision(AABB other)
 {
-	if (_origin.x + _width < other._origin.x ||
-		_origin.x > other._origin.x + other._width) {
+	if (getMaxX() < other.getMinX() ||
+		getMinX() > other.getMaxX()) {
 		return false;
 	} 
-	if (_origin.y + _height < other._origin.y ||
-		_origin.y > other._origin.y + other._height) {
+	if (getMaxY() < other.getMinY() ||
+		getMinY() > other.getMaxY()) {
 		return false;
 	}
 

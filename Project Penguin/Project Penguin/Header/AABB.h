@@ -13,11 +13,14 @@ public:
 	AABB(glm::vec3 origin, float square);
 	AABB(glm::vec3 origin, float height, float width);
 
-	glm::vec3 getOrigin();
-	void setOrigin(glm::vec3 newOrigin);
-
 	float getHeight();
 	float getWidth();
+	void setOrigin(glm::vec3 newOrigin);
+
+	float getMaxX();
+	float getMinX();
+	float getMaxY();
+	float getMinY();
 
 	bool checkCollision(AABB other);
 };

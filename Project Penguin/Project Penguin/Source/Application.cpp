@@ -210,7 +210,7 @@ int main(void) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glBindTexture(GL_TEXTURE_2D, character.getTexture().TextureId);
-        glBufferSubData(VBO, 0, sizeof(vertices), vertices);
+        glBufferSubData(VBO, 0, sizeof(character.getVertices()), character.getVertices());
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glDisable(GL_BLEND);
 

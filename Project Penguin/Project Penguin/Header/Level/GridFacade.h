@@ -11,10 +11,10 @@ private:
 public:
 	GridFacade(LevelGrid* grid);
 
-	bool checkForGround(int x, int y, AABB objHitbox);
-	bool checkForCeiling(int x, int y, AABB objHitbox);
-	bool checkForLeftWall(int x, int y, AABB objHitbox);
-	bool checkForRightWall(int x, int y, AABB objHitbox);
+	bool checkForTwoTilesInX(int x, int y, AABB objHitbox);
+	bool checkForTwoTilesInY(int x, int y, AABB objHitbox);
+
+	bool checkForWall(int x, int y);
 };
 
 #endif // GRID_FACADE

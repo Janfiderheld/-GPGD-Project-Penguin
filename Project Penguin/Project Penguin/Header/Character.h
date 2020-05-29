@@ -9,12 +9,13 @@ private:
 	const float _walkSpeed = 1.5f;
 	const float _sideSpeedAir = 0.5;
 
-	bool _isFalling = false;
+	float* _vertices = new float[20];
 
 public:
 	Character(glm::vec3 pos, Texture texture, AABB boundBox);
 
 	virtual void calculatePosition(float deltaTime);
+	float* getVertices();
 };
 
 #endif // CHAR_HEADER

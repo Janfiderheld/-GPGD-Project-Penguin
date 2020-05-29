@@ -1,11 +1,10 @@
 #include <Character.h>
 
-Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) : MovingObject(pos, texture, boundBox)
-{
+Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) : MovingObject(pos, texture, boundBox) {
+
 }
 
-void Character::calculatePosition(float deltaTime)
-{
+void Character::calculatePosition(float deltaTime) {
 	switch (status)
 	{
 	case STAND:
@@ -19,9 +18,12 @@ void Character::calculatePosition(float deltaTime)
 			status = WALK_RIGHT;
 			break;
 		}
-		if ((getInputStatus(UP) && !hasCeiling) || !isOnGround) {
+		if (getInputStatus(UP) && !hasCeiling) {
 			status = JUMP;
-			_isFalling = !isOnGround;
+			break;
+		}
+		if (!isOnGround) {
+			status = FALL;
 			break;
 		}
 
@@ -44,9 +46,12 @@ void Character::calculatePosition(float deltaTime)
 			status = STAND;
 			break;
 		} 
-		if ((getInputStatus(UP) && !hasCeiling) || !isOnGround) {
+		if (getInputStatus(UP) && !hasCeiling) {
 			status = JUMP;
-			_isFalling = !isOnGround;
+			break;
+		}
+		if (!isOnGround) {
+			status = FALL;
 			break;
 		}
 
@@ -69,25 +74,30 @@ void Character::calculatePosition(float deltaTime)
 			status = STAND;
 			break;
 		}
-		if ((getInputStatus(UP) && !hasCeiling) || !isOnGround) {
+		if (getInputStatus(UP) && !hasCeiling) {
 			status = JUMP;
-			_isFalling = !isOnGround;
+			break;
+		}
+		if(!isOnGround) {
+			status = FALL;
 			break;
 		}
 
 		break;
 
 	case JUMP:
-		if (!_isFalling) {
-			setVerticalSpeed(_jumpSpeed);
-			_isFalling = true;
-		} 	
+		setVerticalSpeed(_jumpSpeed);
+		status = FALL;
+			
+		break;	
+
+	case FALL:
 		setVerticalSpeed(speed.y + gravity * deltaTime);
 		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
-		// TODO: Clip speed when tile is above
 		if (getInputStatus(LEFT)) {
 			setHorizontalSpeed(hasTileLeft ? 0.0f : -_sideSpeedAir);
-		} else if (getInputStatus(RIGHT)) {
+		}
+		else if (getInputStatus(RIGHT)) {
 			setHorizontalSpeed(hasTileRight ? 0.0f : _sideSpeedAir);
 		}
 
@@ -95,7 +105,7 @@ void Character::calculatePosition(float deltaTime)
 			if (!getInputStatus(LEFT) && !getInputStatus(RIGHT)) {
 				status = STAND;
 				break;
-			} 
+			}
 			if (getInputStatus(LEFT)) {
 				status = WALK_LEFT;
 				break;
@@ -104,10 +114,40 @@ void Character::calculatePosition(float deltaTime)
 				status = WALK_RIGHT;
 				break;
 			}
+			if (getInputStatus(UP)) {
+				status = JUMP;
+				break;
+			}
 		}
 
 		break;
 	}
 
 	UpdatePhysics(deltaTime);
+}
+
+float* Character::getVertices() {
+	// TODO: Find a possiblity to use a loop
+	_vertices[0] = (float)getHitbox().getMaxX();
+	_vertices[1] = (float)getHitbox().getMaxY();
+	_vertices[2] = getPosition().z;
+	_vertices[3] = 1.0f;
+	_vertices[4] = 1.0f;
+	_vertices[5] = (float)getHitbox().getMaxX();
+	_vertices[6] = (float)getHitbox().getMinY();
+	_vertices[7] = getPosition().z;
+	_vertices[8] = 1.0f;
+	_vertices[9] = 0.0f;
+	_vertices[10] = (float)getHitbox().getMinX();
+	_vertices[11] = (float)getHitbox().getMinY();
+	_vertices[12] = getPosition().z;
+	_vertices[13] = 0.0f;
+	_vertices[14] = 0.0f;
+	_vertices[15] = (float)getHitbox().getMinX();
+	_vertices[16] = (float)getHitbox().getMaxY();
+	_vertices[17] = getPosition().z;;
+	_vertices[18] = 0.0f;
+	_vertices[19] = 1.0f;
+
+	return _vertices;
 }

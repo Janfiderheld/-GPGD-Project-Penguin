@@ -11,7 +11,8 @@ enum MovingObjectStatus {
 	STAND,
 	WALK_LEFT,
 	WALK_RIGHT,
-	JUMP
+	JUMP,
+	FALL
 };
 
 class MovingObject : public IMovable {
@@ -25,7 +26,6 @@ protected:
 
 	glm::vec3 position;
 	glm::vec3 oldPosition;
-	glm::vec3 centerOffset;
 	MovingObjectStatus status = STAND;
 
 	bool wasOnGround = true;
