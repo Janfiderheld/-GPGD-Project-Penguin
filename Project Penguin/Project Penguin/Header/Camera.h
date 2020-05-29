@@ -3,7 +3,7 @@
 
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
-#include <IMoveable.h>
+#include <Character.h>
 
 class Camera {
 private:
@@ -11,11 +11,13 @@ private:
 	glm::vec3 _front;
 	glm::vec3 _up;
 	glm::vec3 _worldUp;
+	
+	Character* _target;
 
 	void updateVectors();
 
 public:
-	Camera(glm::vec3 position, glm::vec3 worldUp);
+	Camera(glm::vec3 position, glm::vec3 worldUp, Character* character);
 
 	glm::vec3 getPosition();
 	glm::vec3 getFrontVector();
@@ -25,8 +27,7 @@ public:
 
 	void changePosition(glm::vec3 newPos);
 	void changeWorldUp(glm::vec3 newWorldUp);
-
-	void calculatePosition(Direction dir, float deltaTime);
+	void updatePosition(float deltaTime);
 };
 
 #endif // CAMERA_HEADER

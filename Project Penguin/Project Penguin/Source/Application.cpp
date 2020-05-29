@@ -1,5 +1,6 @@
 #include <Game.h>
 #include <Shader.h>
+#include <Camera.h>
 #include <Character.h>
 #include <Texture.h>
 #include <AABB.h>
@@ -51,7 +52,7 @@ int main(void) {
 
     // Camera
     // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
-    Camera cam = Camera(glm::vec3(5.6f, 4.9f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    Camera cam = Camera(glm::vec3(5.6f, 4.9f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), &character);
 
     // 3x Positions 2x Texture
     float vertices[] = {
@@ -93,8 +94,9 @@ int main(void) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         float delta = game.calculateDeltaTime();
-        game.processInput(&cam, &character);
+        game.processInput(&character);
         character.calculatePosition(delta);
+        cam.updatePosition(delta);
 
         // view transform
         glm::mat4 view = cam.getViewMatrix();

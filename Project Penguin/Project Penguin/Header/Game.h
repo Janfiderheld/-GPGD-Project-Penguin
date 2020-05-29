@@ -5,7 +5,6 @@
 #include <GLEW/wglew.h>
 #include <GLFW/glfw3.h>
 #include <Character.h>
-#include <Camera.h>
 #include <iostream>
 
 class Game {
@@ -23,7 +22,7 @@ public:
 
     bool Initialize();
 
-    void processInput(Camera* cam, Character* character);
+    void processInput(Character* character);
 
     GLFWwindow* getWindowPointer();
     int getHeight();

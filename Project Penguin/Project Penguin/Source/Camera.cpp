@@ -9,12 +9,13 @@ void Camera::updateVectors()
 }
 
 // constructor, which sets the position & worldUp
-Camera::Camera(glm::vec3 position, glm::vec3 worldUp)
-{
+Camera::Camera(glm::vec3 position, glm::vec3 worldUp, Character* character) {
 	_position = position;
 	_worldUp = worldUp;
 	_front = glm::vec3(0.0f, 0.0f, -1.0f);
 	updateVectors();
+
+	_target = character;
 }
 
 // returns the camera position
@@ -55,28 +56,7 @@ void Camera::changeWorldUp(glm::vec3 newWorldUp)
 	updateVectors();
 }
 
-// processes the Keyboard Input for a given direction by repositioning the camera 
-void Camera::calculatePosition(Direction dir, float deltaTime)
-{
-	glm::vec3 add(0.0f);
-
-	switch (dir)
-	{
-	case LEFT:
-		add = glm::vec3(-1.0f, 0.0f, 0.0f);
-		break;
-	case RIGHT:
-		add = glm::vec3(1.0f, 0.0f, 0.0f);
-		break;
-	case UP:
-		add = glm::vec3(0.0f, 1.0f, 0.0f);
-		break;
-	case DOWN:
-		add = glm::vec3(0.0f, -1.0f, 0.0f);
-		break;
-	}
-
-	_position += add * 1.0f * deltaTime;
-
-	updateVectors();
+void Camera::updatePosition(float deltaTime) {
+	glm::vec3 speed = _target->getCurrentSpeed();
+	changePosition(getPosition() + speed * deltaTime);
 }
