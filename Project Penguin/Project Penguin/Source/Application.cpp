@@ -46,7 +46,7 @@ int main(void) {
     MovingObject::Facade = &levelFacade;
 
     glm::vec3 charPos(1.0f, 3.0f, -10.0f);
-    AABB charHitbox(charPos, 1);
+    AABB charHitbox(charPos, 0.8, 0.53);
     Character character(charPos, charText, charHitbox);
 
     // Camera

@@ -1,14 +1,13 @@
 #include "AABB.h"
 
-AABB::AABB(glm::vec3 origin, int square)
+AABB::AABB(glm::vec3 origin, float square)
 {
-	//AABB(origin, square, square);
 	_origin = origin;
 	_height = square;
 	_width = square;
 }
 
-AABB::AABB(glm::vec3 origin, int height, int width)
+AABB::AABB(glm::vec3 origin, float height, float width)
 {
 	_origin = origin;
 	_height = height;
@@ -23,6 +22,16 @@ glm::vec3 AABB::getOrigin()
 void AABB::setOrigin(glm::vec3 newOrigin)
 {
 	_origin = newOrigin;
+}
+
+float AABB::getHeight()
+{
+	return _height;
+}
+
+float AABB::getWidth()
+{
+	return _width;
 }
 
 bool AABB::checkCollision(AABB other)

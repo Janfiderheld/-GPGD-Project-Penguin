@@ -50,18 +50,20 @@ private:
 	void generateBottom();
 	void addPlattforms();
 	void addPits();
-	void setTileBorders();
+
 	void fillTilesBelow(int x, int y);
+	void setTileBorders();
+	void generateRemainingTiles();
 
 public:
 	LevelGrid();
 
 	void drawGrid(Texture txt);
 
-	LevelGridTile getTileFromGrid(int x, int y);
-
 	int getWidth();
 	int getHeight();	
+
+	LevelGridTile& getTileFromGrid(int x, int y);
 };
 
 #endif // GRID_HEADER

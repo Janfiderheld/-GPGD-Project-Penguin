@@ -17,6 +17,7 @@ LevelGrid::LevelGrid() {
 	addPlattforms();
 	addPits();
 
+	generateRemainingTiles();
 	setTileBorders();
 }
 
@@ -25,7 +26,10 @@ void LevelGrid::initializeStartingArea() {
 	for (int y = 0; y <= FilledBottomRows; y++) {
 		for (int x = 0; x <= StartingAreaWidth; x++) {
 			size_t current = y * LevelWidth + x;
-			_level.at(current) = LevelGridTile(x, y, y != FilledBottomRows);
+			_level.at(current) = LevelGridTile(x, y);
+			if (y != FilledBottomRows) {
+				_level.at(current).fill();
+			}
 			if (y == FilledBottomRows - 1 && x != StartingAreaWidth) {
 				_level.at(current).changeLocation(START_AREA);
 			}			
@@ -187,7 +191,8 @@ void LevelGrid::generateBottom() {
 		}
 
 		size_t current = currentY * LevelWidth + currentX;
-		_level.at(current) = LevelGridTile(currentX, currentY, true);
+		_level.at(current) = LevelGridTile(currentX, currentY);
+		_level.at(current).fill();
 		if (state == LVL_END) {
 			_level.at(current).changeLocation(END_AREA);
 		}
@@ -196,11 +201,10 @@ void LevelGrid::generateBottom() {
 
 // fills the tiles below the given point with tiles
 void LevelGrid::fillTilesBelow(int x, int y) {
-	for (int i = 0; i < y; i++) {
+	for (int i = y - 1; i >= 0; i--) {
 		size_t current = x + i * LevelWidth;
-		if (!_level.at(current).isGenerated()) {
-			_level.at(current) = LevelGridTile(x, i, true);
-		}
+		_level.at(current) = LevelGridTile(x, i);
+		_level.at(current).fill();
 	}
 }
 
@@ -249,10 +253,17 @@ void LevelGrid::addPlattforms() {
 		positions.push_back(x);
 		positions.push_back(x + 1);
 
-		_level.at(x + (y + 2) * LevelWidth) = LevelGridTile(x, y + 2, true);
-		_level.at((x - 1) + (y + 2) * LevelWidth) = LevelGridTile(x - 1, y + 2, true);
-		_level.at((x + 1) + (y + 2) * LevelWidth) = LevelGridTile(x + 1, y + 2, true);
-		_level.at(x + (y + 4) * LevelWidth) = LevelGridTile(x, y + 4, true);
+		_level.at(x + (y + 2) * LevelWidth) = LevelGridTile(x, y + 2);
+		_level.at(x + (y + 2) * LevelWidth).fill();
+
+		_level.at((x - 1) + (y + 2) * LevelWidth) = LevelGridTile(x - 1, y + 2);
+		_level.at((x - 1) + (y + 2) * LevelWidth).fill();
+
+		_level.at((x + 1) + (y + 2) * LevelWidth) = LevelGridTile(x + 1, y + 2);
+		_level.at((x + 1) + (y + 2) * LevelWidth).fill();
+
+		_level.at(x + (y + 4) * LevelWidth) = LevelGridTile(x, y + 4);
+		_level.at(x + (y + 4) * LevelWidth).fill();
 	}
 }
 
@@ -291,7 +302,7 @@ void LevelGrid::addPits() {
 		for (int pitX = x; pitX <= x + 1; pitX++) {
 			int y = 0;
 			while (_level.at(pitX + y * LevelWidth).isGenerated()) {
-				_level.at(pitX + y * LevelWidth) = LevelGridTile(pitX, y, false);
+				_level.at(pitX + y * LevelWidth).empty();
 				y++;
 			}
 		}		
@@ -303,6 +314,11 @@ void LevelGrid::setTileBorders() {
 	for (int currentX = 0; currentX < LevelWidth; currentX++) {
 		for (int currentY = 0; currentY < LevelHeight; currentY++) {
 			size_t current = currentX + currentY * LevelWidth;
+
+			if (!_level.at(current).isFilled()) {
+				continue;
+			}
+
 			bool isBorder = false;
 
 			if (currentX - 1 >= 0) {
@@ -342,12 +358,23 @@ void LevelGrid::setTileBorders() {
 	}
 }
 
-void LevelGrid::drawGrid(Texture tex) {
+void LevelGrid::generateRemainingTiles()
+{
+	for (int currentX = 0; currentX < LevelWidth; currentX++) {
+		for (int currentY = 0; currentY < LevelHeight; currentY++) {
+			size_t current = currentX + currentY * LevelWidth;
 
+			if (_level.at(current).isGenerated()) {
+				continue;
+			}
+
+			_level.at(current) = LevelGridTile(currentX, currentY);
+		}
+	}
 }
 
 // Returns the tile at position (x, y).
-LevelGridTile LevelGrid::getTileFromGrid(int x, int y)
+LevelGridTile& LevelGrid::getTileFromGrid(int x, int y)
 {
 	return _level.at(x + y * LevelWidth);
 }

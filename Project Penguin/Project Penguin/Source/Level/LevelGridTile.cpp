@@ -4,11 +4,11 @@ LevelGridTile::LevelGridTile() : _hitbox(getPosition(), 1) {
 	// empty constructor
 }
 
-LevelGridTile::LevelGridTile(int x, int y, bool filled) : _hitbox(getPosition(), 1) {
+LevelGridTile::LevelGridTile(int x, int y) : _hitbox(getPosition(), 1) {
 	_x = x;
 	_y = y;
-	_filled = filled;
 	_generated = true;
+	empty();
 
 	// TODO: Find a possiblity to use a loop
 	_vertices[0] = (float)(_x + 1);
@@ -33,6 +33,14 @@ LevelGridTile::LevelGridTile(int x, int y, bool filled) : _hitbox(getPosition(),
 	_vertices[19] = 1.0f;
 
 	_hitbox = AABB(getPosition(), 1);
+}
+
+void LevelGridTile::fill() {
+	_filled = true;
+}
+
+void LevelGridTile::empty() {
+	_filled = false;
 }
 
 bool LevelGridTile::isFilled() {

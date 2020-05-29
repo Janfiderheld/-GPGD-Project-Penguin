@@ -8,9 +8,10 @@
 #include <Level/GridFacade.h>
 
 enum MovingObjectStatus {
-	STANDING,
-	WALKING,
-	JUMPING
+	STAND,
+	WALK_LEFT,
+	WALK_RIGHT,
+	JUMP
 };
 
 class MovingObject : public IMovable {
@@ -24,7 +25,8 @@ protected:
 
 	glm::vec3 position;
 	glm::vec3 oldPosition;
-	MovingObjectStatus status = STANDING;
+	glm::vec3 centerOffset;
+	MovingObjectStatus status = STAND;
 
 	bool wasOnGround = true;
 	bool isOnGround = true;

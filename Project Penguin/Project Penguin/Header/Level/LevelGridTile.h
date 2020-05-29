@@ -16,13 +16,15 @@ private:
 	static const int VerticeAmount = 20;
 	static const int IndexAmount = 6;
 
+	int _x, _y;
 	float z = -10.0;
 
-	bool _left = false, _right = false, _top = false, _bottom = false;
-
-	int _x, _y;
-	bool _filled = false;
 	bool _generated = false;
+	bool _filled = false;
+	bool _left = false;
+	bool _right = false;
+	bool _top = false;
+	bool _bottom = false;
 
 	Location _loc = NORMAL;
 	AABB _hitbox;
@@ -31,8 +33,10 @@ private:
 
 public:
 	LevelGridTile();
-	LevelGridTile(int x, int y, bool filled);
+	LevelGridTile(int x, int y);
 
+	void fill();
+	void empty();
 	bool isFilled();
 	bool isGenerated();
 
