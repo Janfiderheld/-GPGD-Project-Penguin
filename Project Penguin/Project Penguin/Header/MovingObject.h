@@ -6,14 +6,7 @@
 #include <AABB.h>
 #include <Texture.h>
 #include <Level/GridFacade.h>
-
-enum MovingObjectStatus {
-	STAND,
-	WALK_LEFT,
-	WALK_RIGHT,
-	JUMP,
-	FALL
-};
+#include <MovingObjectStatus.h>
 
 class MovingObject : public IMovable {
 private:

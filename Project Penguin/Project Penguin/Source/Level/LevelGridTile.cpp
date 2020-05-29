@@ -51,11 +51,11 @@ bool LevelGridTile::isGenerated() {
 	return _generated;
 }
 
-void LevelGridTile::changeLocation(Location newLoc) {
+void LevelGridTile::changeLocation(TileLocation newLoc) {
 	_loc = newLoc;
 }
 
-Location LevelGridTile::getLocation() {
+TileLocation LevelGridTile::getLocation() {
 	return _loc;
 }
 
@@ -94,8 +94,7 @@ unsigned char LevelGridTile::getBorderForTexture() {
 	return toReturn;
 }
 
-float* LevelGridTile::getVertices()
-{
+float* LevelGridTile::getVertices() {
 	return _vertices;
 }
 

@@ -3,12 +3,7 @@
 
 #include <GLM/glm.hpp>
 #include <AABB.h>
-
-enum Location {
-	NORMAL,
-	START_AREA,
-	END_AREA
-};
+#include <TileLocation.h>
 
 class LevelGridTile {
 private:
@@ -26,7 +21,7 @@ private:
 	bool _top = false;
 	bool _bottom = false;
 
-	Location _loc = NORMAL;
+	TileLocation _loc = NORMAL;
 	AABB _hitbox;
 
 	float* _vertices = new float[VerticeAmount];
@@ -40,8 +35,8 @@ public:
 	bool isFilled();
 	bool isGenerated();
 
-	void changeLocation(Location newLoc);
-	Location getLocation();
+	void changeLocation(TileLocation newLoc);
+	TileLocation getLocation();
 
 	void setLeftBorder(bool left);
 	void setRightBorder(bool right);

@@ -5,15 +5,7 @@
 #include <Level/LevelGridTile.h>
 #include <Texture.h>
 #include <time.h>
-
-#define START		0
-#define HIGH		1
-#define HIGH_FIN	2
-#define HIGH_DOUB	3
-#define LOW			4
-#define LOW_FIN		5
-#define LOW_DOUB	6
-#define LVL_END		7
+#include <LevelGenerationStates.h>
 
 class LevelGrid {
 private:
@@ -41,7 +33,7 @@ private:
 	const int DoubleHigh = 20;
 	const int DoubleLow = 20;
 
-	int state = START;
+	LevelGenerationStates state = LVL_START;
 
 	// Access via [currentY * width + currentX]
 	std::vector<LevelGridTile> _level;
@@ -57,8 +49,6 @@ private:
 
 public:
 	LevelGrid();
-
-	void drawGrid(Texture txt);
 
 	int getWidth();
 	int getHeight();	

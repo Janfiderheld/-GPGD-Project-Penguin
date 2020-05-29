@@ -1,0 +1,10 @@
+enum LevelGenerationStates {
+	LVL_START,
+	LVL_END,
+	HIGH,
+	LOW,
+	DOUBLE_HIGH,
+	DOUBLE_LOW,
+	FINISHED_HIGH,
+	FINISHED_LOW
+};

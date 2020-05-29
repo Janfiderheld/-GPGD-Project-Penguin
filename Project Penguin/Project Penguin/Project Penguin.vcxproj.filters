@@ -27,6 +27,9 @@
     <ClInclude Include="Interfaces\IMoveable.h" />
     <ClInclude Include="Header\Character.h" />
     <ClInclude Include="Header\Level\GridFacade.h" />
+    <ClInclude Include="Enums\LevelGenerationStates.h" />
+    <ClInclude Include="Enums\TileLocation.h" />
+    <ClInclude Include="Enums\MovingObjectStatus.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

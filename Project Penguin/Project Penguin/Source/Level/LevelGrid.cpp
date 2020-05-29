@@ -48,10 +48,10 @@ void LevelGrid::generateBottom() {
 	while (!levelEndReached) {
 		int rndm = rand() % 100;
 		switch (state) {
-		case START:
+		case LVL_START:
 			if (rndm < SameGoUp && currentY < MaxBottomHeight) {
 				currentY++;
-				state = HIGH_DOUB;
+				state = DOUBLE_HIGH;
 			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
@@ -65,7 +65,7 @@ void LevelGrid::generateBottom() {
 		case HIGH:
 			if (countPlain <= 0) {
 				countPlain = PlainWidth;
-				state = HIGH_FIN;
+				state = FINISHED_HIGH;
 			}
 			if (currentX < LevelWidth - EndAreaWidth - 1) {
 				currentX++;
@@ -76,11 +76,11 @@ void LevelGrid::generateBottom() {
 			}			
 			break;
 
-		case HIGH_FIN:
+		case FINISHED_HIGH:
 			if (rndm < HighGoUp) {
 				if (currentY < MaxBottomHeight) {
 					currentY++;
-					state = HIGH_DOUB;
+					state = DOUBLE_HIGH;
 				} else {
 					continue;
 				}
@@ -101,7 +101,7 @@ void LevelGrid::generateBottom() {
 			}
 			break;
 
-		case HIGH_DOUB:
+		case DOUBLE_HIGH:
 			if (rndm < DoubleHigh) {
 				if (currentY < MaxBottomHeight) {
 					currentY++;
@@ -124,7 +124,7 @@ void LevelGrid::generateBottom() {
 		case LOW:
 			if (countPlain <= 0) {
 				countPlain = PlainWidth;
-				state = HIGH_FIN;
+				state = FINISHED_LOW;
 			}
 			if (currentX < LevelWidth - EndAreaWidth - 1) {
 				currentX++;
@@ -135,7 +135,7 @@ void LevelGrid::generateBottom() {
 			}
 			break;
 
-		case LOW_FIN:
+		case FINISHED_LOW:
 			if (rndm < LowGoUp) {
 				if (currentY < MaxBottomHeight) {
 					currentY++;
@@ -146,7 +146,7 @@ void LevelGrid::generateBottom() {
 			} else if (rndm >= LowGoUp && rndm < LowGoUp + LowGoDown) {
 				if (currentY >= FilledBottomRows) {
 					currentY--;
-					state = LOW_DOUB;
+					state = DOUBLE_LOW;
 				} else {
 					continue;
 				}
@@ -160,7 +160,7 @@ void LevelGrid::generateBottom() {
 			}
 			break;
 
-		case LOW_DOUB:
+		case DOUBLE_LOW:
 			if (rndm < DoubleLow) {
 				if (currentY >= FilledBottomRows) {
 					currentY--;

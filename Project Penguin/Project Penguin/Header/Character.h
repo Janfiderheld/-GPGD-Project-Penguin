@@ -5,7 +5,7 @@
 
 class Character : public MovingObject {
 private:
-	const float _jumpSpeed = 1.0f;
+	const float _jumpSpeed = 1.25f;
 	const float _walkSpeed = 1.5f;
 	const float _sideSpeedAir = 0.5;
 
