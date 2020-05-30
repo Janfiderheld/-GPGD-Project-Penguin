@@ -14,8 +14,8 @@ private:
 	Texture _texture;	
 
 protected:
-	const float gravity = -0.5;
-	const float maxFallingSpeed = -2.0f;
+	const float gravity = -0.85f;
+	const float maxFallingSpeed = -2.75f;
 
 	glm::vec3 position;
 	glm::vec3 oldPosition;

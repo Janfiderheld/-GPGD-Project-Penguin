@@ -6,6 +6,10 @@ GridFacade::GridFacade(LevelGrid* grid)
 }
 
 bool GridFacade::checkForTwoTilesInX(int x, int y, AABB objHitbox) {
+	if (x >= _grid->getWidth() || x < 0) {
+		return false;
+	}
+
 	AABB left = _grid->getTileFromGrid(x, y).getHitbox();
 	
 	if (objHitbox.getMinX() >= left.getMinX() &&
@@ -16,8 +20,11 @@ bool GridFacade::checkForTwoTilesInX(int x, int y, AABB objHitbox) {
 	}	
 }
 
-bool GridFacade::checkForTwoTilesInY(int x, int y, AABB objHitbox)
-{
+bool GridFacade::checkForTwoTilesInY(int x, int y, AABB objHitbox) {
+	if (y >= _grid->getHeight() || y < 0) {
+		return false;
+	}
+
 	AABB bottom = _grid->getTileFromGrid(x, y).getHitbox();
 
 	if (objHitbox.getMinY() >= bottom.getMinY() &&
