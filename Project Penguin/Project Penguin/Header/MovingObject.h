@@ -44,6 +44,7 @@ public:
 	AABB getHitbox();
 	Texture getTexture();
 	glm::vec3 getPosition();
+	MovingObjectStatus getCurrentStatus();
 
 	bool justPressed(Direction keyDirect);
 	bool justReleased(Direction keyDirect);

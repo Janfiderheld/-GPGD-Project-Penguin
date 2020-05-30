@@ -57,6 +57,13 @@ void Camera::changeWorldUp(glm::vec3 newWorldUp)
 }
 
 void Camera::updatePosition(float deltaTime) {
+	if (_target->getPosition().x < CharFollowStart) {
+		return;
+	}
+
 	glm::vec3 speed = _target->getCurrentSpeed();
+	if (speed.y != 0.0f && _target->getPosition().y <= MaxHeight) {
+		speed.y = 0.0f;
+	}
 	changePosition(getPosition() + speed * deltaTime);
 }

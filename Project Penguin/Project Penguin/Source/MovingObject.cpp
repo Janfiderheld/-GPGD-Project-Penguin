@@ -98,6 +98,10 @@ glm::vec3 MovingObject::getPosition() {
 	return position;
 }
 
+MovingObjectStatus MovingObject::getCurrentStatus() {
+	return status;
+}
+
 bool MovingObject::justPressed(Direction keyDirect) {
 	if (keyDirect != DOWN) {
 		return currInputs[keyDirect] && !prevInputs[keyDirect];

@@ -7,6 +7,9 @@
 
 class Camera {
 private:
+	const int CharFollowStart = 6;
+	const int MaxHeight = 7;
+
 	glm::vec3 _position;
 	glm::vec3 _front;
 	glm::vec3 _up;
