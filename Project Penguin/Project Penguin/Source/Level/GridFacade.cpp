@@ -46,3 +46,14 @@ bool GridFacade::checkForWall(int x, int y) {
 
 	return _grid->getTileFromGrid(x, y).isFilled();
 }
+
+bool GridFacade::checkForEndArea(int x, int y) {
+	if (x >= _grid->getWidth() ||
+		x < 0 ||
+		y >= _grid->getHeight() ||
+		y <= 0) {
+		return false;
+	}
+
+	return _grid->getTileFromGrid(x, y).getLocation() == END_AREA;
+}

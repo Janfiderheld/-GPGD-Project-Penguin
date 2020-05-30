@@ -13,8 +13,8 @@ public:
 
 	bool checkForTwoTilesInX(int x, int y, AABB objHitbox);
 	bool checkForTwoTilesInY(int x, int y, AABB objHitbox);
-
 	bool checkForWall(int x, int y);
+	bool checkForEndArea(int x, int y);
 };
 
 #endif // GRID_FACADE

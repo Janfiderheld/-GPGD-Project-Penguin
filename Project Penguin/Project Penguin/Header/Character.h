@@ -11,11 +11,15 @@ private:
 
 	float* _vertices = new float[20];
 
+	bool _reachedEnd = false;
+	void checkForReachedEnd();
+
 public:
 	Character(glm::vec3 pos, Texture texture, AABB boundBox);
 
 	virtual void calculatePosition(float deltaTime);
 	float* getVertices();
+	bool hasReachedEnd();
 };
 
 #endif // CHAR_HEADER

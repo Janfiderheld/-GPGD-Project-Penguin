@@ -126,6 +126,7 @@ void Character::calculatePosition(float deltaTime) {
 	}
 
 	UpdatePhysics(deltaTime);
+	checkForReachedEnd();
 }
 
 float* Character::getVertices() {
@@ -152,4 +153,18 @@ float* Character::getVertices() {
 	_vertices[19] = 1.0f;
 
 	return _vertices;
+}
+
+void Character::checkForReachedEnd() {
+	int posX = floor(position.x);
+	int posY = ceil(position.y) - 1;
+
+	if (Facade->checkForEndArea(posX, posY)) {
+		status = STAND;
+		_reachedEnd = true;
+	}
+}
+
+bool Character::hasReachedEnd() {
+	return _reachedEnd;
 }

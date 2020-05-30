@@ -126,7 +126,7 @@ void LevelGrid::generateBottom() {
 				countPlain = PlainWidth;
 				state = FINISHED_LOW;
 			}
-			if (currentX < LevelWidth - EndAreaWidth - 1) {
+			if (currentX < LevelWidth - EndAreaWidth) {
 				currentX++;
 				countPlain--;
 				fillTilesBelow(currentX, currentY);
