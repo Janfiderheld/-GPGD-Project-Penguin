@@ -13,6 +13,7 @@
     <ClCompile Include="Source\Level\LevelGridTile.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Level\GridFacade.cpp" />
+    <ClCompile Include="Source\InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Game.h" />
@@ -30,6 +31,8 @@
     <ClInclude Include="Enums\LevelGenerationStates.h" />
     <ClInclude Include="Enums\TileLocation.h" />
     <ClInclude Include="Enums\MovingObjectStatus.h" />
+    <ClInclude Include="Header\InputManager.h" />
+    <ClInclude Include="Enums\InputDirection.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

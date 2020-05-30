@@ -155,6 +155,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\Level\GridFacade.cpp" />
     <ClCompile Include="Source\Level\LevelGrid.cpp" />
     <ClCompile Include="Source\Level\LevelGridTile.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Source\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enums\InputDirection.h" />
     <ClInclude Include="Enums\LevelGenerationStates.h" />
     <ClInclude Include="Enums\MovingObjectStatus.h" />
     <ClInclude Include="Enums\TileLocation.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="Header\Camera.h" />
     <ClInclude Include="Header\Character.h" />
     <ClInclude Include="Header\Game.h" />
+    <ClInclude Include="Header\InputManager.h" />
     <ClInclude Include="Header\Level\GridFacade.h" />
     <ClInclude Include="Interfaces\IMoveable.h" />
     <ClInclude Include="Header\Level\LevelGrid.h" />

@@ -29,9 +29,6 @@ protected:
 	bool hadTileLeft = false;
 	bool hasTileRight = false;
 	bool hadTileRight = false;
-
-	bool currInputs[3];
-	bool prevInputs[3];
 	
 public:
 	MovingObject(glm::vec3 pos, Texture texture, AABB boundBox);
@@ -45,11 +42,6 @@ public:
 	Texture getTexture();
 	glm::vec3 getPosition();
 	MovingObjectStatus getCurrentStatus();
-
-	bool justPressed(Direction keyDirect);
-	bool justReleased(Direction keyDirect);
-	bool getInputStatus(Direction keyDirect);
-	void setInputStatus(Direction keyDirect, bool val);
 };
 
 #endif // MOVINGOBJ_HEADER

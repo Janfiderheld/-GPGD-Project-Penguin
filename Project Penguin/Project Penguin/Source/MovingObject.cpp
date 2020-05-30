@@ -6,10 +6,6 @@ GridFacade* MovingObject::Facade = nullptr;
 MovingObject::MovingObject(glm::vec3 pos, Texture texture, AABB boundBox) : _texture(texture), _hitbox(boundBox)
 {
 	position = pos;	
-	for (int i = 0; i < 3; i++) {
-		currInputs[i] = false;
-		prevInputs[i] = false;
-	}
 }
 
 void MovingObject::UpdatePhysics(float deltaTime)
@@ -19,10 +15,6 @@ void MovingObject::UpdatePhysics(float deltaTime)
 	wasOnGround = isOnGround;
 	hadTileLeft = hasTileLeft;
 	hadTileRight = hasTileRight;
-
-	for (int i = 0; i < 3; i++) {
-		prevInputs[i] = currInputs[i];
-	}
 
 	position += speed * deltaTime;
 	_hitbox.setOrigin(position);
@@ -100,36 +92,4 @@ glm::vec3 MovingObject::getPosition() {
 
 MovingObjectStatus MovingObject::getCurrentStatus() {
 	return status;
-}
-
-bool MovingObject::justPressed(Direction keyDirect) {
-	if (keyDirect != DOWN) {
-		return currInputs[keyDirect] && !prevInputs[keyDirect];
-	} else {
-		return false;
-	}	
-}
-
-bool MovingObject::justReleased(Direction keyDirect) {
-	if (keyDirect != DOWN) {
-		return !currInputs[keyDirect] && prevInputs[keyDirect];
-	}
-	else {
-		return false;
-	}
-}
-
-bool MovingObject::getInputStatus(Direction keyDirect) {
-	if (keyDirect != DOWN) {
-		return currInputs[keyDirect];
-	}
-	else {
-		return false;
-	}
-}
-
-void MovingObject::setInputStatus(Direction keyDirect, bool val) {
-	if (keyDirect != DOWN) {
-		currInputs[keyDirect] = val;
-	}
 }

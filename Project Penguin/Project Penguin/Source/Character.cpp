@@ -1,5 +1,7 @@
 #include <Character.h>
 
+InputManager* Character::InputManager = nullptr;
+
 Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) : MovingObject(pos, texture, boundBox) {
 
 }
@@ -10,15 +12,15 @@ void Character::calculatePosition(float deltaTime) {
 	case STAND:
 		setCompleteSpeed(glm::vec3(0.0f));
 
-		if (getInputStatus(LEFT)) {
+		if (InputManager->getInputStatus(LEFT)) {
 			status = WALK_LEFT;
 			break;
 		} 
-		if (getInputStatus(RIGHT)) {
+		if (InputManager->getInputStatus(RIGHT)) {
 			status = WALK_RIGHT;
 			break;
 		}
-		if (getInputStatus(UP) && !hasCeiling) {
+		if (InputManager->getInputStatus(UP) && !hasCeiling) {
 			status = JUMP;
 			break;
 		}
@@ -38,15 +40,15 @@ void Character::calculatePosition(float deltaTime) {
 		} else {
 			setHorizontalSpeed(-_walkSpeed);
 		}
-		if (getInputStatus(RIGHT)) {
+		if (InputManager->getInputStatus(RIGHT)) {
 			status = WALK_RIGHT;
 			break;
 		}
-		if (!getInputStatus(LEFT)) {
+		if (!InputManager->getInputStatus(LEFT)) {
 			status = STAND;
 			break;
 		} 
-		if (getInputStatus(UP) && !hasCeiling) {
+		if (InputManager->getInputStatus(UP) && !hasCeiling) {
 			status = JUMP;
 			break;
 		}
@@ -66,15 +68,15 @@ void Character::calculatePosition(float deltaTime) {
 		} else {
 			setHorizontalSpeed(_walkSpeed);
 		}
-		if (getInputStatus(LEFT)) {
+		if (InputManager->getInputStatus(LEFT)) {
 			status = WALK_LEFT;
 			break;
 		}
-		if (!getInputStatus(RIGHT)) {
+		if (!InputManager->getInputStatus(RIGHT)) {
 			status = STAND;
 			break;
 		}
-		if (getInputStatus(UP) && !hasCeiling) {
+		if (InputManager->getInputStatus(UP) && !hasCeiling) {
 			status = JUMP;
 			break;
 		}
@@ -95,28 +97,28 @@ void Character::calculatePosition(float deltaTime) {
 		setVerticalSpeed(speed.y + gravity * deltaTime);
 		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
 
-		if (getInputStatus(LEFT) && !hasTileLeft) {
+		if (InputManager->getInputStatus(LEFT) && !hasTileLeft) {
 			setHorizontalSpeed(-_sideSpeedAir);
-		} else if(getInputStatus(RIGHT) && !hasTileRight) {
+		} else if(InputManager->getInputStatus(RIGHT) && !hasTileRight) {
 			setHorizontalSpeed(_sideSpeedAir);
 		} else {
 			setHorizontalSpeed(0.0f);
 		}
 
 		if (isOnGround && !wasOnGround) {
-			if (!getInputStatus(LEFT) && !getInputStatus(RIGHT)) {
+			if (!InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT)) {
 				status = STAND;
 				break;
 			}
-			if (getInputStatus(LEFT)) {
+			if (InputManager->getInputStatus(LEFT)) {
 				status = WALK_LEFT;
 				break;
 			}
-			if (getInputStatus(RIGHT)) {
+			if (InputManager->getInputStatus(RIGHT)) {
 				status = WALK_RIGHT;
 				break;
 			}
-			if (getInputStatus(UP)) {
+			if (InputManager->getInputStatus(UP)) {
 				status = JUMP;
 				break;
 			}
@@ -126,6 +128,7 @@ void Character::calculatePosition(float deltaTime) {
 	}
 
 	UpdatePhysics(deltaTime);
+	InputManager->Update();
 	checkForReachedEnd();
 }
 

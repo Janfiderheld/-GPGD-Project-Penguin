@@ -44,7 +44,10 @@ int main(void) {
     // Level & Characters
     LevelGrid level;
     GridFacade levelFacade(&level); 
-    MovingObject::Facade = &levelFacade;
+    InputManager inpMan;
+    MovingObject::LevelFacade = &levelFacade;
+    Character::InputManager = &inpMan;
+    Game::InputManager = &inpMan;
 
     glm::vec3 charPos(1.0f, 3.0f, -10.0f);
     AABB charHitbox(charPos, 0.95, 0.95);

@@ -2,6 +2,7 @@
 #define CHAR_HEADER
 
 #include <MovingObject.h>
+#include <InputManager.h>
 
 class Character : public MovingObject {
 private:
@@ -15,6 +16,8 @@ private:
 	void checkForReachedEnd();
 
 public:
+	static InputManager* InputManager;
+
 	Character(glm::vec3 pos, Texture texture, AABB boundBox);
 
 	virtual void calculatePosition(float deltaTime);
