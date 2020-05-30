@@ -94,11 +94,13 @@ void Character::calculatePosition(float deltaTime) {
 	case FALL:
 		setVerticalSpeed(speed.y + gravity * deltaTime);
 		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
-		if (getInputStatus(LEFT)) {
-			setHorizontalSpeed(hasTileLeft ? 0.0f : -_sideSpeedAir);
-		}
-		else if (getInputStatus(RIGHT)) {
-			setHorizontalSpeed(hasTileRight ? 0.0f : _sideSpeedAir);
+
+		if (getInputStatus(LEFT) && !hasTileLeft) {
+			setHorizontalSpeed(-_sideSpeedAir);
+		} else if(getInputStatus(RIGHT) && !hasTileRight) {
+			setHorizontalSpeed(_sideSpeedAir);
+		} else {
+			setHorizontalSpeed(0.0f);
 		}
 
 		if (isOnGround && !wasOnGround) {

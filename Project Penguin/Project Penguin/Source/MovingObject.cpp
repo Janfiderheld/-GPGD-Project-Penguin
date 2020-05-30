@@ -25,18 +25,10 @@ void MovingObject::UpdatePhysics(float deltaTime)
 	}
 
 	position += speed * deltaTime;
-	int flooredPosX = floor(position.x);
-	int flooredPosY = floor(position.y);
-
-	if (hasCeiling) {
-		position.y = glm::min(position.y, flooredPosY + 2.0f);
-		setVerticalSpeed(0.0f);
-		flooredPosY = floor(position.y);
-	}
 	_hitbox.setOrigin(position);
 
-	flooredPosX = floor(position.x);
-	flooredPosY = floor(position.y);
+	int flooredPosX = floor(position.x);
+	int flooredPosY = floor(position.y);
 	int roundPosX = round(position.x);
 	int roundPosY = round(position.y);
 	int ceilPosX = ceil(position.x);
@@ -63,12 +55,6 @@ void MovingObject::UpdatePhysics(float deltaTime)
 		isOnGround = roundPosX == ceilPosX ? bottomTileRight : bottomTileLeft;
 	}
 
-	if (twoCeilings) {
-		hasCeiling = upperTileLeft || upperTileRight;
-	} else {
-		hasCeiling = roundPosX == ceilPosX ? upperTileRight : upperTileLeft;
-	}
-
 	if (twoRight) {
 		hasTileRight = rightWallUpper || rightWallLower;
 	} else {
@@ -79,6 +65,22 @@ void MovingObject::UpdatePhysics(float deltaTime)
 		hasTileLeft = leftWallUpper || leftWallLower;
 	} else {
 		hasTileLeft = roundPosY == ceilPosY ? leftWallUpper : leftWallLower;
+	}
+
+	bool clampUpperLeft = Facade->checkForWall(flooredPosX, flooredPosY + 1);
+	bool clampUpperRight = Facade->checkForWall(ceilPosX, flooredPosY + 1);
+	bool clampJump = false;
+	if (twoCeilings) {
+		hasCeiling = upperTileLeft || upperTileRight;
+		clampJump = clampUpperLeft || clampUpperRight;
+	} else {
+		hasCeiling = roundPosX == ceilPosX ? upperTileRight : upperTileLeft;
+		clampJump = roundPosX == ceilPosX ? clampUpperRight : clampUpperLeft;
+	}
+
+	if (clampJump) {
+		position.y = glm::min(position.y, (float)(flooredPosY + 1));
+		speed.y = glm::min(speed.y, 0.0f);
 	}
 }
 
