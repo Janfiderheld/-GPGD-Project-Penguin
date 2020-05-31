@@ -50,7 +50,7 @@ int main(void) {
     Game::InputManager = &inpMan;
 
     glm::vec3 charPos(1.0f, 3.0f, -10.0f);
-    AABB charHitbox(charPos, 0.95, 0.95);
+    AABB charHitbox(charPos, 1.0f, 0.66f);
     Character character(charPos, charText, charHitbox);
 
     // Camera
@@ -210,6 +210,10 @@ int main(void) {
         // draw character
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, character.getPosition());
+        model = glm::scale(model, glm::vec3(0.66f, 1.0f, 1.0f));
+        if (character.getCurrentSpeed().x < 0.0f) {
+            model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
+        }
         shader.setMat4Uniform("model", model);
 
         glEnable(GL_BLEND);
