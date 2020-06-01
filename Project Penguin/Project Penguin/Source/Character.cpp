@@ -24,14 +24,14 @@ void Character::calculateSpeed(float deltaTime) {
 	case STAND:
 		setCompleteSpeed(glm::vec3(0.0f));
 
-		if (InputManager->getInputStatus(LEFT)) {
-			status = WALK_LEFT;
-			break;
-		} 
-		if (InputManager->getInputStatus(RIGHT)) {
+		if (InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT)) {
 			status = WALK_RIGHT;
 			break;
 		}
+		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT)) {
+			status = WALK_LEFT;
+			break;
+		} 
 		if (InputManager->getInputStatus(UP) && !hasCeiling) {
 			status = JUMP;
 			break;
@@ -46,20 +46,18 @@ void Character::calculateSpeed(float deltaTime) {
 	case WALK_LEFT:
 		setVerticalSpeed(0.0f);
 
-		if (hasTileLeft) {
-			status = STAND;
-			break;
-		} else {
+		if (!hasTileLeft) {
 			setHorizontalSpeed(-_walkSpeed);
 		}
-		if (InputManager->getInputStatus(RIGHT)) {
+		if (InputManager->getInputStatus(LEFT) && InputManager->getInputStatus(RIGHT) ||
+			!InputManager->getInputStatus(LEFT) || hasTileLeft) {
+			status = STAND;
+			break;
+		}
+		if (InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT)) {
 			status = WALK_RIGHT;
 			break;
 		}
-		if (!InputManager->getInputStatus(LEFT)) {
-			status = STAND;
-			break;
-		} 
 		if (InputManager->getInputStatus(UP) && !hasCeiling) {
 			status = JUMP;
 			break;
@@ -74,18 +72,16 @@ void Character::calculateSpeed(float deltaTime) {
 	case WALK_RIGHT:
 		setVerticalSpeed(0.0f);
 
-		if (hasTileRight) {
-			status = STAND;
-			break;
-		} else {
+		if (!hasTileRight) {
 			setHorizontalSpeed(_walkSpeed);
 		}
-		if (InputManager->getInputStatus(LEFT)) {
-			status = WALK_LEFT;
+		if (InputManager->getInputStatus(LEFT) && InputManager->getInputStatus(RIGHT) ||
+			!InputManager->getInputStatus(RIGHT) || hasTileRight) {
+			status = STAND;
 			break;
 		}
-		if (!InputManager->getInputStatus(RIGHT)) {
-			status = STAND;
+		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT)) {
+			status = WALK_LEFT;
 			break;
 		}
 		if (InputManager->getInputStatus(UP) && !hasCeiling) {
@@ -109,28 +105,29 @@ void Character::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(speed.y + gravity * deltaTime);
 		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
 
-		if (InputManager->getInputStatus(LEFT) && !hasTileLeft) {
+		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) && !hasTileLeft) {
 			setHorizontalSpeed(-_sideSpeedAir);
-		} else if(InputManager->getInputStatus(RIGHT) && !hasTileRight) {
+		} else if(InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT) && !hasTileRight) {
 			setHorizontalSpeed(_sideSpeedAir);
 		} else {
 			setHorizontalSpeed(0.0f);
 		}
 
 		if (isOnGround && !wasOnGround) {
-			if (!InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT)) {
+			if (!InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) ||
+				InputManager->getInputStatus(LEFT) && InputManager->getInputStatus(RIGHT)) {
 				status = STAND;
 				break;
 			}
-			if (InputManager->getInputStatus(LEFT)) {
+			if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT)) {
 				status = WALK_LEFT;
 				break;
 			}
-			if (InputManager->getInputStatus(RIGHT)) {
+			if (InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT)) {
 				status = WALK_RIGHT;
 				break;
 			}
-			if (InputManager->getInputStatus(UP)) {
+			if (InputManager->getInputStatus(UP) && !hasCeiling) {
 				status = JUMP;
 				break;
 			}
