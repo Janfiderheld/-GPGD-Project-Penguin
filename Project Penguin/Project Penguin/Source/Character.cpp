@@ -147,7 +147,7 @@ void Character::calculateSpeed(float deltaTime) {
 /// Returns the vertices to draw the player character
 /// </summary>
 float* Character::getVertices() {
-	// TODO: Find a possiblity to use a loop
+	// TODO: Find a possibility to use a loop
 	_vertices[0] = (float)getHitbox().getMaxX();
 	_vertices[1] = (float)getHitbox().getMaxY();
 	_vertices[2] = getPosition().z;

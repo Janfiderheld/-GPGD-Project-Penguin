@@ -45,7 +45,7 @@ int main(void) {
     LevelGrid level;
     GridFacade levelFacade(&level); 
     InputManager inpMan;
-    MovingObject::Facade = &levelFacade;
+    MovingObject::LevelFacade = &levelFacade;
     Character::InputManager = &inpMan;
     Game::InputManager = &inpMan;
 

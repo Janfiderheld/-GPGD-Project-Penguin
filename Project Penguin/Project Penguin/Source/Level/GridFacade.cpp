@@ -24,7 +24,7 @@ bool GridFacade::checkForTwoTilesInX(int x, int y, AABB objHitbox) {
 	AABB left = _grid->getTileFromGrid(x, y).getHitbox();
 	
 	if (objHitbox.getMinX() >= left.getMinX() &&
-		objHitbox.getMaxX() < left.getMaxX()) {
+		objHitbox.getMaxX() <= left.getMaxX()) {
 		return true;
 	} else {
 		return false;
@@ -46,10 +46,9 @@ bool GridFacade::checkForTwoTilesInY(int x, int y, AABB objHitbox) {
 	AABB bottom = _grid->getTileFromGrid(x, y).getHitbox();
 
 	if (objHitbox.getMinY() >= bottom.getMinY() &&
-		objHitbox.getMaxY() < bottom.getMaxY()) {
+		objHitbox.getMaxY() <= bottom.getMaxY()) {
 		return true;
-	}
-	else {
+	} else {
 		return false;
 	}
 }
