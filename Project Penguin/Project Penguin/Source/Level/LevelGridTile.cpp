@@ -1,19 +1,19 @@
 #include <Level/LevelGridTile.h>
 
 /// <summary>
-/// Creates the bounding box based on the tiles position
+/// Creates the bounding box & the vertices based on the tiles position 
 /// </summary>
-LevelGridTile::LevelGridTile() : _hitbox(getPosition(), Size) {
+LevelGridTile::LevelGridTile() : _hitbox(getPosition(), Size), DrawableVertices(_x, _y, _x + 1, _y + 1) {
 	// empty constructor
 }
 
 /// <summary>
-/// Creates the bounding box based on the tiles position, 
+/// Creates the bounding box & the vertices based on the tiles position, 
 /// changes the filling to empty and sets the x and y values
 /// </summary>
 /// <param name="x">position on the x-axis</param>
 /// <param name="y">position on the y-axis</param>
-LevelGridTile::LevelGridTile(int x, int y) : _hitbox(getPosition(), Size) {
+LevelGridTile::LevelGridTile(int x, int y) : _hitbox(getPosition(), Size), DrawableVertices(x, y, x + 1, y + 1) {
 	_x = x;
 	_y = y;
 	_generated = true;
@@ -109,35 +109,6 @@ unsigned char LevelGridTile::getBorderForTexture() {
 	}
 
 	return toReturn;
-}
-
-/// <summary>
-/// Returns the vertices to draw this tile
-/// </summary>
-float* LevelGridTile::getVertices() {
-	// TODO: Find a possiblity to use a loop
-	_vertices[0] = (float)(_x + 1);
-	_vertices[1] = (float)(_y + 1);
-	_vertices[2] = (float)_z;
-	_vertices[3] = Size;
-	_vertices[4] = Size;
-	_vertices[5] = (float)(_x + 1);
-	_vertices[6] = (float)_y;
-	_vertices[7] = (float)_z;
-	_vertices[8] = Size;
-	_vertices[9] = 0.0f;
-	_vertices[10] = (float)_x;
-	_vertices[11] = (float)_y;
-	_vertices[12] = (float)_z;
-	_vertices[13] = 0.0f;
-	_vertices[14] = 0.0f;
-	_vertices[15] = (float)_x;
-	_vertices[16] = (float)(_y + 1);
-	_vertices[17] = (float)_z;
-	_vertices[18] = 0.0f;
-	_vertices[19] = Size;
-
-	return _vertices;
 }
 
 /// <summary>

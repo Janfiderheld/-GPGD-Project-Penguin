@@ -6,12 +6,14 @@
 InputManager* Character::InputManager = nullptr;
 
 /// <summary>
-/// Initializes the player character by setting the starting position, texture and bounding box.
+/// Initializes the player character by setting the starting position, texture, bounding box and vertices.
 /// </summary>
 /// <param name="pos">starting position for the character</param>
 /// <param name="texture">texture for the character</param>
 /// <param name="boundBox">bounding box (= hitbox) for the character</param>
-Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) : MovingObject(pos, texture, boundBox) {
+Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) :
+	MovingObject(pos, texture, boundBox),
+	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()) {
 }
 
 /// <summary>
@@ -138,35 +140,6 @@ void Character::calculateSpeed(float deltaTime) {
 
 	Update(deltaTime);
 	checkForReachedEnd();
-}
-
-/// <summary>
-/// Returns the vertices to draw the player character
-/// </summary>
-float* Character::getVertices() {
-	// TODO: Find a possibility to use a loop
-	_vertices[0] = (float)getHitbox().getMaxX();
-	_vertices[1] = (float)getHitbox().getMaxY();
-	_vertices[2] = getPosition().z;
-	_vertices[3] = 1.0f;
-	_vertices[4] = 1.0f;
-	_vertices[5] = (float)getHitbox().getMaxX();
-	_vertices[6] = (float)getHitbox().getMinY();
-	_vertices[7] = getPosition().z;
-	_vertices[8] = 1.0f;
-	_vertices[9] = 0.0f;
-	_vertices[10] = (float)getHitbox().getMinX();
-	_vertices[11] = (float)getHitbox().getMinY();
-	_vertices[12] = getPosition().z;
-	_vertices[13] = 0.0f;
-	_vertices[14] = 0.0f;
-	_vertices[15] = (float)getHitbox().getMinX();
-	_vertices[16] = (float)getHitbox().getMaxY();
-	_vertices[17] = getPosition().z;;
-	_vertices[18] = 0.0f;
-	_vertices[19] = 1.0f;
-
-	return _vertices;
 }
 
 /// <summary>

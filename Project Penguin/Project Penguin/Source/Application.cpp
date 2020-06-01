@@ -120,13 +120,13 @@ int main(void) {
         // draw Level
         for (int x = 0; x < level.getWidth(); x++) {
             for (int y = 0; y < level.getHeight(); y++) {
-                LevelGridTile temp = level.getTileFromGrid(x, y);
-                if (temp.isFilled()) {
-                    switch (temp.getLocation()) 
+                LevelGridTile currTile = level.getTileFromGrid(x, y);
+                if (currTile.isFilled()) {
+                    switch (currTile.getLocation()) 
                     {
                     case NORMAL:
                     default:
-                        switch (temp.getBorderForTexture())
+                        switch (currTile.getBorderForTexture())
                         {
                         case 0x01:
                             glBindTexture(GL_TEXTURE_2D, iceTileNormal1.TextureId);
@@ -180,7 +180,7 @@ int main(void) {
                         break;
 
                     case START_AREA:
-                        if (temp.getBorderForTexture() == 0x0A) {
+                        if (currTile.getBorderForTexture() == 0x0A) {
                             glBindTexture(GL_TEXTURE_2D, iceTileStartBorder.TextureId);
                         } else {
                             glBindTexture(GL_TEXTURE_2D, iceTileStart.TextureId);
@@ -188,7 +188,7 @@ int main(void) {
                         break;
 
                     case END_AREA:
-                        if (temp.getBorderForTexture() == 0x06) {
+                        if (currTile.getBorderForTexture() == 0x06) {
                             glBindTexture(GL_TEXTURE_2D, iceTileEndBorder.TextureId);
                         }
                         else {
@@ -199,10 +199,10 @@ int main(void) {
 
                     // model transform
                     glm::mat4 model = glm::mat4(1.0f);
-                    model = glm::translate(model, temp.getPosition());
+                    model = glm::translate(model, currTile.getPosition());
                     shader.setMat4Uniform("model", model);
 
-                    glBufferSubData(VBO, 0, sizeof(temp.getVertices()), temp.getVertices());
+                    glBufferSubData(VBO, 0, sizeof(currTile.getVertices()), currTile.getVertices());
                     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 }                
             }

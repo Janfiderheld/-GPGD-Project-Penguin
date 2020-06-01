@@ -14,6 +14,7 @@
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Level\GridFacade.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
+    <ClCompile Include="Source\DrawableVertices.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Game.h" />
@@ -25,7 +26,6 @@
     <ClInclude Include="Header\MovingObject.h" />
     <ClInclude Include="Header\Level\LevelGrid.h" />
     <ClInclude Include="Header\Level\LevelGridTile.h" />
-    <ClInclude Include="Interfaces\IMoveable.h" />
     <ClInclude Include="Header\Character.h" />
     <ClInclude Include="Header\Level\GridFacade.h" />
     <ClInclude Include="Enums\LevelGenerationStates.h" />
@@ -33,6 +33,8 @@
     <ClInclude Include="Enums\MovingObjectStatus.h" />
     <ClInclude Include="Header\InputManager.h" />
     <ClInclude Include="Enums\InputDirection.h" />
+    <ClInclude Include="Interfaces\IMoveable.h" />
+    <ClInclude Include="Header\DrawableVertices.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

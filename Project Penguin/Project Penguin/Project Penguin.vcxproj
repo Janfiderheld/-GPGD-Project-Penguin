@@ -154,6 +154,7 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Character.cpp" />
+    <ClCompile Include="Source\DrawableVertices.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\Level\GridFacade.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Header\AABB.h" />
     <ClInclude Include="Header\Camera.h" />
     <ClInclude Include="Header\Character.h" />
+    <ClInclude Include="Header\DrawableVertices.h" />
     <ClInclude Include="Header\Game.h" />
     <ClInclude Include="Header\InputManager.h" />
     <ClInclude Include="Header\Level\GridFacade.h" />

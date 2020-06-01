@@ -4,10 +4,10 @@
 #include <GLM/glm.hpp>
 #include <AABB.h>
 #include <TileLocation.h>
+#include <DrawableVertices.h>
 
-class LevelGridTile {
+class LevelGridTile : public DrawableVertices {
 private:
-	int VerticeAmount = 20;
 	int _x{}, _y{}, _z = -10;
 	float Size = 1.0f;
 
@@ -20,8 +20,6 @@ private:
 
 	TileLocation _loc = NORMAL;
 	AABB _hitbox;
-
-	float* _vertices = new float[VerticeAmount];
 
 public:
 	LevelGridTile();
@@ -38,7 +36,6 @@ public:
 	void setBottomBorder(bool bottom);
 	unsigned char getBorderForTexture();
 
-	float* getVertices();
 	glm::vec3 getPosition();
 	AABB getHitbox();
 	TileLocation getLocation();
