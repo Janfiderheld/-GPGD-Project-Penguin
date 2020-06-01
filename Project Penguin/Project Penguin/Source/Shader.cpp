@@ -1,5 +1,4 @@
 #include <Shader.h>
-//#include <Windows.h>
 
 /// <summary>
 /// Takes the given id and checks for shader compilation problems when checkCompilation = true,

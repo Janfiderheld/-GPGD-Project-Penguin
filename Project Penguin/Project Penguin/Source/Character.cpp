@@ -21,6 +21,11 @@ Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) :
 /// </summary>
 /// <param name="deltaTime">time since last frame</param>
 void Character::calculateSpeed(float deltaTime) {
+	if(_rechedPitBottom || _reachedEnd)	{
+		setCompleteSpeed(glm::vec3(0.0f));
+		return;
+	}
+	
 	switch (status)
 	{
 	case STAND:
@@ -135,11 +140,12 @@ void Character::calculateSpeed(float deltaTime) {
 			}
 		}
 
+		checkForPitBottom();
 		break;
 	}
 
-	Update(deltaTime);
 	checkForReachedEnd();
+	Update(deltaTime);
 }
 
 /// <summary>
@@ -150,8 +156,16 @@ void Character::checkForReachedEnd() {
 	int posY = ceil(position.y) - 1;
 
 	if (LevelFacade->checkForEndArea(posX, posY)) {
-		status = STAND;
 		_reachedEnd = true;
+	}
+}
+
+/// <summary>
+/// Checks if the player reached the bottom of a pit
+/// </summary>
+void Character::checkForPitBottom() {
+	if(round(position.y) <= 0.0f) {
+		_rechedPitBottom = true;
 	}
 }
 
@@ -160,4 +174,11 @@ void Character::checkForReachedEnd() {
 /// </summary>
 bool Character::hasReachedEnd() {
 	return _reachedEnd;
+}
+
+/// <summary>
+/// Returns true if the character has reached the bottom of a pit
+/// </summary>
+bool Character::diedInPit() {
+	return _rechedPitBottom;
 }

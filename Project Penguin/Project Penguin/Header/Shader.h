@@ -3,7 +3,7 @@
 
 #include <GLEW/glew.h>
 #include <GLM/glm.hpp>
-#include <windows.h>
+#include <Windows.h>
 #include <string>
 #include <fstream>
 #include <sstream>

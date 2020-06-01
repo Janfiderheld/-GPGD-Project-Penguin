@@ -12,8 +12,11 @@ private:
 	const float _sideSpeedAir = 1.25f;
 
 	bool _reachedEnd = false;
+	bool _rechedPitBottom = false;
+	
 	void checkForReachedEnd();
-
+	void checkForPitBottom();
+	
 public:
 	static InputManager* InputManager;
 
@@ -22,6 +25,7 @@ public:
 	virtual void calculateSpeed(float deltaTime);
 	
 	bool hasReachedEnd();
+	bool diedInPit();
 };
 
 #endif // CHAR_HEADER

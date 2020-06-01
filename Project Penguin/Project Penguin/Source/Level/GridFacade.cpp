@@ -4,8 +4,7 @@
 /// Constructor. Gets the pointer to the level for which this works as a facade.
 /// </summary>
 /// <param name="grid">level grid to manage the access to</param>
-GridFacade::GridFacade(LevelGrid* grid)
-{
+GridFacade::GridFacade(LevelGrid* grid) {
 	_grid = grid;
 }
 
@@ -17,7 +16,8 @@ GridFacade::GridFacade(LevelGrid* grid)
 /// <param name="objHitbox">hitbox to check with</param>
 /// <returns>true if the hitbox overlaps wih two tiles</returns>
 bool GridFacade::checkForTwoTilesInX(int x, int y, AABB objHitbox) {
-	if (x >= _grid->getWidth() || x < 0) {
+	if (x >= _grid->getWidth() || x < 0 ||
+		y >= _grid->getHeight() || y <= 0) {
 		return false;
 	}
 
@@ -39,7 +39,8 @@ bool GridFacade::checkForTwoTilesInX(int x, int y, AABB objHitbox) {
 /// <param name="objHitbox">hitbox to check with</param>
 /// <returns>true if the hitbox overlaps wih two tiles</returns>
 bool GridFacade::checkForTwoTilesInY(int x, int y, AABB objHitbox) {
-	if (y >= _grid->getHeight() || y < 0) {
+	if (x >= _grid->getWidth() || x < 0 ||
+		y >= _grid->getHeight() || y <= 0) {
 		return false;
 	}
 
@@ -60,10 +61,8 @@ bool GridFacade::checkForTwoTilesInY(int x, int y, AABB objHitbox) {
 /// <param name="y">Position to check for on y-axis</param>
 /// <returns>true if the tile is filled.</returns>
 bool GridFacade::checkForWall(int x, int y) {
-	if (x >= _grid->getWidth() ||
-		x < 0 ||
-		y >= _grid->getHeight() ||
-		y <= 0) {
+	if (x >= _grid->getWidth() || x < 0 ||
+		y >= _grid->getHeight() || y <= 0) {
 		return false;
 	}
 
@@ -77,10 +76,8 @@ bool GridFacade::checkForWall(int x, int y) {
 /// <param name="y">Position to check for on y-axis</param>
 /// <returns>true if it is part of the end area</returns>
 bool GridFacade::checkForEndArea(int x, int y) {
-	if (x >= _grid->getWidth() ||
-		x < 0 ||
-		y >= _grid->getHeight() ||
-		y <= 0) {
+	if (x >= _grid->getWidth() || x < 0 ||
+		y >= _grid->getHeight() || y <= 0) {
 		return false;
 	}
 

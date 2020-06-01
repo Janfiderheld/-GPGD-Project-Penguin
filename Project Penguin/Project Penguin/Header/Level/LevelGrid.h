@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <ctime>
-#include <Texture.h>
 #include <Level/LevelGridTile.h>
 #include <LevelGenerationStates.h>
 
@@ -11,11 +10,11 @@ class LevelGrid {
 private:
 	// values for level generation
 	const int LevelWidth = 60;
-	const int LevelHeight = 14;
+	const int LevelHeight = 15;
 	const int FilledBottomRows = 3;
 	const int StartingAreaWidth = 5;
 	const int EndAreaWidth = 3;
-	const int MaxBottomHeight = LevelHeight - 4;
+	const int MaxBottomHeight = LevelHeight - 5;
 	const int PlainWidth = 3;
 	const int MaxPits = floor(LevelWidth / 15.0f);
 	const int MaxPlattforms = ceil(LevelWidth / 20.0f);

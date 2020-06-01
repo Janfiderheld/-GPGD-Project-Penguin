@@ -2,11 +2,9 @@
 #define GAME_HEADER
 
 #include <GLEW/glew.h>
-#include <GLEW/wglew.h>
 #include <GLFW/glfw3.h>
 #include <InputManager.h>
 #include <Character.h>
-#include <iostream>
 
 class Game {
 private:
