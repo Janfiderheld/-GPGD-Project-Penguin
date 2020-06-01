@@ -1,12 +1,24 @@
 #include <Character.h>
 
+/// <summary>
+/// Reference to the InputManager, which saves which key is pressed.
+/// </summary>
 InputManager* Character::InputManager = nullptr;
 
+/// <summary>
+/// Initializes the player character by setting the starting position, texture and bounding box.
+/// </summary>
+/// <param name="pos">starting position for the character</param>
+/// <param name="texture">texture for the character</param>
+/// <param name="boundBox">bounding box (= hitbox) for the character</param>
 Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) : MovingObject(pos, texture, boundBox) {
-
 }
 
-void Character::calculatePosition(float deltaTime) {
+/// <summary>
+/// Calculates the characters speed in the current frame by differentiating between the different movement states.
+/// </summary>
+/// <param name="deltaTime">time since last frame</param>
+void Character::calculateSpeed(float deltaTime) {
 	switch (status)
 	{
 	case STAND:
@@ -127,11 +139,13 @@ void Character::calculatePosition(float deltaTime) {
 		break;
 	}
 
-	UpdatePhysics(deltaTime);
-	InputManager->Update();
+	Update(deltaTime);
 	checkForReachedEnd();
 }
 
+/// <summary>
+/// Returns the vertices to draw the player character
+/// </summary>
 float* Character::getVertices() {
 	// TODO: Find a possiblity to use a loop
 	_vertices[0] = (float)getHitbox().getMaxX();
@@ -158,16 +172,22 @@ float* Character::getVertices() {
 	return _vertices;
 }
 
+/// <summary>
+/// Checks if the player has reached a tile belonging to the ending area
+/// </summary>
 void Character::checkForReachedEnd() {
 	int posX = floor(position.x);
 	int posY = ceil(position.y) - 1;
 
-	if (Facade->checkForEndArea(posX, posY)) {
+	if (LevelFacade->checkForEndArea(posX, posY)) {
 		status = STAND;
 		_reachedEnd = true;
 	}
 }
 
+/// <summary>
+/// Returns true if the player has reached an ending tile
+/// </summary>
 bool Character::hasReachedEnd() {
 	return _reachedEnd;
 }

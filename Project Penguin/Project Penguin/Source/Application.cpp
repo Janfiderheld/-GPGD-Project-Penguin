@@ -10,7 +10,7 @@
 int main(void) {
     Game game;
 
-    if (!game.Initialize()) {
+    if (!game.getInitStatus()) {
         return -1;
     }
 
@@ -99,7 +99,7 @@ int main(void) {
 
         float delta = game.calculateDeltaTime();
         game.processInput(&character);
-        character.calculatePosition(delta);
+        character.calculateSpeed(delta);
         cam.updatePosition(delta);
 
         // view transform

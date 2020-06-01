@@ -2,20 +2,16 @@
 #define GRID_HEADER
 
 #include <vector>
-#include <Level/LevelGridTile.h>
+#include <ctime>
 #include <Texture.h>
-#include <time.h>
+#include <Level/LevelGridTile.h>
 #include <LevelGenerationStates.h>
 
 class LevelGrid {
 private:
-	static const int LevelWidth = 60;
-	static const int LevelHeight = 14;
-
-	// TODO: Refine values when movement is implemented
-	const float Friction = 2.0f;
-
 	// values for level generation
+	const int LevelWidth = 60;
+	const int LevelHeight = 14;
 	const int FilledBottomRows = 3;
 	const int StartingAreaWidth = 5;
 	const int EndAreaWidth = 3;
@@ -34,8 +30,6 @@ private:
 	const int DoubleLow = 20;
 
 	LevelGenerationStates state = LVL_START;
-
-	// Access via [currentY * width + currentX]
 	std::vector<LevelGridTile> _level;
 
 	void initializeStartingArea();

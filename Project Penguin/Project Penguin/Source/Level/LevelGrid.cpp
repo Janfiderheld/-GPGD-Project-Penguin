@@ -1,11 +1,13 @@
 #include <Level/LevelGrid.h>
 
-// Generates the level grid.
-// The level has the dimension defined in its header.
-// First the Initialization is done the same way every time.
-// After that the procedural generation is based on a finite state machine.
-// Then plattforms and pits are added.
-// After the level is finished, all tiles are checked if they are border tiles.
+/// <summary>
+/// Generates the level grid.
+/// The level has the dimension defined in its header.
+/// First the Initialization is done the same way every time.
+/// After that the procedural generation is based on a finite state machine.
+/// Then platforms and pits are added.
+/// After the level is finished, all tiles are checked if they are border tiles.
+/// </summary>
 LevelGrid::LevelGrid() {
 	srand(time(NULL));
 
@@ -21,14 +23,16 @@ LevelGrid::LevelGrid() {
 	setTileBorders();
 }
 
-// Fills the starting Area with tiles
+/// <summary>
+/// Fills the starting area, which has a defined size, with tiles.
+/// </summary>
 void LevelGrid::initializeStartingArea() {
 	for (int y = 0; y <= FilledBottomRows; y++) {
 		for (int x = 0; x <= StartingAreaWidth; x++) {
 			size_t current = y * LevelWidth + x;
 			_level.at(current) = LevelGridTile(x, y);
 			if (y != FilledBottomRows) {
-				_level.at(current).fill();
+				_level.at(current).changeFilling(true);
 			}
 			if (y == FilledBottomRows - 1 && x != StartingAreaWidth) {
 				_level.at(current).changeLocation(START_AREA);
@@ -37,8 +41,10 @@ void LevelGrid::initializeStartingArea() {
 	}
 }
 
-// Generates the basic level with a finite state machine which can be found here:
-// TODO: Add diagramm
+/// <summary>
+/// Generates the basic level with a finite state machine which can be found here:
+/// .\Project Penguin\Assets\Documentation\LevelGenerationStateMachine.png
+/// </summary>
 void LevelGrid::generateBottom() {
 	int currentX = StartingAreaWidth;
 	int currentY = FilledBottomRows - 1;
@@ -192,25 +198,30 @@ void LevelGrid::generateBottom() {
 
 		size_t current = currentY * LevelWidth + currentX;
 		_level.at(current) = LevelGridTile(currentX, currentY);
-		_level.at(current).fill();
+		_level.at(current).changeFilling(true);
 		if (state == LVL_END) {
 			_level.at(current).changeLocation(END_AREA);
 		}
 	}
 }
 
-// fills the tiles below the given point with tiles
+/// <summary>
+/// Fills all tiles below the given point.
+/// </summary>
+/// <param name="x">Position of starting tile on x-axis</param>
+/// <param name="y">Position of starting tile on y-axis</param>
 void LevelGrid::fillTilesBelow(int x, int y) {
 	for (int i = y - 1; i >= 0; i--) {
 		size_t current = x + i * LevelWidth;
 		_level.at(current) = LevelGridTile(x, i);
-		_level.at(current).fill();
+		_level.at(current).changeFilling(true);
 	}
 }
 
-// Adds a random number of plattforms to the finished level.
-// The amount is between 1 and (Width / 20).
-// All Plattforms look the same.
+/// <summary>
+/// Adds a random number of plattforms to the finished level.
+/// The amount is between 1 and (Width / 20). All Plattforms look the same.
+/// </summary>
 void LevelGrid::addPlattforms() {
 	int noOfPlattforms = rand() % MaxPlattforms + 1;
 	std::vector<int> positions;
@@ -254,22 +265,23 @@ void LevelGrid::addPlattforms() {
 		positions.push_back(x + 1);
 
 		_level.at(x + (y + 2) * LevelWidth) = LevelGridTile(x, y + 2);
-		_level.at(x + (y + 2) * LevelWidth).fill();
+		_level.at(x + (y + 2) * LevelWidth).changeFilling(true);
 
 		_level.at((x - 1) + (y + 2) * LevelWidth) = LevelGridTile(x - 1, y + 2);
-		_level.at((x - 1) + (y + 2) * LevelWidth).fill();
+		_level.at((x - 1) + (y + 2) * LevelWidth).changeFilling(true);
 
 		_level.at((x + 1) + (y + 2) * LevelWidth) = LevelGridTile(x + 1, y + 2);
-		_level.at((x + 1) + (y + 2) * LevelWidth).fill();
+		_level.at((x + 1) + (y + 2) * LevelWidth).changeFilling(true);
 
 		_level.at(x + (y + 4) * LevelWidth) = LevelGridTile(x, y + 4);
-		_level.at(x + (y + 4) * LevelWidth).fill();
+		_level.at(x + (y + 4) * LevelWidth).changeFilling(true);
 	}
 }
 
-// Adds a random number of pits to the finished level.
-// The amount is between 1 and (Width / 15).
-// All pits are two tiles long.
+/// <summary>
+/// Adds a random number of pits to the finished level.
+/// The amount is between 1 and (Width / 15). All pits are two tiles long.
+/// </summary>
 void LevelGrid::addPits() {
 	int noOfPits = rand() % MaxPits + 1;
 	std::vector<int> positions;
@@ -302,14 +314,17 @@ void LevelGrid::addPits() {
 		for (int pitX = x; pitX <= x + 1; pitX++) {
 			int y = 0;
 			while (_level.at(pitX + y * LevelWidth).isGenerated()) {
-				_level.at(pitX + y * LevelWidth).empty();
+				_level.at(pitX + y * LevelWidth).changeFilling(false);
 				y++;
 			}
 		}		
 	}
 }
 
-// Iterates over the finished level and checks for each tile which borders are not surrounded.
+/// <summary>
+/// Iterates over the finished level and checks for each tile if it has a border,
+/// without a filles neighbour. If so, that border is marked, so it can be drawn differently.
+/// </summary>
 void LevelGrid::setTileBorders() {
 	for (int currentX = 0; currentX < LevelWidth; currentX++) {
 		for (int currentY = 0; currentY < LevelHeight; currentY++) {
@@ -358,8 +373,11 @@ void LevelGrid::setTileBorders() {
 	}
 }
 
-void LevelGrid::generateRemainingTiles()
-{
+/// <summary>
+/// Iterates over the finished level and generates all remaining tiles in the grid to 
+/// circumvent errors of unset values.
+/// </summary>
+void LevelGrid::generateRemainingTiles() {
 	for (int currentX = 0; currentX < LevelWidth; currentX++) {
 		for (int currentY = 0; currentY < LevelHeight; currentY++) {
 			size_t current = currentX + currentY * LevelWidth;
@@ -373,20 +391,25 @@ void LevelGrid::generateRemainingTiles()
 	}
 }
 
-// Returns the tile at position (x, y).
-LevelGridTile& LevelGrid::getTileFromGrid(int x, int y)
-{
+/// <summary>
+/// Returns the tile in the level at the given position.
+/// </summary>
+/// <param name="x">Position of tile on x-axis</param>
+/// <param name="y">Position of tile on y-axis</param>
+LevelGridTile& LevelGrid::getTileFromGrid(int x, int y) {
 	return _level.at(x + y * LevelWidth);
 }
 
-// Returns the width of the level.
-int LevelGrid::getWidth()
-{
+/// <summary>
+/// Returns width of the level
+/// </summary>
+int LevelGrid::getWidth() {
 	return LevelWidth;
 }
 
-// Returns the height of the level.
-int LevelGrid::getHeight()
-{
+/// <summary>
+/// Returns height of the level
+/// </summary>
+int LevelGrid::getHeight() {
 	return LevelHeight;
 }

@@ -1,21 +1,27 @@
 #include <MovingObject.h>
 
-GridFacade* MovingObject::Facade = nullptr;
+/// <summary>
+/// Facade to manage the access to the level for all moving objects
+/// </summary>
+GridFacade* MovingObject::LevelFacade = nullptr;
 
-// Constructor, which sets the texture and the position
-MovingObject::MovingObject(glm::vec3 pos, Texture texture, AABB boundBox) : _texture(texture), _hitbox(boundBox)
-{
+/// <summary>
+/// Constructor which sets the texture, position and bounding box to the given values
+/// </summary>
+/// <param name="pos">starting position for the object</param>
+/// <param name="texture">texture for the object</param>
+/// <param name="boundBox">bounding box (= hitbox) for the object</param>
+MovingObject::MovingObject(glm::vec3 pos, Texture texture, AABB boundBox) : _texture(texture), _hitbox(boundBox) {
 	position = pos;	
 }
 
-void MovingObject::UpdatePhysics(float deltaTime)
-{
-	oldPosition = position;
-	oldSpeed = speed;
+/// <summary>
+/// Updates the bool values which indicate the surrounding walls. 
+/// Also calculates the new position based on the current speed and clamping if jumping at a tile from below.
+/// </summary>
+/// <param name="deltaTime">Time since last frame to normalize calculation</param>
+void MovingObject::Update(float deltaTime) {
 	wasOnGround = isOnGround;
-	hadTileLeft = hasTileLeft;
-	hadTileRight = hasTileRight;
-
 	position += speed * deltaTime;
 	_hitbox.setOrigin(position);
 
@@ -26,20 +32,24 @@ void MovingObject::UpdatePhysics(float deltaTime)
 	int ceilPosX = ceil(position.x);
 	int ceilPosY = ceil(position.y);
 
-	bool twoBottoms = Facade->checkForTwoTilesInX(flooredPosX, ceilPosY - 1, _hitbox);
-	bool twoCeilings = Facade->checkForTwoTilesInX(flooredPosX, flooredPosY + 2, _hitbox);
-	bool twoRight = Facade->checkForTwoTilesInY(flooredPosX + 1, flooredPosY, _hitbox);
-	bool twoLeft = Facade->checkForTwoTilesInY(ceilPosX - 1, flooredPosY, _hitbox);
+	bool twoBottoms = LevelFacade->checkForTwoTilesInX(flooredPosX, ceilPosY - 1, _hitbox);
+	bool twoCeilings = LevelFacade->checkForTwoTilesInX(flooredPosX, flooredPosY + 2, _hitbox);
+	bool twoRight = LevelFacade->checkForTwoTilesInY(flooredPosX + 1, flooredPosY, _hitbox);
+	bool twoLeft = LevelFacade->checkForTwoTilesInY(ceilPosX - 1, flooredPosY, _hitbox);
 
-	bool bottomTileLeft = Facade->checkForWall(flooredPosX, ceilPosY - 1);
-	bool bottomTileRight = Facade->checkForWall(ceilPosX, ceilPosY - 1);
-	bool upperTileLeft = Facade->checkForWall(flooredPosX, flooredPosY + 2);
-	bool upperTileRight = Facade->checkForWall(ceilPosX, flooredPosY + 2);
+	bool bottomTileLeft = LevelFacade->checkForWall(flooredPosX, ceilPosY - 1);
+	bool bottomTileRight = LevelFacade->checkForWall(ceilPosX, ceilPosY - 1);
+	bool upperTileLeft = LevelFacade->checkForWall(flooredPosX, flooredPosY + 2);
+	bool upperTileRight = LevelFacade->checkForWall(ceilPosX, flooredPosY + 2);
 
-	bool leftWallLower = Facade->checkForWall(ceilPosX - 1, flooredPosY);
-	bool leftWallUpper = Facade->checkForWall(ceilPosX - 1, ceilPosY);
-	bool rightWallLower = Facade->checkForWall(flooredPosX + 1, flooredPosY);
-	bool rightWallUpper = Facade->checkForWall(flooredPosX + 1, ceilPosY);
+	bool leftWallLower = LevelFacade->checkForWall(ceilPosX - 1, flooredPosY);
+	bool leftWallUpper = LevelFacade->checkForWall(ceilPosX - 1, ceilPosY);
+	bool rightWallLower = LevelFacade->checkForWall(flooredPosX + 1, flooredPosY);
+	bool rightWallUpper = LevelFacade->checkForWall(flooredPosX + 1, ceilPosY);
+
+	bool clampUpperLeft = LevelFacade->checkForWall(flooredPosX, flooredPosY + 1);
+	bool clampUpperRight = LevelFacade->checkForWall(ceilPosX, flooredPosY + 1);
+	bool clampJump = false;
 
 	if (twoBottoms) {
 		isOnGround = bottomTileLeft || bottomTileRight;
@@ -59,9 +69,6 @@ void MovingObject::UpdatePhysics(float deltaTime)
 		hasTileLeft = roundPosY == ceilPosY ? leftWallUpper : leftWallLower;
 	}
 
-	bool clampUpperLeft = Facade->checkForWall(flooredPosX, flooredPosY + 1);
-	bool clampUpperRight = Facade->checkForWall(ceilPosX, flooredPosY + 1);
-	bool clampJump = false;
 	if (twoCeilings) {
 		hasCeiling = upperTileLeft || upperTileRight;
 		clampJump = clampUpperLeft || clampUpperRight;
@@ -76,20 +83,30 @@ void MovingObject::UpdatePhysics(float deltaTime)
 	}
 }
 
-AABB MovingObject::getHitbox()
-{
+/// <summary>
+/// Returns the hitbox of the object as a bounding box.
+/// </summary>
+AABB MovingObject::getHitbox() {
 	return _hitbox;
 }
 
-Texture MovingObject::getTexture()
-{
+/// <summary>
+/// Returns the texture of the object.
+/// </summary>
+Texture MovingObject::getTexture() {
 	return _texture;
 }
 
+/// <summary>
+/// Returns the current position of the object.
+/// </summary>
 glm::vec3 MovingObject::getPosition() {
 	return position;
 }
 
+/// <summary>
+/// Returns the current Status of the object.
+/// </summary>
 MovingObjectStatus MovingObject::getCurrentStatus() {
 	return status;
 }

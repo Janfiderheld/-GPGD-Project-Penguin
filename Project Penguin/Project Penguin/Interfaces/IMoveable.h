@@ -6,17 +6,12 @@
 class IMovable {
 protected:
 	glm::vec3 speed;
-	glm::vec3 oldSpeed;
 
 public:
-	virtual void calculatePosition(float deltaTime) = 0;
+	virtual void calculateSpeed(float deltaTime) = 0;
 
 	glm::vec3 getCurrentSpeed() {
 		return speed;
-	}
-
-	glm::vec3 getOldSpeed() {
-		return oldSpeed;
 	}
 
 	void setCompleteSpeed(glm::vec3 newSpeed) {

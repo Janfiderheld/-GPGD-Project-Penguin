@@ -7,12 +7,9 @@
 
 class LevelGridTile {
 private:
-	static const int Size = 64;
-	static const int VerticeAmount = 20;
-	static const int IndexAmount = 6;
-
-	int _x, _y;
-	float z = -10.0;
+	int VerticeAmount = 20;
+	int _x{}, _y{}, _z = -10;
+	float Size = 1.0f;
 
 	bool _generated = false;
 	bool _filled = false;
@@ -30,13 +27,10 @@ public:
 	LevelGridTile();
 	LevelGridTile(int x, int y);
 
-	void fill();
-	void empty();
-	bool isFilled();
 	bool isGenerated();
-
+	bool isFilled();
+	void changeFilling(bool status);
 	void changeLocation(TileLocation newLoc);
-	TileLocation getLocation();
 
 	void setLeftBorder(bool left);
 	void setRightBorder(bool right);
@@ -47,6 +41,7 @@ public:
 	float* getVertices();
 	glm::vec3 getPosition();
 	AABB getHitbox();
+	TileLocation getLocation();
 };
 
 #endif // GRIDTILE_HEADER

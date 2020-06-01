@@ -1,80 +1,97 @@
 #include <Level/LevelGridTile.h>
 
-LevelGridTile::LevelGridTile() : _hitbox(getPosition(), 1) {
+/// <summary>
+/// Creates the bounding box based on the tiles position
+/// </summary>
+LevelGridTile::LevelGridTile() : _hitbox(getPosition(), Size) {
 	// empty constructor
 }
 
-LevelGridTile::LevelGridTile(int x, int y) : _hitbox(getPosition(), 1) {
+/// <summary>
+/// Creates the bounding box based on the tiles position, 
+/// changes the filling to empty and sets the x and y values
+/// </summary>
+/// <param name="x">position on the x-axis</param>
+/// <param name="y">position on the y-axis</param>
+LevelGridTile::LevelGridTile(int x, int y) : _hitbox(getPosition(), Size) {
 	_x = x;
 	_y = y;
 	_generated = true;
-	empty();
-
-	// TODO: Find a possiblity to use a loop
-	_vertices[0] = (float)(_x + 1);
-	_vertices[1] = (float)(_y + 1);
-	_vertices[2] = z;
-	_vertices[3] = 1.0f;
-	_vertices[4] = 1.0f;
-	_vertices[5] = (float)(_x + 1);
-	_vertices[6] = (float)_y;
-	_vertices[7] = z;
-	_vertices[8] = 1.0f;
-	_vertices[9] = 0.0f;
-	_vertices[10] = (float)_x;
-	_vertices[11] = (float)_y;
-	_vertices[12] = z;
-	_vertices[13] = 0.0f;
-	_vertices[14] = 0.0f;
-	_vertices[15] = (float)_x;
-	_vertices[16] = (float)(_y + 1);
-	_vertices[17] = z;
-	_vertices[18] = 0.0f;
-	_vertices[19] = 1.0f;
-
-	_hitbox = AABB(getPosition(), 1);
+	changeFilling(false);
+	_hitbox = AABB(getPosition(), Size);
 }
 
-void LevelGridTile::fill() {
-	_filled = true;
-}
-
-void LevelGridTile::empty() {
-	_filled = false;
-}
-
+/// <summary>
+/// Returns true if the tile is filled (= has a texture)
+/// </summary>
 bool LevelGridTile::isFilled() {
 	return _filled;
 }
 
+/// <summary>
+/// Changes if the tile is filled based on the given value
+/// </summary>
+void LevelGridTile::changeFilling(bool status) {
+	_filled = status;
+}
+
+/// <summary>
+/// Returns true if the tile was generated
+/// </summary>
 bool LevelGridTile::isGenerated() {
 	return _generated;
 }
 
+/// <summary>
+/// Changes the location of the tile to the given value 
+/// => if it belongs to the starting or end area or not
+/// </summary>
 void LevelGridTile::changeLocation(TileLocation newLoc) {
 	_loc = newLoc;
 }
 
+/// <summary>
+/// Returns the location of this tile
+/// </summary>
 TileLocation LevelGridTile::getLocation() {
 	return _loc;
 }
 
+/// <summary>
+/// Sets bool indicating if this tile has an outline border to the left
+/// </summary>
 void LevelGridTile::setLeftBorder(bool left) {
 	_left = left;
 }
 
+/// <summary>
+/// Sets bool indicating if this tile has an outline border to the top
+/// </summary>
 void LevelGridTile::setTopBorder(bool top) {
 	_top = top;
 }
 
+/// <summary>
+/// Sets bool indicating if this tile has an outline border to the right
+/// </summary>
 void LevelGridTile::setRightBorder(bool right) {
 	_right = right;
 }
 
+/// <summary>
+/// Sets bool indicating if this tile has an outline border to the ground
+/// </summary>
 void LevelGridTile::setBottomBorder(bool bottom) {
 	_bottom = bottom;
 }
 
+/// <summary>
+/// Returns which borders this tile has coded in a byte: xxxx3210
+/// last Bit (0) = bottom border
+/// seventh bit (1) = top border
+/// sixth bit (2) = right border
+/// fifth bit (3) = left border
+/// </summary>
 unsigned char LevelGridTile::getBorderForTexture() {
 	unsigned char toReturn = 0;
 
@@ -94,14 +111,45 @@ unsigned char LevelGridTile::getBorderForTexture() {
 	return toReturn;
 }
 
+/// <summary>
+/// Returns the vertices to draw this tile
+/// </summary>
 float* LevelGridTile::getVertices() {
+	// TODO: Find a possiblity to use a loop
+	_vertices[0] = (float)(_x + 1);
+	_vertices[1] = (float)(_y + 1);
+	_vertices[2] = (float)_z;
+	_vertices[3] = Size;
+	_vertices[4] = Size;
+	_vertices[5] = (float)(_x + 1);
+	_vertices[6] = (float)_y;
+	_vertices[7] = (float)_z;
+	_vertices[8] = Size;
+	_vertices[9] = 0.0f;
+	_vertices[10] = (float)_x;
+	_vertices[11] = (float)_y;
+	_vertices[12] = (float)_z;
+	_vertices[13] = 0.0f;
+	_vertices[14] = 0.0f;
+	_vertices[15] = (float)_x;
+	_vertices[16] = (float)(_y + 1);
+	_vertices[17] = (float)_z;
+	_vertices[18] = 0.0f;
+	_vertices[19] = Size;
+
 	return _vertices;
 }
 
+/// <summary>
+/// Returns the position of this tile
+/// </summary>
 glm::vec3 LevelGridTile::getPosition() {
-	return glm::vec3(_x, _y, z);
+	return glm::vec3(_x, _y, _z);
 }
 
+/// <summary>
+///  Returns the bounding box of this tile
+/// </summary>
 AABB LevelGridTile::getHitbox() {
 	return _hitbox;
 }

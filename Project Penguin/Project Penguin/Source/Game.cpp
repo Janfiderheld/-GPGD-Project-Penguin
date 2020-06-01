@@ -1,58 +1,83 @@
 #include <Game.h>
 
+/// <summary>
+/// Reference to the InputManager, which saves which key is pressed.
+/// </summary>
 InputManager* Game::InputManager = nullptr;
 
-// Initializes the Window using the GLFW library
-bool Game::Initialize() {
+/// <summary>
+/// Initializes the Game by creaing a window and starting GLFW & GLEW
+/// </summary>
+Game::Game() {
     if (!glfwInit()) {
-        return false;
+        _initStatus = false;
+        return;
     }
 
     _window = glfwCreateWindow(_width, _height, TITLE, NULL, NULL);
     if (!_window)
     {
         glfwTerminate();
-        return false;
+        _initStatus = false;
+        return;
     }
     glfwMakeContextCurrent(_window);
 
     GLenum err = glewInit();
     if (err != GLEW_OK) {
         fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
-        return false;
+        _initStatus = false;
+        return;
     }
 
     glViewport(0, 0, _width, _height);
-    return true;
+    _initStatus = true;
 }
 
-// returns the height of the game
+/// <summary>
+/// Returns true if the initialization in the constructor was successful
+/// </summary>
+bool Game::getInitStatus() {
+    return _initStatus;
+}
+
+/// <summary>
+/// Returns the height of the game resolution
+/// </summary>
 int Game::getHeight() {
     return _height;
 }
 
-// returns the width of the game
+/// <summary>
+/// Returns the width of the game resolution
+/// </summary>
 int Game::getWidth() {
     return _width;
 }
 
-// calculates the time between the last two frames
-float Game::calculateDeltaTime()
-{
+/// <summary>
+/// Calculates & returns the time between the current and the last frame
+/// </summary>
+float Game::calculateDeltaTime() {
     float currentFrame = glfwGetTime();
-    deltaTime = currentFrame - _lastFrame;
+    _deltaTime = currentFrame - _lastFrame;
     _lastFrame = currentFrame;
-    return deltaTime;
+    return _deltaTime;
 }
 
-// returns the pointer to the current window
+/// <summary>
+/// Returns the pointer to the GLFW window object
+/// </summary>
 GLFWwindow* Game::getWindowPointer() {
     return _window;
 }
 
-// processes keyboard inputs 
-void Game::processInput(Character* character)
-{
+/// <summary>
+/// Processes Keyboard inputs to either close the window (ESC) or save them in the InputManager,
+/// if the player character hasn't reached the end yet.
+/// </summary>
+/// <param name="character">Reference to the player character</param>
+void Game::processInput(Character* character) {
     if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(_window, true);
     }

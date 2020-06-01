@@ -20,7 +20,8 @@ public:
 
 	Character(glm::vec3 pos, Texture texture, AABB boundBox);
 
-	virtual void calculatePosition(float deltaTime);
+	virtual void calculateSpeed(float deltaTime);
+
 	float* getVertices();
 	bool hasReachedEnd();
 };

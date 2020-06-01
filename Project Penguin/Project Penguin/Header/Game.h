@@ -11,26 +11,25 @@
 class Game {
 private:
     const char TITLE[16] = "Project Penguin";
-    GLFWwindow* _window;
+    const int _width = 1024;
+    const int _height = 900;
 
-    int _width = 1024;
-    int _height = 900;    
-    
+    GLFWwindow* _window; 
     float _lastFrame = 0.0f;
+    float _deltaTime = 0.0f;
+    bool _initStatus = false;
 
 public:
     static InputManager* InputManager;
 
-    float deltaTime = 0.0f;
+    Game();
 
-    bool Initialize();
-
-    void processInput(Character* character);
-
+    bool getInitStatus();
     GLFWwindow* getWindowPointer();
     int getHeight();
     int getWidth();
 
+    void processInput(Character* character);
     float calculateDeltaTime();
 };
 

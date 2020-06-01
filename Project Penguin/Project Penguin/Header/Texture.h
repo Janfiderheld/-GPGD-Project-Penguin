@@ -13,19 +13,15 @@ private:
 	int _noColorChannels;
 
 	std::string _location = "../Assets/Textures/";
-
 public:
 	unsigned int TextureId;
 
-	// Constructor to create the texture from a given file
 	Texture(const char* fileName, GLint format);
 
-	// Getter
 	int getWidth();
 	int getHeight();
 	int getNumberOfColorChannels();
 
-	// change parameters
 	void changeWrapping(GLint wrappingMode);
 	void changeWrapping(GLint wrappingModeS, GLint wrappingModeT);
 	void changeFiltering(GLint filterMode);

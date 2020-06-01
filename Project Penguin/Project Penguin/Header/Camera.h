@@ -23,9 +23,6 @@ public:
 	Camera(glm::vec3 position, glm::vec3 worldUp, Character* character);
 
 	glm::vec3 getPosition();
-	glm::vec3 getFrontVector();
-	glm::vec3 getUpVector();
-
 	glm::mat4 getViewMatrix();
 
 	void changePosition(glm::vec3 newPos);
