@@ -81,6 +81,11 @@ void MovingObject::Update(float deltaTime) {
 		position.y = glm::min(position.y, (float)(flooredPosY + 1));
 		speed.y = glm::min(speed.y, 0.0f);
 	}
+
+	if(isOnGround) {
+		position.y = glm::max(position.y, (float)ceilPosY - 1);
+		speed.y = glm::max(speed.y, 0.0f);
+	}
 }
 
 /// <summary>
