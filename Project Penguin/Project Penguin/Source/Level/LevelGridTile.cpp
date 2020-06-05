@@ -3,7 +3,7 @@
 /// <summary>
 /// Creates the bounding box & the vertices based on the tiles position 
 /// </summary>
-LevelGridTile::LevelGridTile() : _hitbox(getPosition(), Size), DrawableVertices(_x, _y, _x + 1, _y + 1) {
+LevelGridTile::LevelGridTile() : DrawableVertices(_x, _y, _x + Size, _y + Size), _hitbox(getPosition(), Size) {
 	// empty constructor
 }
 
@@ -13,7 +13,7 @@ LevelGridTile::LevelGridTile() : _hitbox(getPosition(), Size), DrawableVertices(
 /// </summary>
 /// <param name="x">position on the x-axis</param>
 /// <param name="y">position on the y-axis</param>
-LevelGridTile::LevelGridTile(int x, int y) : _hitbox(getPosition(), Size), DrawableVertices(x, y, x + 1, y + 1) {
+LevelGridTile::LevelGridTile(int x, int y) : DrawableVertices(x, y, x + Size, y + Size), _hitbox(getPosition(), Size) {
 	_x = x;
 	_y = y;
 	_generated = true;

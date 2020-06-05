@@ -8,7 +8,7 @@
 
 class LevelGridTile : public DrawableVertices {
 private:
-	int _x{}, _y{}, _z = -10;
+	int _x{}, _y{};
 	float Size = 1.0f;
 
 	bool _generated = false;
