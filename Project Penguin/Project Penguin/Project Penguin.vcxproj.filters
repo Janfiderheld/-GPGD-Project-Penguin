@@ -17,6 +17,8 @@
     <ClCompile Include="Source\Technicals\Shader.cpp" />
     <ClCompile Include="Source\Technicals\stb_image_implementation.cpp" />
     <ClCompile Include="Source\Technicals\Texture.cpp" />
+    <ClCompile Include="Source\Gameplay\Collectable.cpp" />
+    <ClCompile Include="Source\Managers\CollectableManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Level\LevelGrid.h" />
@@ -39,6 +41,8 @@
     <ClInclude Include="Header\Level\BackgroundLayer.h" />
     <ClInclude Include="Header\Managers\GridFacade.h" />
     <ClInclude Include="Header\Gameplay\Camera.h" />
+    <ClInclude Include="Header\Gameplay\Collectable.h" />
+    <ClInclude Include="Header\Managers\CollectableManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />
