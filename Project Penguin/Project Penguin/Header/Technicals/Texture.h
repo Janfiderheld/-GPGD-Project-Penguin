@@ -2,7 +2,7 @@
 #define TEXTURE_HEADER
 
 #include <GLEW/glew.h>
-#include <stb_image.h>
+#include <Technicals/stb_image.h>
 #include <iostream>
 #include <string>
 

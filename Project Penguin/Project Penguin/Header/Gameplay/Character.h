@@ -1,9 +1,11 @@
 #ifndef CHAR_HEADER
 #define CHAR_HEADER
 
-#include <MovingObject.h>
-#include <InputManager.h>
-#include <DrawableVertices.h>
+#include <Gameplay/MovingObject.h>
+#include <Technicals/DrawableVertices.h>
+#include <Managers/InputManager.h>
+#include <Technicals/Texture.h>
+#include <Technicals/AABB.h>
 
 class Character : public MovingObject, public DrawableVertices {
 private:

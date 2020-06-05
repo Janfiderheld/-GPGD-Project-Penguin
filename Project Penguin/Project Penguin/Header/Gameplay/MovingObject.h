@@ -4,9 +4,9 @@
 #include <GLM/glm.hpp>
 #include <IMoveable.h>
 #include <MovingObjectStatus.h>
-#include <AABB.h>
-#include <Texture.h>
-#include <Level/GridFacade.h>
+#include <Technicals/AABB.h>
+#include <Technicals/Texture.h>
+#include <Managers/GridFacade.h>
 
 
 class MovingObject : public IMovable {

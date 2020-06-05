@@ -2,7 +2,7 @@
 #define GRID_FACADE
 
 #include <Level/LevelGrid.h>
-#include <AABB.h>
+#include <Technicals/AABB.h>
 
 class GridFacade {
 private:

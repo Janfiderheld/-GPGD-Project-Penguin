@@ -1,4 +1,4 @@
-#include "Texture.h"
+#include <Technicals/Texture.h>
 
 /// <summary>
 /// Empty default constructor

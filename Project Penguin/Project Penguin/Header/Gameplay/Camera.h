@@ -3,7 +3,7 @@
 
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
-#include <Character.h>
+#include <Gameplay/Character.h>
 
 class Camera {
 private:

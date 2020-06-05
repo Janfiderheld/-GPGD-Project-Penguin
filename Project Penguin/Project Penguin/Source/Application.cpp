@@ -1,11 +1,11 @@
-#include <Game.h>
-#include <Shader.h>
-#include <Camera.h>
-#include <Character.h>
-#include <Texture.h>
-#include <AABB.h>
+#include <Gameplay/Game.h>
+#include <Technicals/Shader.h>
+#include <Gameplay/Camera.h>
+#include <Gameplay/Character.h>
+#include <Technicals/Texture.h>
+#include <Technicals/AABB.h>
 #include <Level/LevelGrid.h>
-#include <Level/GridFacade.h>
+#include <Managers/GridFacade.h>
 
 int main(void) {
     Game game;

@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "Gameplay/Camera.h"
 
 /// <summary>
 /// Sets the camera position, the world up and a reference to the player character.

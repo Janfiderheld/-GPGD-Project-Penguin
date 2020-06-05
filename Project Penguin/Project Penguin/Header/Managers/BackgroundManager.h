@@ -1,9 +1,9 @@
 #ifndef BACKMAN_HEADER
 #define BACKMAN_HEADER
 
-#include <BackgroundLayer.h>
+#include <Level/BackgroundLayer.h>
 #include <vector>
-#include <Texture.h>
+#include <Technicals/Texture.h>
 
 class BackgroundManager {
 private:

@@ -1,4 +1,4 @@
-#include "AABB.h"
+#include <Technicals/AABB.h>
 
 /// <summary>
 /// Sets the origin (= bottom left corner), width and height of a squared bounding box

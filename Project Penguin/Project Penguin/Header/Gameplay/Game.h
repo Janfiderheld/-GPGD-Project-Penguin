@@ -3,8 +3,8 @@
 
 #include <GLEW/glew.h>
 #include <GLFW/glfw3.h>
-#include <InputManager.h>
-#include <Character.h>
+#include <Managers/InputManager.h>
+#include <Gameplay/Character.h>
 
 class Game {
 private:

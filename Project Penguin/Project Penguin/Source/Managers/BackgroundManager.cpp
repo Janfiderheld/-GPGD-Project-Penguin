@@ -1,4 +1,4 @@
-#include <BackgroundManager.h>
+#include <Managers/BackgroundManager.h>
 
 /// <summary>
 /// Creates the defined amount of layers and gives them the corresponding texture

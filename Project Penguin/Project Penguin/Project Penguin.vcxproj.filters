@@ -2,43 +2,43 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
-    <ClCompile Include="Source\Shader.cpp" />
-    <ClCompile Include="Source\Texture.cpp" />
-    <ClCompile Include="Source\stb_image_implementation.cpp" />
-    <ClCompile Include="Source\Game.cpp" />
-    <ClCompile Include="Source\Camera.cpp" />
-    <ClCompile Include="Source\AABB.cpp" />
-    <ClCompile Include="Source\MovingObject.cpp" />
     <ClCompile Include="Source\Level\LevelGrid.cpp" />
     <ClCompile Include="Source\Level\LevelGridTile.cpp" />
-    <ClCompile Include="Source\Character.cpp" />
-    <ClCompile Include="Source\Level\GridFacade.cpp" />
-    <ClCompile Include="Source\InputManager.cpp" />
-    <ClCompile Include="Source\DrawableVertices.cpp" />
-    <ClCompile Include="Source\BackgroundLayer.cpp" />
-    <ClCompile Include="Source\BackgroundManager.cpp" />
+    <ClCompile Include="Source\Gameplay\Game.cpp" />
+    <ClCompile Include="Source\Gameplay\Character.cpp" />
+    <ClCompile Include="Source\Gameplay\MovingObject.cpp" />
+    <ClCompile Include="Source\Level\BackgroundLayer.cpp" />
+    <ClCompile Include="Source\Managers\GridFacade.cpp" />
+    <ClCompile Include="Source\Managers\BackgroundManager.cpp" />
+    <ClCompile Include="Source\Managers\InputManager.cpp" />
+    <ClCompile Include="Source\Technicals\AABB.cpp" />
+    <ClCompile Include="Source\Gameplay\Camera.cpp" />
+    <ClCompile Include="Source\Technicals\DrawableVertices.cpp" />
+    <ClCompile Include="Source\Technicals\Shader.cpp" />
+    <ClCompile Include="Source\Technicals\stb_image_implementation.cpp" />
+    <ClCompile Include="Source\Technicals\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header\Game.h" />
-    <ClInclude Include="Header\Shader.h" />
-    <ClInclude Include="Header\Texture.h" />
-    <ClInclude Include="Header\stb_image.h" />
-    <ClInclude Include="Header\Camera.h" />
-    <ClInclude Include="Header\AABB.h" />
-    <ClInclude Include="Header\MovingObject.h" />
     <ClInclude Include="Header\Level\LevelGrid.h" />
     <ClInclude Include="Header\Level\LevelGridTile.h" />
-    <ClInclude Include="Header\Character.h" />
-    <ClInclude Include="Header\Level\GridFacade.h" />
     <ClInclude Include="Enums\LevelGenerationStates.h" />
     <ClInclude Include="Enums\TileLocation.h" />
     <ClInclude Include="Enums\MovingObjectStatus.h" />
-    <ClInclude Include="Header\InputManager.h" />
     <ClInclude Include="Enums\InputDirection.h" />
     <ClInclude Include="Interfaces\IMoveable.h" />
-    <ClInclude Include="Header\DrawableVertices.h" />
-    <ClInclude Include="Header\BackgroundLayer.h" />
-    <ClInclude Include="Header\BackgroundManager.h" />
+    <ClInclude Include="Header\Technicals\stb_image.h" />
+    <ClInclude Include="Header\Technicals\Texture.h" />
+    <ClInclude Include="Header\Technicals\Shader.h" />
+    <ClInclude Include="Header\Technicals\AABB.h" />
+    <ClInclude Include="Header\Managers\BackgroundManager.h" />
+    <ClInclude Include="Header\Technicals\DrawableVertices.h" />
+    <ClInclude Include="Header\Gameplay\Game.h" />
+    <ClInclude Include="Header\Gameplay\Character.h" />
+    <ClInclude Include="Header\Gameplay\MovingObject.h" />
+    <ClInclude Include="Header\Managers\InputManager.h" />
+    <ClInclude Include="Header\Level\BackgroundLayer.h" />
+    <ClInclude Include="Header\Managers\GridFacade.h" />
+    <ClInclude Include="Header\Gameplay\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

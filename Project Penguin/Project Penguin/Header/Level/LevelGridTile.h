@@ -2,9 +2,9 @@
 #define GRIDTILE_HEADER
 
 #include <GLM/glm.hpp>
-#include <AABB.h>
+#include <Technicals/AABB.h>
 #include <TileLocation.h>
-#include <DrawableVertices.h>
+#include <Technicals/DrawableVertices.h>
 
 class LevelGridTile : public DrawableVertices {
 private:

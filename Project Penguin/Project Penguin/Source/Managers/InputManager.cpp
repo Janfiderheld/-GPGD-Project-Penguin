@@ -1,4 +1,4 @@
-#include <InputManager.h>
+#include <Managers/InputManager.h>
 
 /// <summary>
 /// Initializes the InputManager by setting all Inputs to false

@@ -1,8 +1,8 @@
 #ifndef BACKGROUND_HEADER
 #define BACKGROUND_HEADER
 
-#include <Texture.h>
-#include <DrawableVertices.h>
+#include <Technicals/Texture.h>
+#include <Technicals/DrawableVertices.h>
 #include <GLM/glm.hpp>	
 
 class BackgroundLayer : public DrawableVertices {

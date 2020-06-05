@@ -1,4 +1,4 @@
-#include <Shader.h>
+#include <Technicals/Shader.h>
 
 /// <summary>
 /// Takes the given id and checks for shader compilation problems when checkCompilation = true,
