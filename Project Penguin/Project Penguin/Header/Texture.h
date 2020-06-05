@@ -16,6 +16,7 @@ private:
 public:
 	unsigned int TextureId;
 
+	Texture();
 	Texture(const char* fileName, GLint format);
 
 	int getWidth();

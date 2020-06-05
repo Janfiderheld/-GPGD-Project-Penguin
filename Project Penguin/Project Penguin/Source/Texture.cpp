@@ -1,6 +1,12 @@
 #include "Texture.h"
 
 /// <summary>
+/// Empty default constructor
+/// </summary>
+Texture::Texture() {
+}
+
+/// <summary>
 /// Loads an image from the given file in the given format and saves it as a texture.
 /// Also sets wrapping and filtering to default values (Repeat & linear filtering).
 /// </summary>

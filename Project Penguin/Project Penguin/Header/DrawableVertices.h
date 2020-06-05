@@ -9,11 +9,13 @@ private:
 	float _minY = 0.0f;
 	float _maxX = 0.0f;
 	float _maxY = 0.0f;
-	float _z = -10.0f;
 	
 	float* _vertices = new float[VerticeAmount];
 	void calculateVertices();
 
+protected:
+	float _z = -10.0f;
+	
 public:
 	DrawableVertices(float minX, float minY, float maxX, float maxY);
 	
