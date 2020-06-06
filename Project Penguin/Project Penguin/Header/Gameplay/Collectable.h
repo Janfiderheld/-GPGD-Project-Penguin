@@ -8,8 +8,8 @@
 
 class Collectable : public DrawableVertices{
 private:
-	const int ScoreValue = 10;
-	const glm::vec3 Scale = glm::vec3(1.0f, 1.0f, 1.0f);
+	static int ScoreValue;
+	static glm::vec3 Scale;
 	
 	AABB _hitbox;
 	glm::vec3 _position;
@@ -17,10 +17,10 @@ private:
 	bool _isCollected = false;
 
 public:
-	static Texture CollectTex;
+	static Texture* CollectTex;
 	
 	Collectable();
-	Collectable(glm::vec3 pos, AABB boundBox);
+	Collectable(glm::vec2 pos);
 
 	AABB getHitbox();
 	glm::vec3 getPosition();

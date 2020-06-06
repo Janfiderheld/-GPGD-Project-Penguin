@@ -8,8 +8,8 @@
 
 class CollectableManager {
 private:
-	const int MaxCollectAmount = 20;
-	const int MinCollectAmount = 10;
+	const int MaxCollectAmount = 12;
+	const int MinCollectAmount = 6;
 	
 	std::vector<Collectable> _collectables;
 
@@ -18,6 +18,9 @@ public:
 	static GridFacade* LevelFacade;
 	
 	CollectableManager();
+
+	std::vector<Collectable>* getCollectables();
+	void checkForCollection(AABB playerHitbox);
 };
 
 #endif // COLLMAN_HEADER

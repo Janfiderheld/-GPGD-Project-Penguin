@@ -1,6 +1,19 @@
 #include <Gameplay/Collectable.h>
 
-Texture Collectable::CollectTex = Texture("Collectable", GL_RGBA);
+/// <summary>
+/// Points the player gets for collecting a single collectable
+/// </summary>
+int Collectable::ScoreValue = 10;
+
+/// <summary>
+/// Scale of a collectable
+/// </summary>
+glm::vec3 Collectable::Scale = glm::vec3(0.8f, 0.4f, 1.0f);
+
+/// <summary>
+/// Texture to use for drawing the collectable
+/// </summary>
+Texture* Collectable::CollectTex = nullptr;
 
 /// <summary>
 /// Creates the bounding box & the vertices based on the tiles position 
@@ -17,11 +30,12 @@ Collectable::Collectable() :
 /// </summary>
 /// <param name="pos">starting position</param>
 /// <param name="boundBox">bounding box for the collectable</param>
-Collectable::Collectable(glm::vec3 pos, AABB boundBox) :
-	DrawableVertices(pos.x, pos.y, pos.x + boundBox.getWidth(), pos.y + boundBox.getHeight()),
-	_hitbox(boundBox)
+Collectable::Collectable(glm::vec2 pos) :
+	DrawableVertices(pos.x, pos.y, pos.x + Scale.x, pos.y + Scale.y),
+	_hitbox(getPosition(), Scale.x, Scale.y)
 {
-	_position = pos;
+	_position = glm::vec3(pos, _z);
+	_hitbox = AABB(getPosition(), Scale.x, Scale.y);
 }
 
 /// <summary>

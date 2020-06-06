@@ -83,3 +83,30 @@ bool GridFacade::checkForEndArea(int x, int y) {
 
 	return _grid->getTileFromGrid(x, y).getLocation() == END_AREA;
 }
+
+/// <summary>
+/// Returns a reference to the vector containing the collectable positions on top of the platforms
+/// </summary>
+std::vector<glm::vec2>* GridFacade::getCollectablePositions() {
+	return _grid->getCollectablePositions();
+}
+
+/// <summary>
+/// Generates a random number in the area where platforms, pits & collectables can be placed
+/// </summary>
+int GridFacade::generateRandomForPlacement() {
+	return _grid->generateRandomForPlacement();
+}
+
+/// <summary>
+/// Returns the height of the level at the given x position.
+/// </summary>
+/// <param name="x">position to find the height for</param>
+/// <returns>the height or 0 when this column is part of a pit</returns>
+int GridFacade::getHeightForXPos(int x) {
+	int y = 0;
+	while (_grid->getTileFromGrid(x, y).isFilled()) {
+		y++;
+	}
+	return y;
+}

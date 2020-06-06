@@ -6,6 +6,9 @@
 #include <Technicals/AABB.h>
 #include <Level/LevelGrid.h>
 #include <Managers/GridFacade.h>
+#include <Managers/CollectableManager.h>
+#include <Gameplay/Collectable.h>
+#include <vector>
 
 int main(void) {
     Game game;
@@ -41,18 +44,26 @@ int main(void) {
 
     Texture charText("Penguin.png", GL_RGBA);
 
-    // Level & Characters
+    // Level
     LevelGrid level;
     GridFacade levelFacade(&level); 
     InputManager inpMan;
-    MovingObject::LevelFacade = &levelFacade;
-    Character::InputManager = &inpMan;
     Game::InputManager = &inpMan;
 
+    // Character
     glm::vec3 charPos(1.0f, 3.0f, -10.0f);
     glm::vec3 charScale(0.66f, 1.0f, 1.0f);
     AABB charHitbox(charPos, charScale.y, charScale.x);
     Character character(charPos, charText, charHitbox);
+    MovingObject::LevelFacade = &levelFacade;
+    Character::InputManager = &inpMan;
+
+    // Collectables
+    Texture collectTex("Collectable.png", GL_RGBA); 
+    Collectable::CollectTex = &collectTex;
+    CollectableManager::LevelFacade = &levelFacade;
+    CollectableManager collectMan;
+    std::vector<Collectable>* collectables = collectMan.getCollectables();
 
     // Camera
     // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
@@ -223,6 +234,22 @@ int main(void) {
         glBufferSubData(VBO, 0, sizeof(character.getVertices()), character.getVertices());
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glDisable(GL_BLEND);
+
+        // draw Collectables
+        collectMan.checkForCollection(character.getHitbox());
+        for (int i = 0; i < collectables->size(); i++) {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, collectables->at(i).getPosition());
+            model = glm::scale(model, collectables->at(i).getScale());
+            shader.setMat4Uniform("model", model);
+
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBindTexture(GL_TEXTURE_2D, Collectable::CollectTex->TextureId);
+            glBufferSubData(VBO, 0, sizeof(collectables->at(i).getVertices()), collectables->at(i).getVertices());
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDisable(GL_BLEND);
+        }
 
         glfwSwapBuffers(game.getWindowPointer());
         glfwPollEvents();

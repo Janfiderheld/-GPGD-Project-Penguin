@@ -10,9 +10,7 @@
 /// </summary>
 LevelGrid::LevelGrid() {
 	srand(time(NULL));
-
-	size_t size = LevelHeight * LevelWidth;
-	_level.resize(size);	
+	_level.resize(LevelHeight * LevelWidth);
 
 	initializeStartingArea();
 	generateBottom();
@@ -20,6 +18,7 @@ LevelGrid::LevelGrid() {
 	addPits();
 
 	generateRemainingTiles();
+	_generationFinished = true;
 	setTileBorders();
 }
 
@@ -231,7 +230,7 @@ void LevelGrid::addPlattforms() {
 		int x = 0, y = 0;
 
 		do {
-			x = rand() % (LevelWidth - StartingAreaWidth - EndAreaWidth - 2) + StartingAreaWidth + 2;
+			x = generateRandomForPlacement() + 2;
 
 			if (positions.empty()) {
 				isUsableX = true;
@@ -275,6 +274,7 @@ void LevelGrid::addPlattforms() {
 
 		_level.at(x + (y + 4) * LevelWidth) = LevelGridTile(x, y + 4);
 		_level.at(x + (y + 4) * LevelWidth).changeFilling(true);
+		_collectPos.push_back(glm::vec2(x, y + 5));
 	}
 }
 
@@ -291,7 +291,7 @@ void LevelGrid::addPits() {
 		int x = 0;
 
 		do {
-			x = rand() % (LevelWidth - StartingAreaWidth - EndAreaWidth - 2) + StartingAreaWidth;
+			x = generateRandomForPlacement();
 
 			if (positions.empty()) {
 				isUsableX = true;
@@ -401,6 +401,17 @@ LevelGridTile& LevelGrid::getTileFromGrid(int x, int y) {
 }
 
 /// <summary>
+/// Returns a reference to the vector containing the collectable positions on top of the platforms
+/// </summary>
+std::vector<glm::vec2>* LevelGrid::getCollectablePositions() {
+	if (_generationFinished) {
+		return &_collectPos;
+	} else {
+		return nullptr;
+	}	
+}
+
+/// <summary>
 /// Returns width of the level
 /// </summary>
 int LevelGrid::getWidth() {
@@ -412,4 +423,11 @@ int LevelGrid::getWidth() {
 /// </summary>
 int LevelGrid::getHeight() {
 	return LevelHeight;
+}
+
+/// <summary>
+/// Generates a random number in the area where platforms, pits & collectables can be placed
+/// </summary>
+int LevelGrid::generateRandomForPlacement() {
+	return rand() % (LevelWidth - StartingAreaWidth - EndAreaWidth - 2) + StartingAreaWidth;
 }

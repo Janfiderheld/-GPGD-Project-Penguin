@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <ctime>
+#include <GLM/glm.hpp>
 #include <Level/LevelGridTile.h>
 #include <LevelGenerationStates.h>
 
@@ -30,6 +31,8 @@ private:
 
 	LevelGenerationStates state = LVL_START;
 	std::vector<LevelGridTile> _level;
+	std::vector<glm::vec2> _collectPos;
+	bool _generationFinished = false;
 
 	void initializeStartingArea();
 	void generateBottom();
@@ -44,9 +47,11 @@ public:
 	LevelGrid();
 
 	int getWidth();
-	int getHeight();	
+	int getHeight();
+	int generateRandomForPlacement();
 
 	LevelGridTile& getTileFromGrid(int x, int y);
+	std::vector<glm::vec2>* getCollectablePositions();
 };
 
 #endif // GRID_HEADER
