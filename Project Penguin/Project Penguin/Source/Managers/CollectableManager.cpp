@@ -17,7 +17,7 @@ void CollectableManager::generateCollectables() {
 
 	for (int i = 0; i < _collectables.size() - noOfPlatformCollectables; i++) {
 		bool isUsableX = false;
-		int x = 0;
+		int x = 0, y = 0, height = 0;
 		do {
 			x = LevelFacade->generateRandomForPlacement();
 
@@ -29,14 +29,15 @@ void CollectableManager::generateCollectables() {
 				}
 			}
 
-			if (LevelFacade->getHeightForXPos(x) == 0) {
+			y = LevelFacade->getHeightForXPos(x);
+			height = rand() % 3;
+			if (y == 0 || LevelFacade->checkForWall(x, y + height)) {
 				isUsableX = false;
 			}
 		} while (!isUsableX);
-		int y = LevelFacade->getHeightForXPos(x);
+		y += height;
 		positions->push_back(glm::vec2(x, y));
-		int height = rand() % 3;
-		_collectables.at(i + noOfPlatformCollectables) = Collectable(glm::vec2(x, y + height));
+		_collectables.at(i + noOfPlatformCollectables) = Collectable(glm::vec2(x, y));
 	}
 }
 
