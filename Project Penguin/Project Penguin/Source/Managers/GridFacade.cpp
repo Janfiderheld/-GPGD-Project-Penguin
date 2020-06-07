@@ -9,45 +9,21 @@ GridFacade::GridFacade(LevelGrid* grid) {
 }
 
 /// <summary>
-/// Checks for the given hitbox if it overlaps with only one or two tiles on the x-axis.
+/// Checks if the object with the given parameters overlaps two tiles in a certain direction
+/// by first rounding the values if necessary and then checking if the offset regarding the next 
+/// tile starting position together with the size is bigger than a certain offset.
 /// </summary>
-/// <param name="x">Position to check for in x-axis</param>
-/// <param name="y">Position to check for on y-axis</param>
-/// <param name="objHitbox">hitbox to check with</param>
-/// <returns>true if the hitbox overlaps wih two tiles</returns>
-bool GridFacade::checkForTwoTilesInX(int x, int y, AABB objHitbox) {
-	if (x >= _grid->getWidth() || x < 0 ||
-		y >= _grid->getHeight() || y <= 0) {
-		return false;
+/// <param name="minVal">Value to check for</param>
+/// <param name="size">Size of the object to check for</param>
+/// <returns>true if this object overlaps two tiles</returns>
+bool GridFacade::checkForTwoTiles(float minVal, float size) {
+	int roundVal = round(minVal);
+	if (roundVal - minVal <= RoundUpDiff) {
+		minVal = roundVal;
 	}
 
-	AABB left = _grid->getTileFromGrid(x, y).getHitbox();
-	
-	if (objHitbox.getMinX() >= left.getMinX() &&
-		objHitbox.getMaxX() <= left.getMaxX()) {
-		return true;
-	} else {
-		return false;
-	}	
-}
-
-/// <summary>
-/// Checks for the given hitbox if it overlaps with only one or two tiles on the y-axis.
-/// </summary>
-/// <param name="x">Position to check for in x-axis</param>
-/// <param name="y">Position to check for on y-axis</param>
-/// <param name="objHitbox">hitbox to check with</param>
-/// <returns>true if the hitbox overlaps wih two tiles</returns>
-bool GridFacade::checkForTwoTilesInY(int x, int y, AABB objHitbox) {
-	if (x >= _grid->getWidth() || x < 0 ||
-		y >= _grid->getHeight() || y <= 0) {
-		return false;
-	}
-
-	AABB bottom = _grid->getTileFromGrid(x, y).getHitbox();
-
-	if (objHitbox.getMinY() >= bottom.getMinY() &&
-		objHitbox.getMaxY() <= bottom.getMaxY()) {
+	float overlap = minVal + size - floor(minVal);
+	if (overlap - OverlapFactor >= 0.0f) {
 		return true;
 	} else {
 		return false;

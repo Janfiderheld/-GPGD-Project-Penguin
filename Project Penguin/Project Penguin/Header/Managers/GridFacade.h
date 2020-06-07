@@ -8,13 +8,15 @@
 
 class GridFacade {
 private:
+	const float OverlapFactor = 1.25f;
+	const float RoundUpDiff = 0.05f;
+
 	LevelGrid* _grid;
 
 public:
 	GridFacade(LevelGrid* grid);
 
-	bool checkForTwoTilesInX(int x, int y, AABB objHitbox);
-	bool checkForTwoTilesInY(int x, int y, AABB objHitbox);
+	bool checkForTwoTiles(float minVal, float size);
 	bool checkForWall(int x, int y);
 	bool checkForEndArea(int x, int y);
 

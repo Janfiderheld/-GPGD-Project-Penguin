@@ -35,14 +35,14 @@ void AABB::setOrigin(glm::vec3 newOrigin) {
 /// Returns the maximal value of the bounding box on the x-axis
 /// </summary>
 float AABB::getMaxX() {
-	return _origin.x;
+	return _origin.x + _width;
 }
 
 /// <summary>
 /// Returns the minimal value of the bounding box on the x-axis
 /// </summary>
 float AABB::getMinX() {
-	return _origin.x + _width;
+	return _origin.x;
 }
 
 /// <summary>

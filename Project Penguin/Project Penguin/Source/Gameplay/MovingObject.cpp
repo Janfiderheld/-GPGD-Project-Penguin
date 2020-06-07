@@ -22,70 +22,61 @@ MovingObject::MovingObject(glm::vec3 pos, Texture texture, AABB boundBox) : _tex
 /// <param name="deltaTime">Time since last frame to normalize calculation</param>
 void MovingObject::Update(float deltaTime) {
 	wasOnGround = isOnGround;
-	position += speed * deltaTime;
-	_hitbox.setOrigin(position);
 
-	int flooredPosX = floor(position.x);
-	int flooredPosY = floor(position.y);
+	int floorPosX = floor(position.x);
+	int floorPosY = floor(position.y);
 	int roundPosX = round(position.x);
 	int roundPosY = round(position.y);
 	int ceilPosX = ceil(position.x);
 	int ceilPosY = ceil(position.y);
 
-	bool twoBottoms = LevelFacade->checkForTwoTilesInX(flooredPosX, ceilPosY - 1, _hitbox);
-	bool twoCeilings = LevelFacade->checkForTwoTilesInX(flooredPosX, flooredPosY + 2, _hitbox);
-	bool twoRight = LevelFacade->checkForTwoTilesInY(flooredPosX + 1, flooredPosY, _hitbox);
-	bool twoLeft = LevelFacade->checkForTwoTilesInY(ceilPosX - 1, flooredPosY, _hitbox);
+	bool twoInXDir = LevelFacade->checkForTwoTiles(position.x, _hitbox.getWidth());
+	bool twoInYDir = LevelFacade->checkForTwoTiles(position.y, _hitbox.getHeight());
 
-	bool bottomTileLeft = LevelFacade->checkForWall(flooredPosX, ceilPosY - 1);
+	bool bottomTileLeft = LevelFacade->checkForWall(floorPosX, ceilPosY - 1);
 	bool bottomTileRight = LevelFacade->checkForWall(ceilPosX, ceilPosY - 1);
-	bool upperTileLeft = LevelFacade->checkForWall(flooredPosX, flooredPosY + 2);
-	bool upperTileRight = LevelFacade->checkForWall(ceilPosX, flooredPosY + 2);
+	bool upperTileLeft = LevelFacade->checkForWall(floorPosX, floorPosY + 2);
+	bool upperTileRight = LevelFacade->checkForWall(ceilPosX, floorPosY + 2);
 
-	bool leftWallLower = LevelFacade->checkForWall(ceilPosX - 1, flooredPosY);
+	bool leftWallLower = LevelFacade->checkForWall(ceilPosX - 1, floorPosY);
 	bool leftWallUpper = LevelFacade->checkForWall(ceilPosX - 1, ceilPosY);
-	bool rightWallLower = LevelFacade->checkForWall(flooredPosX + 1, flooredPosY);
-	bool rightWallUpper = LevelFacade->checkForWall(flooredPosX + 1, ceilPosY);
+	bool rightWallLower = LevelFacade->checkForWall(floorPosX + 1, floorPosY);
+	bool rightWallUpper = LevelFacade->checkForWall(floorPosX + 1, ceilPosY);
 
-	bool clampUpperLeft = LevelFacade->checkForWall(flooredPosX, flooredPosY + 1);
-	bool clampUpperRight = LevelFacade->checkForWall(ceilPosX, flooredPosY + 1);
+	bool clampUpperLeft = LevelFacade->checkForWall(floorPosX, floorPosY + 1);
+	bool clampUpperRight = LevelFacade->checkForWall(ceilPosX, floorPosY + 1);
 	bool clampJump = false;
 
-	if (twoBottoms) {
+	if (twoInXDir) {
 		isOnGround = bottomTileLeft || bottomTileRight;
-	} else {
-		isOnGround = roundPosX == ceilPosX ? bottomTileRight : bottomTileLeft;
-	}
-
-	if (twoRight) {
-		hasTileRight = rightWallUpper || rightWallLower;
-	} else {
-		hasTileRight = roundPosY == ceilPosY ? rightWallUpper : rightWallLower;
-	}
-
-	if (twoLeft) {
-		hasTileLeft = leftWallUpper || leftWallLower;
-	} else {
-		hasTileLeft = roundPosY == ceilPosY ? leftWallUpper : leftWallLower;
-	}
-
-	if (twoCeilings) {
 		hasCeiling = upperTileLeft || upperTileRight;
 		clampJump = clampUpperLeft || clampUpperRight;
 	} else {
+		isOnGround = roundPosX == ceilPosX ? bottomTileRight : bottomTileLeft;
 		hasCeiling = roundPosX == ceilPosX ? upperTileRight : upperTileLeft;
 		clampJump = roundPosX == ceilPosX ? clampUpperRight : clampUpperLeft;
 	}
 
+	if (twoInYDir) {
+		hasTileRight = rightWallUpper || rightWallLower;
+		hasTileLeft = leftWallUpper || leftWallLower;
+	} else {
+		hasTileRight = roundPosY == ceilPosY ? rightWallUpper : rightWallLower;
+		hasTileLeft = roundPosY == ceilPosY ? leftWallUpper : leftWallLower;
+	}
+
 	if (clampJump) {
-		position.y = glm::min(position.y, (float)(flooredPosY + 1));
+		position.y = glm::min(position.y, (float)(floorPosY + 1));
 		speed.y = glm::min(speed.y, 0.0f);
 	}
 
 	if(isOnGround) {
-		position.y = glm::max(position.y, (float)ceilPosY - 1);
+		position.y = glm::max(position.y, (float)floorPosY);
 		speed.y = glm::max(speed.y, 0.0f);
 	}
+
+	position += speed * deltaTime;
+	_hitbox.setOrigin(position);
 }
 
 /// <summary>
