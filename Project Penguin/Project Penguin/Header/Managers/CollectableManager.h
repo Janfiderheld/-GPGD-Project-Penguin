@@ -3,6 +3,7 @@
 
 #include <Gameplay/Collectable.h>
 #include <Managers/GridFacade.h>
+#include <Managers/HighscoreManager.h> 
 #include <vector>
 #include <random>
 
@@ -16,6 +17,7 @@ private:
 	void generateCollectables();
 public:
 	static GridFacade* LevelFacade;
+	static HighscoreManager* HighscoreMan;
 	
 	CollectableManager();
 

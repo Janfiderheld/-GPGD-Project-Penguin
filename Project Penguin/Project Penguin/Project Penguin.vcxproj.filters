@@ -19,6 +19,7 @@
     <ClCompile Include="Source\Technicals\Texture.cpp" />
     <ClCompile Include="Source\Gameplay\Collectable.cpp" />
     <ClCompile Include="Source\Managers\CollectableManager.cpp" />
+    <ClCompile Include="Source\Managers\HighscoreManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Level\LevelGrid.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="Header\Gameplay\Camera.h" />
     <ClInclude Include="Header\Gameplay\Collectable.h" />
     <ClInclude Include="Header\Managers\CollectableManager.h" />
+    <ClInclude Include="Header\Managers\HighscoreManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

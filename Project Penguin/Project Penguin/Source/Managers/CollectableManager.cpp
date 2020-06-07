@@ -6,7 +6,15 @@
 GridFacade* CollectableManager::LevelFacade = nullptr;
 
 /// <summary>
-/// 
+/// Manages the highscores and the current score
+/// </summary>
+HighscoreManager* CollectableManager::HighscoreMan = nullptr;
+
+/// <summary>
+/// Places a random number of collectables at random points throughout the levels.
+/// For each point a random x-coordinate is chosen.
+/// Afterwards a random height between [0, 2) is added to the highest y-coordinate at that point.
+/// This position is then used for a collectable, if it is not inside of a platform tile.
 /// </summary>
 void CollectableManager::generateCollectables() {
 	std::vector<glm::vec2>* positions = LevelFacade->getCollectablePositions();
@@ -42,7 +50,7 @@ void CollectableManager::generateCollectables() {
 }
 
 /// <summary>
-/// 
+/// Creates the collectable Manager by setting the random seed, calculating the amount of collectables and generating them.
 /// </summary>
 CollectableManager::CollectableManager() {
 	srand(time(NULL));
@@ -69,6 +77,7 @@ void CollectableManager::checkForCollection(AABB playerHitbox) {
 		if (playerHitbox.checkCollision(temp->getHitbox())) {
 			temp->collect();
 			_collectables.erase(_collectables.begin() + i);
+			HighscoreMan->addToCurrentScore(temp->getScore());
 		}
 	}
 }

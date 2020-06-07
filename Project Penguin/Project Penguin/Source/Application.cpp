@@ -59,9 +59,11 @@ int main(void) {
     Character::InputManager = &inpMan;
 
     // Collectables
+    HighscoreManager highMan;
     Texture collectTex("Collectable.png", GL_RGBA); 
     Collectable::CollectTex = &collectTex;
     CollectableManager::LevelFacade = &levelFacade;
+    CollectableManager::HighscoreMan = &highMan;
     CollectableManager collectMan;
     std::vector<Collectable>* collectables = collectMan.getCollectables();
 

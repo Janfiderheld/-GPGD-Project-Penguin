@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Gameplay\Collectable.cpp" />
     <ClCompile Include="Source\Managers\CollectableManager.cpp" />
+    <ClCompile Include="Source\Managers\HighscoreManager.cpp" />
     <ClCompile Include="Source\Technicals\AABB.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Managers\BackgroundManager.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Enums\TileLocation.h" />
     <ClInclude Include="Header\Gameplay\Collectable.h" />
     <ClInclude Include="Header\Managers\CollectableManager.h" />
+    <ClInclude Include="Header\Managers\HighscoreManager.h" />
     <ClInclude Include="Header\Technicals\AABB.h" />
     <ClInclude Include="Header\Managers\BackgroundManager.h" />
     <ClInclude Include="Header\Gameplay\Camera.h" />
