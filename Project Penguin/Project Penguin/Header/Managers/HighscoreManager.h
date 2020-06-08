@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 
 struct Highscore {
 	int rank;
@@ -23,20 +25,21 @@ struct Highscore {
 class HighscoreManager {
 private:
 	const int MaxHighscores = 10;
-
+	const std::string FileName = "Highscore.hsc";
+	
 	int _currentScore = 0;
 	std::vector<Highscore> _highscores;
 
+	int getNumberOfHighscores();
 	bool saveToFile();
 	bool loadFromFile();
-
+	
 	void resetCurrentScore();
-	bool compareTwoHighscores(const Highscore& h1, const Highscore& h2);
 	void sortAndChangeRanks(bool deleteLast);
 
 public:
 	HighscoreManager();
-
+	
 	void addToCurrentScore(int val);
 	void addNewHighscore(std::string name);
 };

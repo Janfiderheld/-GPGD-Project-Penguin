@@ -1,13 +1,61 @@
 #include <Managers/HighscoreManager.h>
 
+/// <summary>
+/// Saves the current highscores in the Highscore-File
+/// </summary>
+/// <returns>true if saving was successful</returns>
 bool HighscoreManager::saveToFile() {
-	// TODO: Save into simple text file (Encryption?) 
-	return false;
+	std::ofstream out(FileName, std::ios::out | std::ios::binary);
+	if(!out) {
+		return false;
+	}
+	
+	for(const auto &h : _highscores) {
+		out.write((char*) &h, sizeof(Highscore));
+	}
+	out.close();
+
+	return out.good();
 }
 
+/// <summary>
+/// Returns the number of Highscores (= number of lines) in the file
+/// </summary>
+int HighscoreManager::getNumberOfHighscores() {
+	std::ifstream in(FileName, std::ios::in | std::ios::binary);
+	if(!in)	{
+		return 0;
+	}
+	
+	int numLines = 0;
+	std::string unused;
+	while (std::getline(in, unused)) {
+		++numLines;
+	}
+	in.close();
+	return numLines;
+}
+
+/// <summary>
+/// Loads all highscores from the highscore file
+/// </summary>
+/// <returns>true if loading was successful</returns>
 bool HighscoreManager::loadFromFile() {
-	// TODO: Load from simple text file (Encryption?) 
-	return false;
+	std::ifstream in(FileName, std::ios::in | std::ios::binary);
+	if(!in)	{
+		return false;
+	}
+
+	int numLines = getNumberOfHighscores();
+	for(int i = 0; i < numLines; i++) {
+		Highscore temp;
+		in.read((char*)&temp, sizeof(Highscore));
+		_highscores.push_back(temp);
+		// TODO: Find out why crash when this line is finished
+	}
+	in.close();
+
+	return in.good();
 }
 
 /// <summary>
@@ -33,9 +81,13 @@ void HighscoreManager::sortAndChangeRanks(bool deleteLast) {
 }
 
 /// <summary>
-/// 
+/// Loads the highscores from a highscore file, if one exists
 /// </summary>
 HighscoreManager::HighscoreManager() {
+	std::ifstream loadFrom(FileName);
+	if((bool)loadFrom) {
+		loadFromFile();
+	}
 }
 
 /// <summary>
