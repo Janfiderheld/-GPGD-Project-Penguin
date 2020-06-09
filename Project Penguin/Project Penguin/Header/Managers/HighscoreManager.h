@@ -31,7 +31,7 @@ struct Highscore {
 	/// <param name="h1">highscore to compare with</param>
 	/// <returns>True if this highscore has less points than the given one</returns>
 	bool operator<(const Highscore& h1) const {
-		return points < h1.points;
+		return points >= h1.points;
 	}
 };
 

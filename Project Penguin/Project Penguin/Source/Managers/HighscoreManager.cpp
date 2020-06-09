@@ -13,7 +13,13 @@ bool HighscoreManager::saveToFile() {
 	std::vector<Highscore>::size_type size = _highscores.size();
 	try {
 		out.write((char*)&size, sizeof(size));
-		out.write((char*)&_highscores[0], _highscores.size() * sizeof(Highscore));
+		for(int i = 0; i < size; i++) {
+			out.write((char*)&_highscores.at(i).rank, sizeof(int));
+			out.write((char*)&_highscores.at(i).points, sizeof(int));
+			size_t nameLen = _highscores.at(i).name.size();
+			out.write((char*)&nameLen, sizeof(size_t));
+			out.write((char*)_highscores.at(i).name.c_str(), nameLen);
+		}
 	} catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}
@@ -35,8 +41,21 @@ bool HighscoreManager::loadFromFile() {
 	try	{
 		std::vector<Highscore>::size_type size = 0;
 		in.read((char*)&size, sizeof(size));
-		_highscores.resize(size);
-		in.read((char*)&_highscores[0], _highscores.size() * sizeof(Highscore));		
+		for(int i = 0; i < size; i++) {
+			int r, p;
+			size_t nLen;
+			in.read((char*)&r, sizeof(int));
+			in.read((char*)&p, sizeof(int));
+			in.read((char*)&nLen, sizeof(size_t));
+
+			char* temp = new char[nLen + 1];
+			in.read(temp, nLen);
+			temp[nLen] = '\0';
+			std::string name = temp;
+			delete[] temp;
+
+			_highscores.emplace_back(r, name, p);
+		}
 	} catch(const std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}
@@ -57,14 +76,13 @@ void HighscoreManager::resetCurrentScore() {
 /// If the parameter is set to true, the last highscore after the sorting is deleted
 /// </summary>
 void HighscoreManager::sortAndChangeRanks(bool deleteLast) {
-	// TODO: Find out why std::sort leads to "read access violation"-error
 	std::sort(_highscores.begin(), _highscores.end());
 	if (deleteLast && _highscores.size() > MaxHighscores) {
 		_highscores.pop_back();
 	}
 
-	for (int i = 1; i <= _highscores.size(); i++) {
-		_highscores.at(i).rank = i;
+	for (int i = 0; i < _highscores.size(); i++) {
+		_highscores.at(i).rank = i + 1;
 	}
 }
 
