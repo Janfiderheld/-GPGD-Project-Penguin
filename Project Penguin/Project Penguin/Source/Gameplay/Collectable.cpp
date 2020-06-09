@@ -8,7 +8,13 @@ int Collectable::ScoreValue = 10;
 /// <summary>
 /// Scale of a collectable
 /// </summary>
-glm::vec3 Collectable::Scale = glm::vec3(0.8f, 0.4f, 1.0f);
+glm::vec2 Collectable::Scale = glm::vec2(0.8f, 0.4f);
+
+/// <summary>
+/// Offset of the texture in relation to the origin.
+/// Can be calculated by subtracting the Scale from 1 and dividing by two
+/// </summary>
+glm::vec2 Collectable::TextureOffset = glm::vec2(0.1f, 0.3f);
 
 /// <summary>
 /// Texture to use for drawing the collectable
@@ -20,7 +26,7 @@ Texture* Collectable::CollectTex = nullptr;
 /// </summary>
 Collectable::Collectable() :
 	DrawableVertices(_position.x, _position.y, _position.x + Scale.x, _position.y + Scale.y),
-	_hitbox(getPosition(), Scale.x, Scale.y)
+	_hitbox(getPosition(), TextureOffset, Scale.y, Scale.x)
 {
 	// empty constructor
 }
@@ -32,10 +38,10 @@ Collectable::Collectable() :
 /// <param name="boundBox">bounding box for the collectable</param>
 Collectable::Collectable(glm::vec2 pos) :
 	DrawableVertices(pos.x, pos.y, pos.x + Scale.x, pos.y + Scale.y),
-	_hitbox(getPosition(), Scale.x, Scale.y)
+	_hitbox(getPosition(), TextureOffset, Scale.y, Scale.x)
 {
 	_position = glm::vec3(pos, _z);
-	_hitbox = AABB(getPosition(), Scale.x, Scale.y);
+	_hitbox = AABB(getPosition(), TextureOffset, Scale.y, Scale.x);
 }
 
 /// <summary>
@@ -55,7 +61,7 @@ glm::vec3 Collectable::getPosition() {
 /// <summary>
 /// Returns the scale of this collectable in all directions
 /// </summary>
-glm::vec3 Collectable::getScale() {
+glm::vec2 Collectable::getScale() {
 	return Scale;
 }
 

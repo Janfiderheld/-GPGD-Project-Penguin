@@ -9,6 +9,7 @@ AABB::AABB(glm::vec3 origin, float square) {
 	_origin = origin;
 	_height = square;
 	_width = square;
+	_hasOffset = false;
 }
 
 /// <summary>
@@ -17,11 +18,26 @@ AABB::AABB(glm::vec3 origin, float square) {
 /// <param name="origin">position of origin</param>
 /// <param name="height">height of the bounding box</param>
 /// <param name="width">width of the bounding box</param>
-/// <returns></returns>
 AABB::AABB(glm::vec3 origin, float height, float width) {
 	_origin = origin;
 	_height = height;
 	_width = width;
+	_hasOffset = false;
+}
+
+/// <summary>
+/// Sets the origin (= bottom left corner), offset, width and height of a squared bounding box
+/// </summary>
+/// <param name="origin">position of origin</param>
+/// <param name="offset">offset of the texture</param>
+/// <param name="height">height of the bounding box</param>
+/// <param name="width">width of the bounding box</param>
+AABB::AABB(glm::vec3 origin, glm::vec2 offset, float height, float width) {
+	_origin = origin;
+	_offset = offset;
+	_height = height;
+	_width = width;
+	_hasOffset = true;
 }
 
 /// <summary>
@@ -35,28 +51,36 @@ void AABB::setOrigin(glm::vec3 newOrigin) {
 /// Returns the maximal value of the bounding box on the x-axis
 /// </summary>
 float AABB::getMaxX() {
-	return _origin.x + _width;
+	return getMinX() + _width;
 }
 
 /// <summary>
 /// Returns the minimal value of the bounding box on the x-axis
 /// </summary>
 float AABB::getMinX() {
-	return _origin.x;
+	if(_hasOffset) {
+		return _origin.x + _offset.x;
+	} else {
+		return _origin.x;
+	}
 }
 
 /// <summary>
 /// Returns the maximal value of the bounding box on the y-axis
 /// </summary>
 float AABB::getMaxY() {
-	return _origin.y + _height;
+	return getMinY() + _height;
 }
 
 /// <summary>
 /// Returns the minimal value of the bounding box on the y-axis
 /// </summary>
 float AABB::getMinY() {
-	return _origin.y;
+	if (_hasOffset) {
+		return _origin.y + _offset.y;
+	} else {
+		return _origin.y;
+	}
 }
 
 /// <summary>

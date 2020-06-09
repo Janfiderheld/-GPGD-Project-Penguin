@@ -242,7 +242,7 @@ int main(void) {
         for (int i = 0; i < collectables->size(); i++) {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, collectables->at(i).getPosition());
-            model = glm::scale(model, collectables->at(i).getScale());
+            model = glm::scale(model, glm::vec3(collectables->at(i).getScale(), 1.0f));
             shader.setMat4Uniform("model", model);
 
             glEnable(GL_BLEND);
