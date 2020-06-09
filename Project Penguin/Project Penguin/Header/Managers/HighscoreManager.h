@@ -9,9 +9,22 @@
 
 struct Highscore {
 	int rank;
-	int points;
 	std::string name;
+	int points;
 
+	/// <summary>
+	/// Empty constructor, which does nothing
+	/// </summary>
+	Highscore() {}
+	
+	/// <summary>
+	/// Constructs a highscore by setting the values by the given parameters
+	/// </summary>
+	/// <param name="r">rank of this highscore</param>
+	/// <param name="n">name of the person holding this highscore</param>
+	/// <param name="p">points of this highscore</param>
+	Highscore(int r, std::string n, int p) : rank(r), name(std::move(n)), points(p) {}
+	
 	/// <summary>
 	/// Compares this highscore to the given one based on the points they have
 	/// </summary>
@@ -30,7 +43,6 @@ private:
 	int _currentScore = 0;
 	std::vector<Highscore> _highscores;
 
-	int getNumberOfHighscores();
 	bool saveToFile();
 	bool loadFromFile();
 	

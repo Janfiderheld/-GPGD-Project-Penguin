@@ -1,7 +1,7 @@
 #include <Managers/HighscoreManager.h>
 
 /// <summary>
-/// Saves the current highscores in the Highscore-File
+/// Tries to save the current highscores and how many there are in the Highscore-File
 /// </summary>
 /// <returns>true if saving was successful</returns>
 bool HighscoreManager::saveToFile() {
@@ -9,9 +9,13 @@ bool HighscoreManager::saveToFile() {
 	if(!out) {
 		return false;
 	}
-	
-	for(const auto &h : _highscores) {
-		out.write((char*) &h, sizeof(Highscore));
+
+	std::vector<Highscore>::size_type size = _highscores.size();
+	try {
+		out.write((char*)&size, sizeof(size));
+		out.write((char*)&_highscores[0], _highscores.size() * sizeof(Highscore));
+	} catch (const std::exception& e) {
+		std::cout << e.what() << std::endl;
 	}
 	out.close();
 
@@ -19,25 +23,7 @@ bool HighscoreManager::saveToFile() {
 }
 
 /// <summary>
-/// Returns the number of Highscores (= number of lines) in the file
-/// </summary>
-int HighscoreManager::getNumberOfHighscores() {
-	std::ifstream in(FileName, std::ios::in | std::ios::binary);
-	if(!in)	{
-		return 0;
-	}
-	
-	int numLines = 0;
-	std::string unused;
-	while (std::getline(in, unused)) {
-		++numLines;
-	}
-	in.close();
-	return numLines;
-}
-
-/// <summary>
-/// Loads all highscores from the highscore file
+/// Tries to load all highscores from the highscore file
 /// </summary>
 /// <returns>true if loading was successful</returns>
 bool HighscoreManager::loadFromFile() {
@@ -45,16 +31,17 @@ bool HighscoreManager::loadFromFile() {
 	if(!in)	{
 		return false;
 	}
-
-	int numLines = getNumberOfHighscores();
-	for(int i = 0; i < numLines; i++) {
-		Highscore temp;
-		in.read((char*)&temp, sizeof(Highscore));
-		_highscores.push_back(temp);
-		// TODO: Find out why crash when this line is finished
+	
+	try	{
+		std::vector<Highscore>::size_type size = 0;
+		in.read((char*)&size, sizeof(size));
+		_highscores.resize(size);
+		in.read((char*)&_highscores[0], _highscores.size() * sizeof(Highscore));		
+	} catch(const std::exception& e) {
+		std::cout << e.what() << std::endl;
 	}
+	
 	in.close();
-
 	return in.good();
 }
 
@@ -70,6 +57,7 @@ void HighscoreManager::resetCurrentScore() {
 /// If the parameter is set to true, the last highscore after the sorting is deleted
 /// </summary>
 void HighscoreManager::sortAndChangeRanks(bool deleteLast) {
+	// TODO: Find out why std::sort leads to "read access violation"-error
 	std::sort(_highscores.begin(), _highscores.end());
 	if (deleteLast && _highscores.size() > MaxHighscores) {
 		_highscores.pop_back();
@@ -107,9 +95,7 @@ void HighscoreManager::addNewHighscore(std::string name) {
 		return;
 	}
 
-	Highscore newHigh;
-	newHigh.name = name;
-	newHigh.points = _currentScore;
+	Highscore newHigh(0, name, _currentScore);
 	_highscores.push_back(newHigh);
 	sortAndChangeRanks(true);
 	resetCurrentScore();
