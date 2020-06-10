@@ -1,7 +1,7 @@
 #ifndef SHADER_HEADER
 #define SHADER_HEADER
 
-#include <GLEW/glew.h>
+#include <GL/glew.h>
 #include <GLM/glm.hpp>
 #include <Windows.h>
 #include <string>

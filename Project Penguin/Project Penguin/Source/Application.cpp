@@ -105,8 +105,7 @@ int main(void) {
     glEnableVertexAttribArray(1);
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(game.getWindowPointer()))
-    {
+    while (!glfwWindowShouldClose(game.getWindowPointer())) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -130,6 +129,8 @@ int main(void) {
         //// Wireframe for Debugging
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+        game.drawUI();
+    	
         // draw Level
         for (int x = 0; x < level.getWidth(); x++) {
             for (int y = 0; y < level.getHeight(); y++) {
@@ -260,7 +261,6 @@ int main(void) {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     shader.changeStatus(false);
-
-    glfwTerminate();
+    game.cleanUp();
     return 0;
 }

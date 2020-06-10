@@ -6,7 +6,7 @@
 InputManager* Game::InputManager = nullptr;
 
 /// <summary>
-/// Initializes the Game by creaing a window and starting GLFW & GLEW
+/// Initializes the Game by creating a window and starting GLFW, GLEW & imGUI
 /// </summary>
 Game::Game() {
     if (!glfwInit()) {
@@ -30,7 +30,13 @@ Game::Game() {
         return;
     }
 
-    glViewport(0, 0, _width, _height);
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(_window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+
     _initStatus = true;
 }
 
@@ -70,6 +76,38 @@ float Game::calculateDeltaTime() {
 /// </summary>
 GLFWwindow* Game::getWindowPointer() {
     return _window;
+}
+
+/// <summary>
+/// Draws the UI with ImGUI every frame
+/// </summary>
+void Game::drawUI() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    // TODO: Fill user interface
+    ImGui::Begin("Project Penguin"); 
+    ImGui::Text("Example");
+    ImGui::End();
+
+    ImGui::Render();
+    int display_w, display_h;
+    glfwGetFramebufferSize(_window, &display_w, &display_h);
+    glViewport(0, 0, display_w, display_h);
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+/// <summary>
+/// Clean up the used objects after the application is closed
+/// </summary>
+void Game::cleanUp() {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(_window);
+    glfwTerminate();
 }
 
 /// <summary>

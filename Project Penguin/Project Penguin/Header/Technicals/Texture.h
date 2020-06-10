@@ -1,7 +1,7 @@
 #ifndef TEXTURE_HEADER
 #define TEXTURE_HEADER
 
-#include <GLEW/glew.h>
+#include <GL/glew.h>
 #include <Technicals/stb_image.h>
 #include <iostream>
 #include <string>
