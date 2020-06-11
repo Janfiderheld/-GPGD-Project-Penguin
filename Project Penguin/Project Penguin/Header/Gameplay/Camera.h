@@ -4,8 +4,9 @@
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
 #include <Gameplay/Character.h>
+#include <IResetable.h>
 
-class Camera {
+class Camera : public IResetable {
 private:
 	const int CharFollowStart = 6;
 	const int MaxHeight = 7;
@@ -25,6 +26,7 @@ public:
 	glm::vec3 getPosition();
 	glm::mat4 getViewMatrix();
 
+	void reset() override;
 	void changePosition(glm::vec3 newPos);
 	void changeWorldUp(glm::vec3 newWorldUp);
 	void updatePosition(float deltaTime);

@@ -12,7 +12,8 @@ GridFacade* MovingObject::LevelFacade = nullptr;
 /// <param name="texture">texture for the object</param>
 /// <param name="boundBox">bounding box (= hitbox) for the object</param>
 MovingObject::MovingObject(glm::vec3 pos, Texture texture, AABB boundBox) : _texture(texture), _hitbox(boundBox) {
-	position = pos;	
+	position = pos;
+	startPos = pos;
 }
 
 /// <summary>
@@ -20,7 +21,7 @@ MovingObject::MovingObject(glm::vec3 pos, Texture texture, AABB boundBox) : _tex
 /// Also calculates the new position based on the current speed and clamping if jumping at a tile from below.
 /// </summary>
 /// <param name="deltaTime">Time since last frame to normalize calculation</param>
-void MovingObject::Update(float deltaTime) {
+void MovingObject::update(float deltaTime) {
 	wasOnGround = isOnGround;
 
 	int floorPosX = floor(position.x);
@@ -77,6 +78,14 @@ void MovingObject::Update(float deltaTime) {
 
 	position += speed * deltaTime;
 	_hitbox.setOrigin(position);
+}
+
+/// <summary>
+/// Resets the character after a death
+/// </summary>
+void MovingObject::reset() {
+	_hitbox.setOrigin(startPos);
+	position = startPos;
 }
 
 /// <summary>

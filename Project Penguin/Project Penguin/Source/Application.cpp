@@ -57,6 +57,7 @@ int main(void) {
     Character character(charPos, charText, charHitbox);
     MovingObject::LevelFacade = &levelFacade;
     Character::InputManager = &inpMan;
+    UserInterface::PlayerCharacter = &character;
 
     // Collectables
     HighscoreManager highMan;
@@ -105,30 +106,29 @@ int main(void) {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    /* Loop until the user closes the window */
+    // Loop until the user closes the window
     while (!glfwWindowShouldClose(ui.getWindowPointer())) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ui.drawUI(&character);
-        ui.processInput(&character);
+        ui.drawUI();
+        ui.processInput(&cam);
     	if(ui.hasGameStarted()) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
             cam.updatePosition(delta);
-
+    		
             // view transform
             glm::mat4 view = cam.getViewMatrix();
 
             // projection transform
             glm::mat4 projection = glm::mat4(1.0f);
-            projection = glm::perspective(glm::radians(45.0f), (float)ui.getWidth() / (float)ui.getHeight(), 0.1f, 100.0f);
+            projection = glm::perspective(glm::radians(45.0f), (float)UserInterface::Width / (float)UserInterface::Height, 0.1f, 100.0f);
 
             shader.changeStatus(true);
             shader.setMat4Uniform("view", view);
             shader.setMat4Uniform("projection", projection);
 
-            glBindVertexArray(VAO);
             //// Wireframe for Debugging
             //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -255,8 +255,8 @@ int main(void) {
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 glDisable(GL_BLEND);
             }
-    	}
-
+    	}    	
+        
         glfwSwapBuffers(ui.getWindowPointer());
         glfwPollEvents();
     }

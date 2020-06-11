@@ -109,14 +109,21 @@ void HighscoreManager::addToCurrentScore(int val) {
 /// </summary>
 /// <param name="name">name of the player which belongs to the highscore</param>
 void HighscoreManager::addNewHighscore(std::string name) {	
-	if (_currentScore <= _highscores.back().points) {
-		return;
-	}
-
 	Highscore newHigh(0, name, _currentScore);
 	_highscores.push_back(newHigh);
 	sortAndChangeRanks(true);
 	resetCurrentScore();
+}
+
+/// <summary>
+/// Returns true, if the current score is a new highscore
+/// </summary>
+bool HighscoreManager::isNewHighscore() {
+	if(_highscores.size() < MaxHighscores) {
+		return _currentScore > 0;
+	}
+	
+	return _currentScore > _highscores.back().points;	
 }
 
 /// <summary>

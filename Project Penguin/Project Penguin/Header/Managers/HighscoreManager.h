@@ -43,18 +43,18 @@ private:
 	int _currentScore = 0;
 	std::vector<Highscore> _highscores;
 
-	bool saveToFile();
 	bool loadFromFile();
-	
 	void resetCurrentScore();
 	void sortAndChangeRanks(bool deleteLast);
 
 public:
 	HighscoreManager();
-	
+
 	void addToCurrentScore(int val);
 	void addNewHighscore(std::string name);
-
+	bool isNewHighscore();
+	bool saveToFile();
+	
 	std::string getScoreAsString();
 	std::vector<Highscore> getHighscores();
 };

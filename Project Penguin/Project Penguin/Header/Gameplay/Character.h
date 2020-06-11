@@ -27,7 +27,8 @@ public:
 
 	Character(glm::vec3 pos, Texture texture, AABB boundBox);
 
-	virtual void calculateSpeed(float deltaTime);
+	void calculateSpeed(float deltaTime) override;
+	void reset() override;
 	
 	bool hasReachedEnd();
 	bool hasDied();

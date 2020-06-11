@@ -8,6 +8,7 @@
 /// <param name="worldUp">vector pointing up in the world</param>
 /// <param name="character">reference to player character</param>
 Camera::Camera(glm::vec3 position, glm::vec3 worldUp, Character* character) {
+	startPos = position;
 	_position = position;
 	_worldUp = worldUp;
 	_front = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -37,6 +38,13 @@ glm::vec3 Camera::getPosition() {
 /// </summary>
 glm::mat4 Camera::getViewMatrix() {
 	return glm::lookAt(_position, _position + _front, _up);
+}
+
+/// <summary>
+/// Resets the camera to the starting position
+/// </summary>
+void Camera::reset() {
+	_position = startPos;
 }
 
 /// <summary>

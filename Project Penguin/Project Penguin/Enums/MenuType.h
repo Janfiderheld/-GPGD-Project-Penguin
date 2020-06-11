@@ -2,5 +2,6 @@ enum MenuType {
 	MAIN,
 	SETTINGS,
 	HIGHSCORE,
-	GAME
+	GAME,
+	GAME_OVER
 };

@@ -62,6 +62,7 @@
     <ClInclude Include="Enums\MenuType.h" />
     <ClInclude Include="Header\Technicals\UserInterfaceParameters.h" />
     <ClInclude Include="Header\Technicals\UserInterface.h" />
+    <ClInclude Include="Interfaces\IResetable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

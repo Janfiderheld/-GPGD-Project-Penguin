@@ -1,6 +1,16 @@
 #include <Technicals/UserInterface.h>
 
 /// <summary>
+/// Width of the application
+/// </summary>
+int UserInterface::Width = 1024;
+
+/// <summary>
+/// Height of the application
+/// </summary>
+int UserInterface::Height = 900;
+
+/// <summary>
 /// Reference to the InputManager, which saves which key is pressed.
 /// </summary>
 InputManager* UserInterface::InputManager = nullptr;
@@ -11,31 +21,35 @@ InputManager* UserInterface::InputManager = nullptr;
 HighscoreManager* UserInterface::HighscoreManager = nullptr;
 
 /// <summary>
+/// Reference to the main character, which is controlled by the player
+/// </summary>
+Character* UserInterface::PlayerCharacter = nullptr;
+
+/// <summary>
 /// Draws the Main Menu
 /// </summary>
 void UserInterface::drawMainMenu() {
-    float middle = _width / 4.0f - UserInterfaceParameters::MainMenuButtonSize.x / 2.0f;
-    float differenceInY = _height / 20.0;
+    float differenceInY = Height / 20.0;
 	
     ImGui::Begin("Project Penguin - Main Menu", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
-    ImGui::SetCursorPos(ImVec2(middle, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + differenceInY));
     if (ImGui::Button("New Game", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = GAME;
     }
 
-    ImGui::SetCursorPos(ImVec2(middle, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + differenceInY));
 	if(ImGui::Button("Highscores", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = HIGHSCORE;
 	}
 
-    ImGui::SetCursorPos(ImVec2(middle, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + differenceInY));
 	if(ImGui::Button("Settings", UserInterfaceParameters::MainMenuButtonSize))	{
         _currentMenu = SETTINGS;
 	}
 
-    ImGui::SetCursorPos(ImVec2(middle, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + differenceInY));
 	if(ImGui::Button("Quit", UserInterfaceParameters::MainMenuButtonSize)) {
-        glfwSetWindowShouldClose(_window, true);
+        closeWindow();
 	}
     ImGui::End();
 }
@@ -69,24 +83,61 @@ void UserInterface::drawSettingsMenu() {
 /// <summary>
 /// Draws the UI during the Game
 /// </summary>
-void UserInterface::drawIngameUI(Character* character) {
+void UserInterface::drawIngameUI() {
     ImGui::Begin("Project Penguin - Game", nullptr, _windowFlags);
     std::string curr = "Current Score: ";
 	curr.append(HighscoreManager->getScoreAsString());
     ImGui::Text(curr.c_str());
     ImGui::SameLine();
     ImGui::Text("Health:");
-    for(int i = 0; i < character->getCurrentHealth(); i++) {
+    for(int i = 0; i < PlayerCharacter->getCurrentHealth(); i++) {
         ImGui::SameLine();
         ImGui::Image((ImTextureID)(intptr_t)_heartFill.TextureId, UserInterfaceParameters::HeartTextureSize,
             UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax);
     }
-	for(int i = 0; i < character->getMaxHealth() - character->getCurrentHealth(); i++) {
+	for(int i = 0; i < PlayerCharacter->getMaxHealth() - PlayerCharacter->getCurrentHealth(); i++) {
         ImGui::SameLine();
         ImGui::Image((ImTextureID)(intptr_t)_heartUnfill.TextureId, UserInterfaceParameters::HeartTextureSize,
             UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax);
 	}	
     ImGui::End();
+}
+
+/// <summary>
+/// Draws a game over screen
+/// </summary>
+void UserInterface::drawGameOverScreen() {
+    ImGui::Begin("Project Penguin - Game Over", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
+    std::string curr = "Your Score: ";
+    curr.append(HighscoreManager->getScoreAsString());
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY()));
+    ImGui::Text(curr.c_str());
+    if(HighscoreManager->isNewHighscore())  {
+        static char buf[64] = "";
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + 10));
+        ImGui::Text("Enter Your Name");
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX - 120, ImGui::GetCursorPosY() + 10));
+    	ImGui::InputText("", buf, 64);
+        ImGui::SameLine();
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX + 200, ImGui::GetCursorPosY()));
+    	if(ImGui::Button("Confirm")){
+            HighscoreManager->addNewHighscore(std::string(buf));
+            _currentMenu = HIGHSCORE;
+    	}        
+    }
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + 10));
+    if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
+        _currentMenu = MAIN;
+    }
+    ImGui::End();
+}
+
+/// <summary>
+/// Closes the window and ends the application
+/// </summary>
+void UserInterface::closeWindow() {
+    glfwSetWindowShouldClose(_window, true);
+    HighscoreManager->saveToFile();
 }
 
 /// <summary>
@@ -111,7 +162,7 @@ UserInterface::UserInterface() {
         return;
     }
 
-    _window = glfwCreateWindow(_width, _height, TITLE, NULL, NULL);
+    _window = glfwCreateWindow(Width, Height, TITLE, NULL, NULL);
     if (!_window)
     {
         glfwTerminate();
@@ -149,20 +200,6 @@ bool UserInterface::getInitStatus() {
 }
 
 /// <summary>
-/// Returns the height of the game resolution
-/// </summary>
-int UserInterface::getHeight() {
-    return _height;
-}
-
-/// <summary>
-/// Returns the width of the game resolution
-/// </summary>
-int UserInterface::getWidth() {
-    return _width;
-}
-
-/// <summary>
 /// Calculates & returns the time between the current and the last frame
 /// </summary>
 float UserInterface::calculateDeltaTime() {
@@ -189,17 +226,17 @@ GLFWwindow* UserInterface::getWindowPointer() {
 /// <summary>
 /// Draws the UI with ImGUI every frame
 /// </summary>
-void UserInterface::drawUI(Character* character) {
+void UserInterface::drawUI() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     if (hasGameStarted()) {
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(_width, _height / 20), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(Width, Height / 20), ImGuiCond_Always);
     } else {
-        ImGui::SetNextWindowPos(ImVec2(_width / 4, _height / 4), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(_width / 2, _height / 2), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(ImVec2(Width / 4, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(Width / 2, Height / 2), ImGuiCond_Always);
     }
 	
     switch(_currentMenu) {
@@ -213,7 +250,10 @@ void UserInterface::drawUI(Character* character) {
         drawSettingsMenu();
         break;
     case GAME:
-        drawIngameUI(character);
+        drawIngameUI();
+        break;
+    case GAME_OVER:
+        drawGameOverScreen();
         break;
     }
 	
@@ -241,12 +281,18 @@ void UserInterface::cleanUp() {
 /// if the player character hasn't reached the end yet.
 /// </summary>
 /// <param name="character">Reference to the player character</param>
-void UserInterface::processInput(Character* character) {
+void UserInterface::processInput(Camera* cam) {
     if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(_window, true);
+        closeWindow();
     }
 
-    if (!character->hasReachedEnd() && !character->hasDied() && hasGameStarted()) {
+    if(PlayerCharacter->hasDied()) {
+        _currentMenu = GAME_OVER;
+        PlayerCharacter->reset();
+        cam->reset();
+    }
+	
+    if (!PlayerCharacter->hasReachedEnd() && !PlayerCharacter->hasDied() && hasGameStarted()) {
         InputManager->setInputStatus(LEFT, glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS);
         InputManager->setInputStatus(RIGHT, glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS);
         InputManager->setInputStatus(UP, glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS);

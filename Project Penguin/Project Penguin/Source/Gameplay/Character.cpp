@@ -27,8 +27,7 @@ void Character::calculateSpeed(float deltaTime) {
 		return;
 	}
 	
-	switch (status)
-	{
+	switch (status)	{
 	case STAND:
 		setCompleteSpeed(glm::vec3(0.0f));
 
@@ -146,7 +145,16 @@ void Character::calculateSpeed(float deltaTime) {
 	}
 
 	checkForReachedEnd();
-	Update(deltaTime);
+	update(deltaTime);
+}
+
+/// <summary>
+/// Resets the character after a death
+/// </summary>
+void Character::reset() {
+	MovingObject::reset();
+	_rechedPitBottom = false;
+	_currentHealth = MaxHealth;
 }
 
 /// <summary>

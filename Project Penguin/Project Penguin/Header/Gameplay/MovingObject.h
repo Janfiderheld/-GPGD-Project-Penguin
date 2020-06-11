@@ -3,13 +3,13 @@
 
 #include <GLM/glm.hpp>
 #include <IMoveable.h>
+#include <IResetable.h>
 #include <MovingObjectStatus.h>
 #include <Technicals/AABB.h>
 #include <Technicals/Texture.h>
 #include <Managers/GridFacade.h>
 
-
-class MovingObject : public IMovable {
+class MovingObject : public IMovable, public IResetable {
 private:
 	AABB _hitbox;
 	Texture _texture;	
@@ -33,9 +33,10 @@ public:
 
 	MovingObject(glm::vec3 pos, Texture texture, AABB boundBox);
 
-	virtual void calculateSpeed(float deltaTime) = 0;
-	void Update(float deltaTime);
-
+	void calculateSpeed(float deltaTime) override = 0;
+	void reset() override;
+	void update(float deltaTime);	
+	
 	AABB getHitbox();
 	Texture getTexture();
 	glm::vec3 getPosition();

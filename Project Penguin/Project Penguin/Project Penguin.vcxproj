@@ -211,6 +211,7 @@
     <ClInclude Include="Header\Technicals\Shader.h" />
     <ClInclude Include="Header\Technicals\stb_image.h" />
     <ClInclude Include="Header\Technicals\Texture.h" />
+    <ClInclude Include="Interfaces\IResetable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicFragmentShader.frag" />

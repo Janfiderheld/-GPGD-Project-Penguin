@@ -6,17 +6,16 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include <Managers/InputManager.h>
-#include <Gameplay/Character.h>
 #include <MenuType.h>
-#include <Technicals/UserInterfaceParameters.h>
+#include <Managers/InputManager.h>
 #include <Managers/HighscoreManager.h>
+#include <Gameplay/Character.h>
+#include <Gameplay/Camera.h>
+#include <Technicals/UserInterfaceParameters.h>
 
 class UserInterface {
 private:
     const char TITLE[16] = "Project Penguin";
-    const int _width = 1024;
-    const int _height = 900;
     const char* glsl_version = "#version 330";
 
     GLFWwindow* _window;
@@ -32,25 +31,29 @@ private:
     void drawMainMenu();
     void drawHighscoreMenu();
     void drawSettingsMenu();
-    void drawIngameUI(Character* character);
-
+    void drawIngameUI();
+    void drawGameOverScreen();
+	
+    void closeWindow();	
     std::string formatHighscore(Highscore toFormat);
 
 public:
+    static int Width;
+    static int Height;
+	
     static InputManager* InputManager;
     static HighscoreManager* HighscoreManager;
+    static Character* PlayerCharacter;
 
     UserInterface();
 
     bool getInitStatus();
-    int getHeight();
-    int getWidth();
     GLFWwindow* getWindowPointer();
 
-    void drawUI(Character* character);
+    void drawUI();
     void cleanUp();
 
-    void processInput(Character* character);
+    void processInput(Camera* cam);
     float calculateDeltaTime();
     bool hasGameStarted();
 };
