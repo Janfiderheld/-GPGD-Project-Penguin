@@ -118,3 +118,17 @@ void HighscoreManager::addNewHighscore(std::string name) {
 	sortAndChangeRanks(true);
 	resetCurrentScore();
 }
+
+/// <summary>
+/// Returns the current score as a string
+/// </summary>
+std::string HighscoreManager::getScoreAsString() {
+	return std::to_string(_currentScore);
+}
+
+/// <summary>
+/// Returns the highscores as a vector
+/// </summary>
+std::vector<Highscore> HighscoreManager::getHighscores() {
+	return _highscores;
+}

@@ -54,6 +54,9 @@ public:
 	
 	void addToCurrentScore(int val);
 	void addNewHighscore(std::string name);
+
+	std::string getScoreAsString();
+	std::vector<Highscore> getHighscores();
 };
 
 #endif // HIGHMAN_HEADER
