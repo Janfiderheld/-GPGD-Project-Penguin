@@ -72,12 +72,11 @@ void HighscoreManager::resetCurrentScore() {
 }
 
 /// <summary>
-/// Sorts the Highscores based on their scores and changes the ranks accordingly.
-/// If the parameter is set to true, the last highscore after the sorting is deleted
+/// Sorts the Highscores based on their scores and changes the ranks accordingly
 /// </summary>
-void HighscoreManager::sortAndChangeRanks(bool deleteLast) {
+void HighscoreManager::sortAndChangeRanks() {
 	std::sort(_highscores.begin(), _highscores.end());
-	if (deleteLast && _highscores.size() > MaxHighscores) {
+	if (_highscores.size() > MaxHighscores) {
 		_highscores.pop_back();
 	}
 
@@ -111,7 +110,7 @@ void HighscoreManager::addToCurrentScore(int val) {
 void HighscoreManager::addNewHighscore(std::string name) {	
 	Highscore newHigh(0, name, _currentScore);
 	_highscores.push_back(newHigh);
-	sortAndChangeRanks(true);
+	sortAndChangeRanks();	
 	resetCurrentScore();
 }
 
