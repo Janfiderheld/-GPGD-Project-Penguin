@@ -9,6 +9,7 @@
 #include <MenuType.h>
 #include <Managers/InputManager.h>
 #include <Managers/HighscoreManager.h>
+#include <Managers/CollectableManager.h>
 #include <Gameplay/Character.h>
 #include <Gameplay/Camera.h>
 #include <Technicals/UserInterfaceParameters.h>
@@ -40,9 +41,11 @@ private:
 public:
     static int Width;
     static int Height;
-	
+
+    static GridFacade* LevelGrid;
     static InputManager* InputManager;
     static HighscoreManager* HighscoreManager;
+    static CollectableManager* CollectableManager;
     static Character* PlayerCharacter;
 
     UserInterface();

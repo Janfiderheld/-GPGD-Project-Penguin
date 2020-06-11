@@ -11,6 +11,11 @@ int UserInterface::Width = 1024;
 int UserInterface::Height = 900;
 
 /// <summary>
+/// Facade of the level which is used to reset the level between games
+/// </summary>
+GridFacade* UserInterface::LevelGrid = nullptr;
+
+/// <summary>
 /// Reference to the InputManager, which saves which key is pressed.
 /// </summary>
 InputManager* UserInterface::InputManager = nullptr;
@@ -19,6 +24,11 @@ InputManager* UserInterface::InputManager = nullptr;
 /// Reference to the HighscoreManager, which is for everything related to highscores
 /// </summary>
 HighscoreManager* UserInterface::HighscoreManager = nullptr;
+
+/// <summary>
+/// Reference to the CollectableManager, to regenerate the collectables after a level end
+/// </summary>
+CollectableManager* UserInterface::CollectableManager = nullptr;
 
 /// <summary>
 /// Reference to the main character, which is controlled by the player
@@ -290,6 +300,8 @@ void UserInterface::processInput(Camera* cam) {
         _currentMenu = GAME_OVER;
         PlayerCharacter->reset();
         cam->reset();
+        LevelGrid->generateLevel();
+        CollectableManager->generateCollectables();
     }
 	
     if (!PlayerCharacter->hasReachedEnd() && !PlayerCharacter->hasDied() && hasGameStarted()) {

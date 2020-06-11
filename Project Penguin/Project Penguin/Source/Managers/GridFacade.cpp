@@ -86,3 +86,10 @@ int GridFacade::getHeightForXPos(int x) {
 	}
 	return y;
 }
+
+/// <summary>
+/// Generates a new level for every game
+/// </summary>
+void GridFacade::generateLevel() {
+	_grid->generateWholeLevel();
+}

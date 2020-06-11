@@ -45,13 +45,14 @@ private:
 
 public:
 	LevelGrid();
-
+	
 	int getWidth();
 	int getHeight();
-	int generateRandomForPlacement();
-
 	LevelGridTile& getTileFromGrid(int x, int y);
 	std::vector<glm::vec2>* getCollectablePositions();
+	
+	void generateWholeLevel();
+	int generateRandomForPlacement();
 };
 
 #endif // GRID_HEADER

@@ -1,25 +1,11 @@
 #include <Level/LevelGrid.h>
 
 /// <summary>
-/// Generates the level grid.
-/// The level has the dimension defined in its header.
-/// First the Initialization is done the same way every time.
-/// After that the procedural generation is based on a finite state machine.
-/// Then platforms and pits are added.
-/// After the level is finished, all tiles are checked if they are border tiles.
+/// Creates a level by setting the seed for random numbers and generating the level
 /// </summary>
 LevelGrid::LevelGrid() {
 	srand(time(NULL));
-	_level.resize(LevelHeight * LevelWidth);
-
-	initializeStartingArea();
-	generateBottom();
-	addPlattforms();
-	addPits();
-
-	generateRemainingTiles();
-	_generationFinished = true;
-	setTileBorders();
+	generateWholeLevel();
 }
 
 /// <summary>
@@ -423,6 +409,31 @@ int LevelGrid::getWidth() {
 /// </summary>
 int LevelGrid::getHeight() {
 	return LevelHeight;
+}
+
+/// <summary>
+/// Generates the level grid.
+/// The level has the dimension defined in its header.
+/// First the Initialization is done the same way every time.
+/// After that the procedural generation is based on a finite state machine.
+/// Then platforms and pits are added.
+/// After the level is finished, all tiles are checked if they are border tiles.
+/// </summary>
+void LevelGrid::generateWholeLevel() {
+	_collectPos.clear();
+	_level.clear();
+	_level.resize(LevelHeight * LevelWidth);
+	_generationFinished = false;
+	state = LVL_START;
+
+	initializeStartingArea();
+	generateBottom();
+	addPlattforms();
+	addPits();
+
+	generateRemainingTiles();
+	setTileBorders();
+	_generationFinished = true;
 }
 
 /// <summary>

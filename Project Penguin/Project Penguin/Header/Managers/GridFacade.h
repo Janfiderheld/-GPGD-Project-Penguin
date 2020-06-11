@@ -23,6 +23,7 @@ public:
 	std::vector<glm::vec2>* getCollectablePositions();
 	int generateRandomForPlacement();
 	int getHeightForXPos(int x);
+	void generateLevel();
 };
 
 #endif // GRID_FACADE

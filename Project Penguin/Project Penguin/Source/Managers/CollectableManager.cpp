@@ -1,6 +1,16 @@
 #include <Managers/CollectableManager.h>
 
 /// <summary>
+/// Maximum amount of spawned collectables
+/// </summary>
+int CollectableManager::MaxCollectAmount = 12;
+
+/// <summary>
+/// Minimum amount of spawned collectables
+/// </summary>
+int CollectableManager::MinCollectAmount = 6;
+
+/// <summary>
 /// Facade to manage the access to the level for all placing the collectables
 /// </summary>
 GridFacade* CollectableManager::LevelFacade = nullptr;
@@ -17,6 +27,9 @@ HighscoreManager* CollectableManager::HighscoreMan = nullptr;
 /// This position is then used for a collectable, if it is not inside of a platform tile.
 /// </summary>
 void CollectableManager::generateCollectables() {
+	_collectables.clear();
+	int size = rand() % (MaxCollectAmount - MinCollectAmount) + MinCollectAmount;
+	_collectables.resize(size);	
 	std::vector<glm::vec2>* positions = LevelFacade->getCollectablePositions();
 	int noOfPlatformCollectables = positions->size();
 	for (int i = 0; i < noOfPlatformCollectables; i++) {
@@ -54,16 +67,7 @@ void CollectableManager::generateCollectables() {
 /// </summary>
 CollectableManager::CollectableManager() {
 	srand(time(NULL));
-	int size = rand() % (MaxCollectAmount - MinCollectAmount) + MinCollectAmount;
-	_collectables.resize(size);
 	generateCollectables();
-}
-
-/// <summary>
-/// Returns a reference to the vector containing all collectables
-/// </summary>
-std::vector<Collectable>* CollectableManager::getCollectables() {
-	return &_collectables;
 }
 
 /// <summary>
@@ -80,4 +84,18 @@ void CollectableManager::checkForCollection(AABB playerHitbox) {
 			HighscoreMan->addToCurrentScore(temp->getScore());
 		}
 	}
+}
+
+/// <summary>
+/// Number of collectables currently managed
+/// </summary>
+int CollectableManager::getAmountOfCollectables() {
+	return _collectables.size();
+}
+
+/// <summary>
+/// Returns the collectable at the given position
+/// </summary>
+Collectable* CollectableManager::getCollectableAtPosition(int pos) {
+	return &_collectables.at(pos);
 }

@@ -8,7 +8,6 @@
 #include <Managers/GridFacade.h>
 #include <Managers/CollectableManager.h>
 #include <Gameplay/Collectable.h>
-#include <vector>
 
 int main(void) {
     UserInterface ui;
@@ -49,6 +48,7 @@ int main(void) {
     GridFacade levelFacade(&level); 
     InputManager inpMan;
     UserInterface::InputManager = &inpMan;
+    UserInterface::LevelGrid = &levelFacade;
 
     // Character
     glm::vec3 charPos(1.0f, 3.0f, -10.0f);
@@ -66,8 +66,8 @@ int main(void) {
     CollectableManager::LevelFacade = &levelFacade;
     CollectableManager::HighscoreMan = &highMan;
     CollectableManager collectMan;
-    std::vector<Collectable>* collectables = collectMan.getCollectables();
     UserInterface::HighscoreManager = &highMan;
+    UserInterface::CollectableManager = &collectMan;
 
     // Camera
     // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
@@ -242,16 +242,16 @@ int main(void) {
 
             // draw Collectables
             collectMan.checkForCollection(character.getHitbox());
-            for (int i = 0; i < collectables->size(); i++) {
+            for (int i = 0; i < collectMan.getAmountOfCollectables(); i++) {
                 glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, collectables->at(i).getPosition());
-                model = glm::scale(model, glm::vec3(collectables->at(i).getScale(), 1.0f));
+                model = glm::translate(model, collectMan.getCollectableAtPosition(i)->getPosition());
+                model = glm::scale(model, glm::vec3(collectMan.getCollectableAtPosition(i)->getScale(), 1.0f));
                 shader.setMat4Uniform("model", model);
 
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 glBindTexture(GL_TEXTURE_2D, Collectable::CollectTex->TextureId);
-                glBufferSubData(VBO, 0, sizeof(collectables->at(i).getVertices()), collectables->at(i).getVertices());
+                glBufferSubData(VBO, 0, sizeof(collectMan.getCollectableAtPosition(i)->getVertices()), collectMan.getCollectableAtPosition(i)->getVertices());
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 glDisable(GL_BLEND);
             }

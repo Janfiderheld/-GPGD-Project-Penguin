@@ -9,20 +9,21 @@
 
 class CollectableManager {
 private:
-	const int MaxCollectAmount = 12;
-	const int MinCollectAmount = 6;
+	static int MaxCollectAmount;
+	static int MinCollectAmount;
 	
 	std::vector<Collectable> _collectables;
 
-	void generateCollectables();
 public:
 	static GridFacade* LevelFacade;
 	static HighscoreManager* HighscoreMan;
 	
 	CollectableManager();
 
-	std::vector<Collectable>* getCollectables();
+	void generateCollectables();
 	void checkForCollection(AABB playerHitbox);
+	int getAmountOfCollectables();
+	Collectable* getCollectableAtPosition(int pos);
 };
 
 #endif // COLLMAN_HEADER
