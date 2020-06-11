@@ -14,6 +14,7 @@ InputManager* Character::InputManager = nullptr;
 Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) :
 	MovingObject(pos, texture, boundBox),
 	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()) {
+	_currentHealth = MaxHealth;
 }
 
 /// <summary>
@@ -54,7 +55,7 @@ void Character::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(0.0f);
 
 		if (!hasTileLeft) {
-			setHorizontalSpeed(-_walkSpeed);
+			setHorizontalSpeed(-WalkSpeed);
 		}
 		if (InputManager->getInputStatus(LEFT) && InputManager->getInputStatus(RIGHT) ||
 			!InputManager->getInputStatus(LEFT) || hasTileLeft) {
@@ -80,7 +81,7 @@ void Character::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(0.0f);
 
 		if (!hasTileRight) {
-			setHorizontalSpeed(_walkSpeed);
+			setHorizontalSpeed(WalkSpeed);
 		}
 		if (InputManager->getInputStatus(LEFT) && InputManager->getInputStatus(RIGHT) ||
 			!InputManager->getInputStatus(RIGHT) || hasTileRight) {
@@ -103,7 +104,7 @@ void Character::calculateSpeed(float deltaTime) {
 		break;
 
 	case JUMP:
-		setVerticalSpeed(_jumpSpeed);
+		setVerticalSpeed(JumpSpeed);
 		status = FALL;
 			
 		break;	
@@ -113,9 +114,9 @@ void Character::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
 
 		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) && !hasTileLeft) {
-			setHorizontalSpeed(-_sideSpeedAir);
+			setHorizontalSpeed(-SideSpeedAir);
 		} else if(InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT) && !hasTileRight) {
-			setHorizontalSpeed(_sideSpeedAir);
+			setHorizontalSpeed(SideSpeedAir);
 		} else {
 			setHorizontalSpeed(0.0f);
 		}
@@ -177,8 +178,31 @@ bool Character::hasReachedEnd() {
 }
 
 /// <summary>
-/// Returns true if the character has reached the bottom of a pit
+/// Returns true if the character has died either by loosing all its health or by reaching the bottom of a pit
 /// </summary>
-bool Character::diedInPit() {
-	return _rechedPitBottom;
+bool Character::hasDied() {
+	return _rechedPitBottom || _currentHealth <= 0;
+}
+
+/// <summary>
+/// Makes the player loose a live, if possible
+/// </summary>
+void Character::looseHealth() {
+	if(_currentHealth > 0) {
+		_currentHealth--;
+	}
+}
+
+/// <summary>
+/// Returns the current health of the player
+/// </summary>
+int Character::getCurrentHealth() {
+	return _currentHealth;
+}
+
+/// <summary>
+/// Returns the maximal health of the player
+/// </summary>
+int Character::getMaxHealth() {
+	return MaxHealth;
 }

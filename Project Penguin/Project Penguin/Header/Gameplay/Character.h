@@ -9,10 +9,13 @@
 
 class Character : public MovingObject, public DrawableVertices {
 private:
-	const float _jumpSpeed = 2.0f;
-	const float _walkSpeed = 2.0f;
-	const float _sideSpeedAir = 1.25f;
-
+	const float JumpSpeed = 2.0f;
+	const float WalkSpeed = 2.0f;
+	const float SideSpeedAir = 1.25f;
+	
+	const int MaxHealth = 3;	
+	int _currentHealth = MaxHealth;
+	
 	bool _reachedEnd = false;
 	bool _rechedPitBottom = false;
 	
@@ -27,7 +30,10 @@ public:
 	virtual void calculateSpeed(float deltaTime);
 	
 	bool hasReachedEnd();
-	bool diedInPit();
+	bool hasDied();
+	void looseHealth();
+	int getCurrentHealth();
+	int getMaxHealth();
 };
 
 #endif // CHAR_HEADER

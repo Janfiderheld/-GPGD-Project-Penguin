@@ -69,13 +69,23 @@ void UserInterface::drawSettingsMenu() {
 /// <summary>
 /// Draws the UI during the Game
 /// </summary>
-void UserInterface::drawIngameUI() {
+void UserInterface::drawIngameUI(Character* character) {
     ImGui::Begin("Project Penguin - Game", nullptr, _windowFlags);
     std::string curr = "Current Score: ";
 	curr.append(HighscoreManager->getScoreAsString());
     ImGui::Text(curr.c_str());
     ImGui::SameLine();
-    ImGui::Text("Health: 3");
+    ImGui::Text("Health:");
+    for(int i = 0; i < character->getCurrentHealth(); i++) {
+        ImGui::SameLine();
+        ImGui::Image((ImTextureID)(intptr_t)_heartFill.TextureId, UserInterfaceParameters::HeartTextureSize,
+            UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax);
+    }
+	for(int i = 0; i < character->getMaxHealth() - character->getCurrentHealth(); i++) {
+        ImGui::SameLine();
+        ImGui::Image((ImTextureID)(intptr_t)_heartUnfill.TextureId, UserInterfaceParameters::HeartTextureSize,
+            UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax);
+	}	
     ImGui::End();
 }
 
@@ -125,6 +135,8 @@ UserInterface::UserInterface() {
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     _windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+    _heartFill = Texture("HeartFilled.png", GL_RGBA);
+    _heartUnfill = Texture("HeartUnfilled.png", GL_RGBA);
 	
     _initStatus = true;
 }
@@ -177,14 +189,14 @@ GLFWwindow* UserInterface::getWindowPointer() {
 /// <summary>
 /// Draws the UI with ImGUI every frame
 /// </summary>
-void UserInterface::drawUI() {
+void UserInterface::drawUI(Character* character) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     if (hasGameStarted()) {
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(_width, _height / 25), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(_width, _height / 20), ImGuiCond_Always);
     } else {
         ImGui::SetNextWindowPos(ImVec2(_width / 4, _height / 4), ImGuiCond_Always);
         ImGui::SetNextWindowSize(ImVec2(_width / 2, _height / 2), ImGuiCond_Always);
@@ -201,7 +213,7 @@ void UserInterface::drawUI() {
         drawSettingsMenu();
         break;
     case GAME:
-        drawIngameUI();
+        drawIngameUI(character);
         break;
     }
 	
@@ -234,7 +246,7 @@ void UserInterface::processInput(Character* character) {
         glfwSetWindowShouldClose(_window, true);
     }
 
-    if (!character->hasReachedEnd() && !character->diedInPit() && hasGameStarted()) {
+    if (!character->hasReachedEnd() && !character->hasDied() && hasGameStarted()) {
         InputManager->setInputStatus(LEFT, glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS);
         InputManager->setInputStatus(RIGHT, glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS);
         InputManager->setInputStatus(UP, glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS);

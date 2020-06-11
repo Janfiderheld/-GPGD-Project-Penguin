@@ -22,6 +22,8 @@ private:
     GLFWwindow* _window;
     MenuType _currentMenu = MAIN;
     ImGuiWindowFlags _windowFlags = 0;
+    Texture _heartFill;
+    Texture _heartUnfill;
 	
     float _lastFrame = 0.0f;
     float _deltaTime = 0.0f;
@@ -30,7 +32,7 @@ private:
     void drawMainMenu();
     void drawHighscoreMenu();
     void drawSettingsMenu();
-    void drawIngameUI();
+    void drawIngameUI(Character* character);
 
     std::string formatHighscore(Highscore toFormat);
 
@@ -45,7 +47,7 @@ public:
     int getWidth();
     GLFWwindow* getWindowPointer();
 
-    void drawUI();
+    void drawUI(Character* character);
     void cleanUp();
 
     void processInput(Character* character);
