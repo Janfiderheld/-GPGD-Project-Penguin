@@ -22,8 +22,11 @@ private:
     GLFWwindow* _window;
     MenuType _currentMenu = MAIN;
     ImGuiWindowFlags _windowFlags = 0;
+	
     Texture _heartFill;
     Texture _heartUnfill;
+    Texture _ukFlag;
+    Texture _germanFlag;
 	
     float _lastFrame = 0.0f;
     float _deltaTime = 0.0f;

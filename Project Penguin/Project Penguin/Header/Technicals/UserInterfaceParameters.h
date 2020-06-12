@@ -6,10 +6,14 @@
 
 class UserInterfaceParameters {
 public:
+	static ImVec2 UiSize;
+	
 	static ImVec2 MainMenuButtonSize;
-	static float ScreenMiddleInX;
+	static float ScreenMiddleButtons;
+	static float ScreenMiddleFlags;
 	
 	static ImVec2 HeartTextureSize;
+	static ImVec2 LangFlagTextureSize;
 	static ImVec2 TextureCoordMin;
 	static ImVec2 TextureCoordMax;
 };

@@ -42,22 +42,22 @@ void UserInterface::drawMainMenu() {
     float differenceInY = Height / 20.0;
 	
     ImGui::Begin("Project Penguin - Main Menu", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
     if (ImGui::Button("New Game", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = GAME;
     }
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
 	if(ImGui::Button("Highscores", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = HIGHSCORE;
 	}
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
 	if(ImGui::Button("Settings", UserInterfaceParameters::MainMenuButtonSize))	{
         _currentMenu = SETTINGS;
 	}
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
 	if(ImGui::Button("Quit", UserInterfaceParameters::MainMenuButtonSize)) {
         closeWindow();
 	}
@@ -83,7 +83,59 @@ void UserInterface::drawHighscoreMenu() {
 /// Draws the Settings-Menu
 /// </summary>
 void UserInterface::drawSettingsMenu() {
-    ImGui::Begin("Project Penguin - Settings", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
+    float differenceInY = Height / 20.0;
+	
+	ImGui::Begin("Project Penguin - Settings", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);	
+    ImGui::Text("NOTE: The functionalities for these options will be \n added in the next milestone");
+	
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::Text("Choose a language:");
+	
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleFlags, ImGui::GetCursorPosY()));
+	if(ImGui::ImageButton((ImTextureID)(intptr_t)_ukFlag.TextureId, UserInterfaceParameters::LangFlagTextureSize,
+        UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax))	{
+		// TODO: Change language
+	}
+    
+    ImGui::SameLine();
+	if(ImGui::ImageButton((ImTextureID)(intptr_t)_germanFlag.TextureId, UserInterfaceParameters::LangFlagTextureSize,
+        UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax)) {
+        // TODO: Change language
+    }
+
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::Text("Choose your resolution");
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY()));
+    const char* items[] = { "800x400", "1024x900", "1920x1080" };
+    static int item_current = 0;
+    if (ImGui::BeginCombo("", items[item_current], 0)) {
+        for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
+            const bool is_selected = (item_current == n);
+            if (ImGui::Selectable(items[n], is_selected)) {
+                item_current = n;
+            }
+            if (is_selected) {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::Text("Change the Controls");
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY()));
+    static char jump[2];
+    ImGui::InputText("Jump", jump, IM_ARRAYSIZE(jump));
+	
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY()));
+    static char left[2];
+    ImGui::InputText("Walk left", left, IM_ARRAYSIZE(left));
+	
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY()));
+    static char right[2];
+    ImGui::InputText("Walk right", right, IM_ARRAYSIZE(right));
+	
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = MAIN;
     }
@@ -120,23 +172,23 @@ void UserInterface::drawGameOverScreen() {
     ImGui::Begin("Project Penguin - Game Over", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
     std::string curr = "Your Score: ";
     curr.append(HighscoreManager->getScoreAsString());
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY()));
     ImGui::Text(curr.c_str());
     if(HighscoreManager->isNewHighscore())  {
         static char buf[HIGHSCORE_MAX_LENGTH] = "";
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + 10));
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 10));
         ImGui::Text("Enter Your Name");
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX - 120, ImGui::GetCursorPosY() + 10));
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 120, ImGui::GetCursorPosY() + 10));
     	ImGui::InputText("", buf, HIGHSCORE_MAX_LENGTH);
         ImGui::SameLine();
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX + 200, ImGui::GetCursorPosY()));
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons + 200, ImGui::GetCursorPosY()));
     	if(ImGui::Button("Confirm")){
             HighscoreManager->addNewHighscore(buf);
             buf[0] = '\0';
             _currentMenu = HIGHSCORE;
     	}        
     }
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + 10));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 10));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = MAIN;
     }
@@ -205,6 +257,8 @@ UserInterface::UserInterface() {
     _windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
     _heartFill = Texture("HeartFilled.png", GL_RGBA);
     _heartUnfill = Texture("HeartUnfilled.png", GL_RGBA);
+    _ukFlag = Texture("uk_flag.png", GL_RGB);
+    _germanFlag = Texture("germany_flag.png", GL_RGB);
 	
     _initStatus = true;
 }
@@ -253,7 +307,7 @@ void UserInterface::drawUI() {
         ImGui::SetNextWindowSize(ImVec2(Width, Height / 20), ImGuiCond_Always);
     } else {
         ImGui::SetNextWindowPos(ImVec2(Width / 4, Height / 4), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(Width / 2, Height / 2), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::UiSize, ImGuiCond_Always);
     }
 	
     switch(_currentMenu) {
