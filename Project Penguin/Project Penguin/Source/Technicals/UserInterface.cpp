@@ -123,15 +123,16 @@ void UserInterface::drawGameOverScreen() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY()));
     ImGui::Text(curr.c_str());
     if(HighscoreManager->isNewHighscore())  {
-        static char buf[64] = "";
+        static char buf[HIGHSCORE_MAX_LENGTH] = "";
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX, ImGui::GetCursorPosY() + 10));
         ImGui::Text("Enter Your Name");
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX - 120, ImGui::GetCursorPosY() + 10));
-    	ImGui::InputText("", buf, 64);
+    	ImGui::InputText("", buf, HIGHSCORE_MAX_LENGTH);
         ImGui::SameLine();
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInX + 200, ImGui::GetCursorPosY()));
     	if(ImGui::Button("Confirm")){
-            HighscoreManager->addNewHighscore(std::string(buf));
+            HighscoreManager->addNewHighscore(buf);
+            buf[0] = '\0';
             _currentMenu = HIGHSCORE;
     	}        
     }
@@ -157,9 +158,15 @@ void UserInterface::closeWindow() {
 /// <returns>string of format "rank. name - points"</returns>
 std::string UserInterface::formatHighscore(Highscore toFormat) {
     std::string temp;
-    temp.append(std::to_string(toFormat.rank) + ".");
-    temp.append(" " + toFormat.name);
-    temp.append(" - " + std::to_string(toFormat.points));
+	if(toFormat.rank < 10) {
+        temp.append("0");
+	}
+    temp.append(std::to_string(toFormat.rank) + ". ");
+	temp += toFormat.name;
+	for(int i = temp.length(); i < HIGHSCORE_MAX_LENGTH + 4; i++) {
+        temp.append(" ");
+	}
+    temp.append("- " + std::to_string(toFormat.points));
     return temp;
 }
 

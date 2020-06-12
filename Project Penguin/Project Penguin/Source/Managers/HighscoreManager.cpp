@@ -16,9 +16,7 @@ bool HighscoreManager::saveToFile() {
 		for(int i = 0; i < size; i++) {
 			out.write((char*)&_highscores.at(i).rank, sizeof(int));
 			out.write((char*)&_highscores.at(i).points, sizeof(int));
-			size_t nameLen = _highscores.at(i).name.size();
-			out.write((char*)&nameLen, sizeof(size_t));
-			out.write((char*)_highscores.at(i).name.c_str(), nameLen);
+			out.write((char*)&_highscores.at(i).name, HIGHSCORE_MAX_LENGTH);
 		}
 	} catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
@@ -43,18 +41,11 @@ bool HighscoreManager::loadFromFile() {
 		in.read((char*)&size, sizeof(size));
 		for(int i = 0; i < size; i++) {
 			int r, p;
-			size_t nLen;
+			char n[HIGHSCORE_MAX_LENGTH];
 			in.read((char*)&r, sizeof(int));
 			in.read((char*)&p, sizeof(int));
-			in.read((char*)&nLen, sizeof(size_t));
-
-			char* temp = new char[nLen + 1];
-			in.read(temp, nLen);
-			temp[nLen] = '\0';
-			std::string name = temp;
-			delete[] temp;
-
-			_highscores.emplace_back(r, name, p);
+			in.read((char*)&n, HIGHSCORE_MAX_LENGTH);
+			_highscores.emplace_back(r, n, p);
 		}
 	} catch(const std::exception& e) {
 		std::cout << e.what() << std::endl;
@@ -107,7 +98,7 @@ void HighscoreManager::addToCurrentScore(int val) {
 /// Afterwards the highscores are sorted and the smallest score is deleted.
 /// </summary>
 /// <param name="name">name of the player which belongs to the highscore</param>
-void HighscoreManager::addNewHighscore(std::string name) {	
+void HighscoreManager::addNewHighscore(char* name) {	
 	Highscore newHigh(0, name, _currentScore);
 	_highscores.push_back(newHigh);
 	sortAndChangeRanks();	

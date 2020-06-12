@@ -1,5 +1,6 @@
 #ifndef HIGHMAN_HEADER
 #define HIGHMAN_HEADER
+#define HIGHSCORE_MAX_LENGTH 17
 
 #include <vector>
 #include <string>
@@ -9,21 +10,23 @@
 
 struct Highscore {
 	int rank;
-	std::string name;
+	char name[HIGHSCORE_MAX_LENGTH];
 	int points;
 
 	/// <summary>
 	/// Empty constructor, which does nothing
 	/// </summary>
 	Highscore() {}
-	
+
 	/// <summary>
 	/// Constructs a highscore by setting the values by the given parameters
 	/// </summary>
 	/// <param name="r">rank of this highscore</param>
 	/// <param name="n">name of the person holding this highscore</param>
 	/// <param name="p">points of this highscore</param>
-	Highscore(int r, std::string n, int p) : rank(r), name(std::move(n)), points(p) {}
+	Highscore(int r, char n[HIGHSCORE_MAX_LENGTH], int p) : rank(r), points(p) {
+		strcpy_s(name, n);
+	}
 	
 	/// <summary>
 	/// Compares this highscore to the given one based on the points they have
@@ -51,7 +54,7 @@ public:
 	HighscoreManager();
 
 	void addToCurrentScore(int val);
-	void addNewHighscore(std::string name);
+	void addNewHighscore(char* name);
 	bool isNewHighscore();
 	bool saveToFile();
 	
