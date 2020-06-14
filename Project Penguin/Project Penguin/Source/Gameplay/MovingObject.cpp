@@ -83,7 +83,7 @@ void MovingObject::update(float deltaTime) {
 /// <summary>
 /// Returns true if the object would be falling inside a pit, if it would follow in this direction
 /// </summary>
-bool MovingObject::standsBeforePit(MovingObjectStatus dir) {
+bool MovingObject::checkForPit(MovingObjectStatus dir) {
 	if (dir != WALK_RIGHT && dir != WALK_LEFT) {
 		return false;
 	}
@@ -94,6 +94,45 @@ bool MovingObject::standsBeforePit(MovingObjectStatus dir) {
 	}
 
 	return false;
+}
+
+/// <summary>
+/// Returns true if the object faces a two tile high wall
+/// </summary>
+/// <param name="dir">Direction the player currently faces</param>
+bool MovingObject::checkForDoubleWall(MovingObjectStatus dir) {
+	if (dir != WALK_LEFT && dir != WALK_RIGHT) {
+		return false;
+	}
+
+	int nextY = LevelFacade->getHeightForXPos(round(dir == WALK_LEFT ? position.x - 1 : position.x + 1));
+	int thisY =	LevelFacade->getHeightForXPos(round(position.x));
+
+	if (abs(nextY - thisY) >= 2.0f) {
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// Checks if the object has reached either starting or end area
+/// </summary>
+/// <param name="dir">direction the object currently faces</param>
+/// <param name="start">true if it should be checked for the starting area</param>
+/// <returns>true if the object has reached the questioned area</returns>
+bool MovingObject::checkForReachedArea(MovingObjectStatus dir, bool start) {
+	if (dir != WALK_LEFT && dir != WALK_RIGHT) {
+		return false;
+	}
+
+	int posX = dir == WALK_RIGHT ? ceil(position.x) : floor(position.x);
+	int currY = ceil(position.y) - 1;
+	int nextY = ceil(position.y) - 2;
+	TileLocation loc = start ? START_AREA : END_AREA;
+
+	return LevelFacade->checkForSpecificArea(posX, currY, loc) ||
+		LevelFacade->checkForSpecificArea(posX, nextY, loc);
 }
 
 /// <summary>

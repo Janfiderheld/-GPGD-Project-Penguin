@@ -18,7 +18,7 @@ public:
 
 	bool checkForTwoTiles(float minVal, float size);
 	bool checkForWall(int x, int y);
-	bool checkForEndArea(int x, int y);
+	bool checkForSpecificArea(int x, int y, TileLocation area);
 
 	std::vector<glm::vec2>* getCollectablePositions();
 	int generateRandomForPlacement();

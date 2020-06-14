@@ -22,7 +22,8 @@ ShootingEnemy::ShootingEnemy(glm::vec3 pos, Texture texture, AABB boundBox) :
 /// </summary>
 /// <param name="deltaTime">time since the last frame</param>
 void ShootingEnemy::calculateSpeed(float deltaTime) {
-	_beforePit = standsBeforePit(status);
+	_beforePit = checkForPit(status);
+	_reachedSpecialArea = checkForReachedArea(status, true) || checkForReachedArea(status, false);
 
 	switch (status) {
 	case STAND:
@@ -45,9 +46,10 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 	case WALK_LEFT:
 		setVerticalSpeed(0.0f);
 
-		if (!hasTileLeft && !_beforePit && (startPos.x - position.x) <= MovementRadius) {
+		if (!hasTileLeft && !_beforePit && (startPos.x - position.x) <= MovementRadius 
+			&& !_reachedSpecialArea && !checkForDoubleWall(WALK_LEFT)) {
 			setHorizontalSpeed(-WalkSpeed);
-		} else if(hasTileLeft) {
+		} else if(hasTileLeft && !checkForDoubleWall(WALK_LEFT)) {
 			_lastDir = WALK_LEFT;
 			status = JUMP;
 			break;
@@ -67,9 +69,10 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 	case WALK_RIGHT:
 		setVerticalSpeed(0.0f);
 
-		if (!hasTileRight && !_beforePit && (position.x - startPos.x) <= MovementRadius) {
+		if (!hasTileRight && !_beforePit && (position.x - startPos.x) <= MovementRadius 
+			&& !_reachedSpecialArea && !checkForDoubleWall(WALK_RIGHT)) {
 			setHorizontalSpeed(WalkSpeed);
-		} else if (hasTileRight) {
+		} else if (hasTileRight && !checkForDoubleWall(WALK_RIGHT)) {
 			_lastDir = WALK_RIGHT;
 			status = JUMP;
 			break;
@@ -94,9 +97,13 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(speed.y + gravity * deltaTime);
 		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
 
-		if (_lastDir == WALK_LEFT && !hasTileLeft && !_beforePit && (startPos.x - position.x) <= MovementRadius) {
+		if (_lastDir == WALK_LEFT && !hasTileLeft &&
+			!checkForPit(WALK_LEFT) && (startPos.x - position.x) <= MovementRadius &&
+			!_reachedSpecialArea) {
 			setHorizontalSpeed(-SideSpeedAir);
-		} else if (_lastDir == WALK_RIGHT && !hasTileRight && !_beforePit && (position.x - startPos.x) <= MovementRadius) {
+		} else if (_lastDir == WALK_RIGHT && !hasTileRight &&
+			!checkForPit(WALK_RIGHT) && (position.x - startPos.x) <= MovementRadius &&
+			!_reachedSpecialArea) {
 			setHorizontalSpeed(SideSpeedAir);
 		} else {
 			setHorizontalSpeed(0.0f);
@@ -111,8 +118,12 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 				status = WALK_RIGHT;
 				break;
 			}
-			if (standsBeforePit(_lastDir)) {
+			if (checkForPit(_lastDir)) {
 				status = STAND;
+				break;
+			}
+			if (hasTileLeft || hasTileRight) {
+				status = JUMP;
 				break;
 			}
 		}		

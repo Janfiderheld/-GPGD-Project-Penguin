@@ -19,7 +19,6 @@ private:
 	bool _reachedEnd = false;
 	bool _rechedPitBottom = false;
 	
-	void checkForReachedEnd();
 	void checkForPitBottom();
 	
 public:

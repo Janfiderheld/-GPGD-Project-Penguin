@@ -144,7 +144,7 @@ void Character::calculateSpeed(float deltaTime) {
 		break;
 	}
 
-	checkForReachedEnd();
+	_reachedEnd = checkForReachedArea(WALK_RIGHT, false);
 	update(deltaTime);
 }
 
@@ -155,18 +155,6 @@ void Character::reset() {
 	MovingObject::reset();
 	_rechedPitBottom = false;
 	_currentHealth = MaxHealth;
-}
-
-/// <summary>
-/// Checks if the player has reached a tile belonging to the ending area
-/// </summary>
-void Character::checkForReachedEnd() {
-	int posX = floor(position.x);
-	int posY = ceil(position.y) - 1;
-
-	if (LevelFacade->checkForEndArea(posX, posY)) {
-		_reachedEnd = true;
-	}
 }
 
 /// <summary>

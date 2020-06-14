@@ -50,14 +50,16 @@ bool GridFacade::checkForWall(int x, int y) {
 /// </summary>
 /// <param name="x">Position to check for in x-axis</param>
 /// <param name="y">Position to check for on y-axis</param>
+/// <param name="area">the area to check for</param>
 /// <returns>true if it is part of the end area</returns>
-bool GridFacade::checkForEndArea(int x, int y) {
-	if (x >= _grid->getWidth() || x < 0 ||
+bool GridFacade::checkForSpecificArea(int x, int y, TileLocation area) {
+	if (area == NORMAL ||
+		x >= _grid->getWidth() || x < 0 ||
 		y >= _grid->getHeight() || y <= 0) {
 		return false;
 	}
 
-	return _grid->getTileFromGrid(x, y).getLocation() == END_AREA;
+	return _grid->getTileFromGrid(x, y).getLocation() == area;
 }
 
 /// <summary>

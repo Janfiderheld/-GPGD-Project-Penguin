@@ -15,6 +15,7 @@ private:
 	int _standCounter = 0;
 	MovingObjectStatus _lastDir = WALK_LEFT;
 	bool _beforePit = false;
+	bool _reachedSpecialArea = false;
 
 	void shootProjectile();
 

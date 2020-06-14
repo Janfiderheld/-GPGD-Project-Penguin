@@ -29,7 +29,10 @@ protected:
 	bool hasTileRight = false;
 	
 	void update(float deltaTime);
-	bool standsBeforePit(MovingObjectStatus dir);
+
+	bool checkForPit(MovingObjectStatus dir);	
+	bool checkForDoubleWall(MovingObjectStatus dir);
+	bool checkForReachedArea(MovingObjectStatus dir, bool start);
 
 public:
 	static GridFacade* LevelFacade;
