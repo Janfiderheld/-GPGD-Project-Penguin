@@ -27,6 +27,7 @@
     <ClCompile Include="ImGUI\imgui_demo.cpp" />
     <ClCompile Include="Source\Technicals\UserInterface.cpp" />
     <ClCompile Include="Source\Technicals\UserInterfaceParameters.cpp" />
+    <ClCompile Include="Source\Gameplay\ShootingEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Level\LevelGrid.h" />
@@ -63,6 +64,7 @@
     <ClInclude Include="Header\Technicals\UserInterfaceParameters.h" />
     <ClInclude Include="Header\Technicals\UserInterface.h" />
     <ClInclude Include="Interfaces\IResetable.h" />
+    <ClInclude Include="Header\Gameplay\ShootingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

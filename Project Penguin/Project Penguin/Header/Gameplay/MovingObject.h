@@ -15,7 +15,7 @@ private:
 	Texture _texture;	
 
 protected:
-	const float gravity = -0.85f;
+	const float gravity = -1.0f;
 	const float maxFallingSpeed = -2.75f;
 
 	MovingObjectStatus status = STAND;
@@ -28,14 +28,16 @@ protected:
 	bool hasTileLeft = false;
 	bool hasTileRight = false;
 	
+	void update(float deltaTime);
+	bool standsBeforePit(MovingObjectStatus dir);
+
 public:
 	static GridFacade* LevelFacade;
 
 	MovingObject(glm::vec3 pos, Texture texture, AABB boundBox);
 
 	void calculateSpeed(float deltaTime) override = 0;
-	void reset() override;
-	void update(float deltaTime);	
+	void reset() override;	
 	
 	AABB getHitbox();
 	Texture getTexture();

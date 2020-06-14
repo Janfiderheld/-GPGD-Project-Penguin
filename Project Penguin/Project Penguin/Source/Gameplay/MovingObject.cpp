@@ -81,11 +81,28 @@ void MovingObject::update(float deltaTime) {
 }
 
 /// <summary>
-/// Resets the character after a death
+/// Returns true if the object would be falling inside a pit, if it would follow in this direction
+/// </summary>
+bool MovingObject::standsBeforePit(MovingObjectStatus dir) {
+	if (dir != WALK_RIGHT && dir != WALK_LEFT) {
+		return false;
+	}
+
+	int x = dir == WALK_RIGHT ? ceil(position.x) : floor(position.x);
+	if (LevelFacade->getHeightForXPos(x) == 0) {
+		return true;
+	}
+
+	return false;
+}
+
+/// <summary>
+/// Resets this object for a new game
 /// </summary>
 void MovingObject::reset() {
 	_hitbox.setOrigin(startPos);
 	position = startPos;
+	status = STAND;
 }
 
 /// <summary>
