@@ -1,19 +1,56 @@
 #include <Gameplay/ShootingEnemy.h>
 
 /// <summary>
+/// Initial speed in y direction for jumping
+/// </summary>
+float ShootingEnemy::JumpSpeed = 1.5f;
+
+/// <summary>
+/// speed for walking in x direction
+/// </summary>
+float ShootingEnemy::WalkSpeed = 1.25f;
+
+/// <summary>
+/// speed for moving the object in x direction in the air
+/// </summary>
+float ShootingEnemy::SideSpeedAir = 0.85f;
+
+/// <summary>
+/// Counting towards this number to see how long an enemy keeps standing
+/// </summary>
+int ShootingEnemy::StandCountMax = 60;
+
+/// <summary>
+/// Maximum amount of tiles in any direction the enemy can move from its starting position
+/// </summary>
+int ShootingEnemy::MovementRadius = 12;
+
+/// <summary>
+/// Texture for the shooting enemy
+/// </summary>
+Texture* ShootingEnemy::ShooterTex = nullptr;
+
+/// <summary>
 /// Shoots projectile in the direction this enemy is looking when certain criteria are met
 /// </summary>
 void ShootingEnemy::shootProjectile() {
 }
 
 /// <summary>
+/// Empty constructor for the vector
+/// </summary>
+ShootingEnemy::ShootingEnemy() : 
+	MovingObject(position, *ShooterTex, getHitbox()),
+	DrawableVertices(getHitbox().getMinX(), getHitbox().getMinY(), getHitbox().getMaxX(), getHitbox().getMaxY()) {
+}
+
+/// <summary>
 /// Initializes a shooting enemy by setting the starting position, texture, bounding box and vertices.
 /// </summary>
 /// <param name="pos">starting position for the character</param>
-/// <param name="texture">texture for the character</param>
 /// <param name="boundBox">bounding box (= hitbox) for the character</param>
-ShootingEnemy::ShootingEnemy(glm::vec3 pos, Texture texture, AABB boundBox) :
-	MovingObject(pos, texture, boundBox),
+ShootingEnemy::ShootingEnemy(glm::vec3 pos, AABB boundBox) :
+	MovingObject(pos, *ShooterTex, boundBox),
 	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()) {
 }
 
@@ -94,8 +131,8 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 		break;
 
 	case FALL:
-		setVerticalSpeed(speed.y + gravity * deltaTime);
-		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
+		setVerticalSpeed(speed.y + Gravity * deltaTime);
+		setVerticalSpeed(glm::max(speed.y, MaxFallingSpeed));
 
 		if (_lastDir == WALK_LEFT && !hasTileLeft &&
 			!checkForPit(WALK_LEFT) && (startPos.x - position.x) <= MovementRadius &&

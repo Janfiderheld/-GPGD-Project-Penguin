@@ -109,8 +109,8 @@ void Character::calculateSpeed(float deltaTime) {
 		break;	
 
 	case FALL:
-		setVerticalSpeed(speed.y + gravity * deltaTime);
-		setVerticalSpeed(glm::max(speed.y, maxFallingSpeed));
+		setVerticalSpeed(speed.y + Gravity * deltaTime);
+		setVerticalSpeed(glm::max(speed.y, MaxFallingSpeed));
 
 		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) && !hasTileLeft) {
 			setHorizontalSpeed(-SideSpeedAir);

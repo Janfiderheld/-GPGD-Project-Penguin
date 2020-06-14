@@ -97,5 +97,9 @@ int CollectableManager::getAmountOfCollectables() {
 /// Returns the collectable at the given position
 /// </summary>
 Collectable* CollectableManager::getCollectableAtPosition(int pos) {
+	if (pos < 0 || pos >= getAmountOfCollectables()) {
+		return nullptr;
+	}
+
 	return &_collectables.at(pos);
 }

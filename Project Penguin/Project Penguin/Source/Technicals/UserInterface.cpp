@@ -11,6 +11,12 @@ int UserInterface::Width = 1024;
 int UserInterface::Height = 900;
 
 /// <summary>
+/// Amount of specials for each level.
+/// Specials include enemies, pits & platforms
+/// </summary>
+int UserInterface::MaxSpecialAmount = 12;
+
+/// <summary>
 /// Facade of the level which is used to reset the level between games
 /// </summary>
 GridFacade* UserInterface::LevelGrid = nullptr;

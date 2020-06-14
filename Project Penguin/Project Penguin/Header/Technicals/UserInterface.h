@@ -44,6 +44,7 @@ private:
 public:
     static int Width;
     static int Height;
+    static int MaxSpecialAmount;
 
     static GridFacade* LevelGrid;
     static InputManager* InputManager;

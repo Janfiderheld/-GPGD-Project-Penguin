@@ -5,12 +5,12 @@
 
 class ShootingEnemy : public MovingObject, public DrawableVertices {
 private:
-	const float JumpSpeed = 1.5f;
-	const float WalkSpeed = 1.25f;
-	const float SideSpeedAir = 0.85f;
+	static float JumpSpeed;
+	static float WalkSpeed;
+	static float SideSpeedAir;
 
-	const int StandCountMax = 60;
-	const int MovementRadius = 12;
+	static int StandCountMax;
+	static int MovementRadius;
 	
 	int _standCounter = 0;
 	MovingObjectStatus _lastDir = WALK_LEFT;
@@ -20,7 +20,10 @@ private:
 	void shootProjectile();
 
 public:
-	ShootingEnemy(glm::vec3 pos, Texture texture, AABB boundBox);
+	static Texture* ShooterTex;
+
+	ShootingEnemy();
+	ShootingEnemy(glm::vec3 pos, AABB boundBox);
 
 	void calculateSpeed(float deltaTime) override;
 	void reset() override;

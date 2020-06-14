@@ -159,6 +159,7 @@
     <ClCompile Include="Source\Gameplay\Collectable.cpp" />
     <ClCompile Include="Source\Gameplay\ShootingEnemy.cpp" />
     <ClCompile Include="Source\Managers\CollectableManager.cpp" />
+    <ClCompile Include="Source\Managers\EnemyManager.cpp" />
     <ClCompile Include="Source\Managers\HighscoreManager.cpp" />
     <ClCompile Include="Source\Technicals\AABB.cpp" />
     <ClCompile Include="Source\Application.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Header\Gameplay\Collectable.h" />
     <ClInclude Include="Header\Gameplay\ShootingEnemy.h" />
     <ClInclude Include="Header\Managers\CollectableManager.h" />
+    <ClInclude Include="Header\Managers\EnemyManager.h" />
     <ClInclude Include="Header\Managers\HighscoreManager.h" />
     <ClInclude Include="Header\Technicals\AABB.h" />
     <ClInclude Include="Header\Managers\BackgroundManager.h" />

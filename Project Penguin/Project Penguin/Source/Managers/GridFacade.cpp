@@ -70,6 +70,13 @@ std::vector<glm::vec2>* GridFacade::getCollectablePositions() {
 }
 
 /// <summary>
+/// Returns the current Number of Specials (pits or platforms)
+/// </summary
+int GridFacade::getNumberOfSpecials() {
+	return _grid->getNumberOfSpecials();
+}
+
+/// <summary>
 /// Generates a random number in the area where platforms, pits & collectables can be placed
 /// </summary>
 int GridFacade::generateRandomForPlacement() {

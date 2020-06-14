@@ -15,8 +15,8 @@ private:
 	Texture _texture;	
 
 protected:
-	const float gravity = -1.0f;
-	const float maxFallingSpeed = -2.75f;
+	static float Gravity;
+	static float MaxFallingSpeed;
 
 	MovingObjectStatus status = STAND;
 	glm::vec3 position;

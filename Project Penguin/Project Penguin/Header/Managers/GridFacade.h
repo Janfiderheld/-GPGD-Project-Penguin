@@ -21,6 +21,8 @@ public:
 	bool checkForSpecificArea(int x, int y, TileLocation area);
 
 	std::vector<glm::vec2>* getCollectablePositions();
+	int getNumberOfSpecials();
+
 	int generateRandomForPlacement();
 	int getHeightForXPos(int x);
 	void generateLevel();

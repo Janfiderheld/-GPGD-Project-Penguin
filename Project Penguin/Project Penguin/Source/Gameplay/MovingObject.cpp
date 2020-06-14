@@ -1,6 +1,16 @@
 #include <Gameplay/MovingObject.h>
 
 /// <summary>
+/// Gravity for the level which works on this object
+/// </summary>
+float MovingObject::Gravity = -1.0f;
+
+/// <summary>
+/// Maxmimum speed to fall with in y direction
+/// </summary>
+float MovingObject::MaxFallingSpeed = -2.75;
+
+/// <summary>
 /// Facade to manage the access to the level for all moving objects
 /// </summary>
 GridFacade* MovingObject::LevelFacade = nullptr;

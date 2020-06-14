@@ -33,6 +33,8 @@ private:
 	std::vector<LevelGridTile> _level;
 	std::vector<glm::vec2> _collectPos;
 	bool _generationFinished = false;
+	int _pitsAmount = 0;
+	int _platformsAmount = 0;
 
 	void initializeStartingArea();
 	void generateBottom();
@@ -50,6 +52,7 @@ public:
 	int getHeight();
 	LevelGridTile& getTileFromGrid(int x, int y);
 	std::vector<glm::vec2>* getCollectablePositions();
+	int getNumberOfSpecials();
 	
 	void generateWholeLevel();
 	int generateRandomForPlacement();

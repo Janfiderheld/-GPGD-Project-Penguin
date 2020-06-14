@@ -7,7 +7,9 @@
 #include <Level/LevelGrid.h>
 #include <Managers/GridFacade.h>
 #include <Managers/CollectableManager.h>
+#include <Managers/EnemyManager.h>
 #include <Gameplay/Collectable.h>
+#include <Gameplay/ShootingEnemy.h>
 
 int main(void) {
     UserInterface ui;
@@ -58,6 +60,12 @@ int main(void) {
     MovingObject::LevelFacade = &levelFacade;
     Character::InputManager = &inpMan;
     UserInterface::PlayerCharacter = &character;
+
+    // Enemies
+    Texture shooterTex("HeartFilled.png", GL_RGBA);
+    ShootingEnemy::ShooterTex = &shooterTex;
+    EnemyManager::LevelFacade = &levelFacade;
+    EnemyManager enemyMan;    
 
     // Collectables
     HighscoreManager highMan;
@@ -117,6 +125,10 @@ int main(void) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
             cam.updatePosition(delta);
+
+            for (int i = 0; i < enemyMan.getShooterAmount(); i++) {
+                enemyMan.getEnemyAtVectorPos(i)->calculateSpeed(delta);
+            }
     		
             // view transform
             glm::mat4 view = cam.getViewMatrix();
@@ -239,6 +251,21 @@ int main(void) {
             glBufferSubData(VBO, 0, sizeof(character.getVertices()), character.getVertices());
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glDisable(GL_BLEND);
+
+            // draw enemies
+            for (int i = 0; i < enemyMan.getShooterAmount(); i++) {
+                ShootingEnemy* temp = enemyMan.getEnemyAtVectorPos(i);
+                model = glm::mat4(1.0f);
+                model = glm::translate(model, temp->getPosition());
+                shader.setMat4Uniform("model", model);
+
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                glBindTexture(GL_TEXTURE_2D, temp->getTexture().TextureId);
+                glBufferSubData(VBO, 0, sizeof(temp->getVertices()), temp->getVertices());
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                glDisable(GL_BLEND);
+            }
 
             // draw Collectables
             collectMan.checkForCollection(character.getHitbox());

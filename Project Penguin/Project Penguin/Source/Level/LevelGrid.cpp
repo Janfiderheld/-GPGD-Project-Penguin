@@ -208,10 +208,10 @@ void LevelGrid::fillTilesBelow(int x, int y) {
 /// The amount is between 1 and (Width / 20). All Plattforms look the same.
 /// </summary>
 void LevelGrid::addPlattforms() {
-	int noOfPlattforms = rand() % MaxPlattforms + 1;
+	_platformsAmount = rand() % MaxPlattforms + 1;
 	std::vector<int> positions;
 
-	for (int i = 0; i < noOfPlattforms; i++) {
+	for (int i = 0; i < _platformsAmount; i++) {
 		bool isUsableX = false;
 		int x = 0, y = 0;
 
@@ -269,10 +269,10 @@ void LevelGrid::addPlattforms() {
 /// The amount is between 1 and (Width / 15). All pits are two tiles long.
 /// </summary>
 void LevelGrid::addPits() {
-	int noOfPits = rand() % MaxPits + 1;
+	_pitsAmount = rand() % MaxPits + 1;
 	std::vector<int> positions;
 
-	for (int i = 0; i < noOfPits; i++) {
+	for (int i = 0; i < _pitsAmount; i++) {
 		bool isUsableX = false;
 		int x = 0;
 
@@ -395,6 +395,13 @@ std::vector<glm::vec2>* LevelGrid::getCollectablePositions() {
 	} else {
 		return nullptr;
 	}	
+}
+
+/// <summary>
+/// Returns the current Number of Specials (pits or platforms)
+/// </summary
+int LevelGrid::getNumberOfSpecials() {
+	return _pitsAmount + _platformsAmount;
 }
 
 /// <summary>
