@@ -2,6 +2,7 @@
 #define SHOOTENEMY_HEADER
 
 #include <Gameplay/MovingObject.h>
+#include <Gameplay/Projectile.h>
 #include <Technicals/Texture.h>
 
 class ShootingEnemy : public MovingObject, public DrawableVertices {
@@ -12,20 +13,26 @@ private:
 
 	static int StandCountMax;
 	static int MovementRadius;
+	static int MaxShootDistance;
+	static int MinShootDistance;
 	
 	int _standCounter = 0;
-	MovingObjectStatus _lastDir = WALK_LEFT;
 	bool _beforePit = false;
 	bool _reachedSpecialArea = false;
 
-	void shootProjectile();
+	MovingObjectStatus _lastDir = WALK_LEFT;
+	Projectile _currProj;
 
 public:
 	static Texture* ShooterTex;
 
 	ShootingEnemy();
 	ShootingEnemy(glm::vec3 pos, AABB boundBox);
-
+	
+	void shootProjectile(glm::vec3 playerPos);
+	void setCurrentProjectile(Projectile proj);
+	Projectile* getCurrentProjectile();
+	
 	void calculateSpeed(float deltaTime) override;
 	void reset() override;
 };

@@ -4,6 +4,8 @@
 #include <vector>
 #include <random>
 #include <Gameplay/ShootingEnemy.h>
+#include <Gameplay/Projectile.h>
+#include <Gameplay/Character.h>
 #include <Managers/GridFacade.h>
 #include <Technicals/UserInterface.h>
 #include <Technicals/AABB.h>
@@ -16,14 +18,17 @@ private:
 
 public: 
 	static GridFacade* LevelFacade;
+	static Character* PlayerChar;
 
 	EnemyManager();
 
-	void generateEnemys();
-	void checkForCollision(AABB playerHitbox);
+	void updateEnemies(float delta);	
+	void generateEnemies();
+	void checkForCollision();
 
-	int getShooterAmount();
-	ShootingEnemy* getEnemyAtVectorPos(int pos);
+	int getShooterAndProjectileAmount();
+	ShootingEnemy* getShootingEnemyAtVectorPos(int pos);
+	Projectile* getProjectileAtVectorPos(int pos);
 };
 
 #endif // ENEMYMAN_HEADER

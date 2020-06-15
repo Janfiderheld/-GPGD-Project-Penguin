@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Technicals\UserInterfaceParameters.cpp" />
     <ClCompile Include="Source\Gameplay\ShootingEnemy.cpp" />
     <ClCompile Include="Source\Managers\EnemyManager.cpp" />
+    <ClCompile Include="Source\Gameplay\Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Level\LevelGrid.h" />
@@ -67,6 +68,7 @@
     <ClInclude Include="Interfaces\IResetable.h" />
     <ClInclude Include="Header\Gameplay\ShootingEnemy.h" />
     <ClInclude Include="Header\Managers\EnemyManager.h" />
+    <ClInclude Include="Header\Gameplay\Projectile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

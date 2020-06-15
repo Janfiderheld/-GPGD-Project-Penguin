@@ -20,6 +20,7 @@ int main(void) {
 
     Shader shader("BasicVertexShader.vert", "BasicFragmentShader.frag");
     Texture iceTileStart("IceTileStart.png", GL_RGBA);
+    Texture testProj("Projectile.png", GL_RGBA);
     Texture iceTileStartBorder("IceTileStartLeftBorder.png", GL_RGBA);
 
     Texture iceTileEnd("IceTileEnd.png", GL_RGBA);
@@ -65,6 +66,8 @@ int main(void) {
     Texture shooterTex("HeartFilled.png", GL_RGBA);
     ShootingEnemy::ShooterTex = &shooterTex;
     EnemyManager::LevelFacade = &levelFacade;
+    EnemyManager::PlayerChar = &character;
+    Projectile::ProjectileTex = &testProj;
     EnemyManager enemyMan;    
 
     // Collectables
@@ -125,10 +128,7 @@ int main(void) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
             cam.updatePosition(delta);
-
-            for (int i = 0; i < enemyMan.getShooterAmount(); i++) {
-                enemyMan.getEnemyAtVectorPos(i)->calculateSpeed(delta);
-            }
+            enemyMan.updateEnemies(delta);
     		
             // view transform
             glm::mat4 view = cam.getViewMatrix();
@@ -253,21 +253,35 @@ int main(void) {
             glDisable(GL_BLEND);
 
             // draw enemies
-            for (int i = 0; i < enemyMan.getShooterAmount(); i++) {
-                ShootingEnemy* temp = enemyMan.getEnemyAtVectorPos(i);
-                model = glm::mat4(1.0f);
-                model = glm::translate(model, temp->getPosition());
+            for (int i = 0; i < enemyMan.getShooterAndProjectileAmount(); i++) {
+                ShootingEnemy* tempShoot = enemyMan.getShootingEnemyAtVectorPos(i);
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, tempShoot->getPosition());
                 shader.setMat4Uniform("model", model);
 
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 glBindTexture(GL_TEXTURE_2D, ShootingEnemy::ShooterTex->TextureId);
-                glBufferSubData(VBO, 0, sizeof(temp->getVertices()), temp->getVertices());
+                glBufferSubData(VBO, 0, sizeof(tempShoot->getVertices()), tempShoot->getVertices());
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 glDisable(GL_BLEND);
+
+                Projectile* tempProj = enemyMan.getProjectileAtVectorPos(i);
+                if (tempProj != NULL && tempProj->getStatus()) {
+                    model = glm::mat4(1.0f);
+                    model = glm::translate(model, tempProj->getPosition());
+                    shader.setMat4Uniform("model", model);
+
+                    glEnable(GL_BLEND);
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                    glBindTexture(GL_TEXTURE_2D, Projectile::ProjectileTex->TextureId);
+                    glBufferSubData(VBO, 0, sizeof(tempProj->getVertices()), tempProj->getVertices());
+                    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                    glDisable(GL_BLEND);
+                }
             }
 
-            // draw Collectables
+    		// draw Collectables
             collectMan.checkForCollection(character.getHitbox());
             for (int i = 0; i < collectMan.getAmountOfCollectables(); i++) {
                 glm::mat4 model = glm::mat4(1.0f);

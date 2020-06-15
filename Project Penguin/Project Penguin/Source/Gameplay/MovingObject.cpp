@@ -21,6 +21,7 @@ GridFacade* MovingObject::LevelFacade = nullptr;
 /// <param name="pos">starting position for the object</param>
 /// <param name="boundBox">bounding box (= hitbox) for the object</param>
 MovingObject::MovingObject(glm::vec3 pos, AABB boundBox) : _hitbox(boundBox) {
+	setCompleteSpeed(glm::vec3(0.0f));
 	position = pos;
 	startPos = pos;
 }
@@ -29,8 +30,7 @@ MovingObject::MovingObject(glm::vec3 pos, AABB boundBox) : _hitbox(boundBox) {
 /// Updates the bool values which indicate the surrounding walls. 
 /// Also calculates the new position based on the current speed and clamping if jumping at a tile from below.
 /// </summary>
-/// <param name="deltaTime">Time since last frame to normalize calculation</param>
-void MovingObject::update(float deltaTime) {
+void MovingObject::updateBoundaries(float deltaTime) {
 	wasOnGround = isOnGround;
 
 	int floorPosX = floor(position.x);
@@ -85,6 +85,14 @@ void MovingObject::update(float deltaTime) {
 		speed.y = glm::max(speed.y, 0.0f);
 	}
 
+	updatePosition(deltaTime);
+}
+
+/// <summary>
+/// Updates the objects position
+/// </summary>
+/// <param name="deltaTime">Time since last frame to normalize calculation</param>
+void MovingObject::updatePosition(float deltaTime) {
 	position += speed * deltaTime;
 	_hitbox.setOrigin(position);
 }

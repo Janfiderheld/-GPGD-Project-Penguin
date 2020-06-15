@@ -26,7 +26,8 @@ protected:
 	bool hasTileLeft = false;
 	bool hasTileRight = false;
 	
-	void update(float deltaTime);
+	void updateBoundaries(float deltaTime);
+	void updatePosition(float deltaTime);
 
 	bool checkForPit(MovingObjectStatus dir);	
 	bool checkForDoubleWall(MovingObjectStatus dir);

@@ -146,7 +146,7 @@ void Character::calculateSpeed(float deltaTime) {
 	}
 
 	_reachedEnd = checkForReachedArea(WALK_RIGHT, false);
-	update(deltaTime);
+	updateBoundaries(deltaTime);
 }
 
 /// <summary>
