@@ -6,13 +6,11 @@
 #include <IResetable.h>
 #include <MovingObjectStatus.h>
 #include <Technicals/AABB.h>
-#include <Technicals/Texture.h>
 #include <Managers/GridFacade.h>
 
 class MovingObject : public IMovable, public IResetable {
 private:
 	AABB _hitbox;
-	Texture _texture;	
 
 protected:
 	static float Gravity;
@@ -37,13 +35,12 @@ protected:
 public:
 	static GridFacade* LevelFacade;
 
-	MovingObject(glm::vec3 pos, Texture texture, AABB boundBox);
+	MovingObject(glm::vec3 pos, AABB boundBox);
 
 	void calculateSpeed(float deltaTime) override = 0;
 	void reset() override;	
 	
 	AABB getHitbox();
-	Texture getTexture();
 	glm::vec3 getPosition();
 	MovingObjectStatus getCurrentStatus();
 };

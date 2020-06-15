@@ -18,13 +18,14 @@ private:
 	
 	bool _reachedEnd = false;
 	bool _rechedPitBottom = false;
+	Texture* _tex;
 	
 	void checkForPitBottom();
 	
 public:
 	static InputManager* InputManager;
 
-	Character(glm::vec3 pos, Texture texture, AABB boundBox);
+	Character(glm::vec3 pos, Texture* texture, AABB boundBox);
 
 	void calculateSpeed(float deltaTime) override;
 	void reset() override;
@@ -32,8 +33,10 @@ public:
 	bool hasReachedEnd();
 	bool hasDied();
 	void looseHealth();
+	
 	int getCurrentHealth();
 	int getMaxHealth();
+	Texture* getTexture();
 };
 
 #endif // CHAR_HEADER

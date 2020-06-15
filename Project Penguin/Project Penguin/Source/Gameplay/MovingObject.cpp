@@ -19,9 +19,8 @@ GridFacade* MovingObject::LevelFacade = nullptr;
 /// Constructor which sets the texture, position and bounding box to the given values
 /// </summary>
 /// <param name="pos">starting position for the object</param>
-/// <param name="texture">texture for the object</param>
 /// <param name="boundBox">bounding box (= hitbox) for the object</param>
-MovingObject::MovingObject(glm::vec3 pos, Texture texture, AABB boundBox) : _texture(texture), _hitbox(boundBox) {
+MovingObject::MovingObject(glm::vec3 pos, AABB boundBox) : _hitbox(boundBox) {
 	position = pos;
 	startPos = pos;
 }
@@ -159,13 +158,6 @@ void MovingObject::reset() {
 /// </summary>
 AABB MovingObject::getHitbox() {
 	return _hitbox;
-}
-
-/// <summary>
-/// Returns the texture of the object.
-/// </summary>
-Texture MovingObject::getTexture() {
-	return _texture;
 }
 
 /// <summary>

@@ -11,10 +11,11 @@ InputManager* Character::InputManager = nullptr;
 /// <param name="pos">starting position for the character</param>
 /// <param name="texture">texture for the character</param>
 /// <param name="boundBox">bounding box (= hitbox) for the character</param>
-Character::Character(glm::vec3 pos, Texture texture, AABB boundBox) :
-	MovingObject(pos, texture, boundBox),
+Character::Character(glm::vec3 pos, Texture* texture, AABB boundBox) :
+	MovingObject(pos, boundBox),
 	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()) {
 	_currentHealth = MaxHealth;
+	_tex = texture;
 }
 
 /// <summary>
@@ -201,4 +202,11 @@ int Character::getCurrentHealth() {
 /// </summary>
 int Character::getMaxHealth() {
 	return MaxHealth;
+}
+
+/// <summary>
+/// Returns the Texture for the main character
+/// </summary>
+Texture* Character::getTexture() {
+	return _tex;
 }

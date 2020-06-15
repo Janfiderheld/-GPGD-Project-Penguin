@@ -56,7 +56,7 @@ int main(void) {
     glm::vec3 charPos(1.0f, 3.0f, -10.0f);
     glm::vec3 charScale(0.66f, 1.0f, 1.0f);
     AABB charHitbox(charPos, charScale.y, charScale.x);
-    Character character(charPos, charText, charHitbox);
+    Character character(charPos, &charText, charHitbox);
     MovingObject::LevelFacade = &levelFacade;
     Character::InputManager = &inpMan;
     UserInterface::PlayerCharacter = &character;
@@ -247,7 +247,7 @@ int main(void) {
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glBindTexture(GL_TEXTURE_2D, character.getTexture().TextureId);
+            glBindTexture(GL_TEXTURE_2D, character.getTexture()->TextureId);
             glBufferSubData(VBO, 0, sizeof(character.getVertices()), character.getVertices());
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glDisable(GL_BLEND);
@@ -261,7 +261,7 @@ int main(void) {
 
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                glBindTexture(GL_TEXTURE_2D, temp->getTexture().TextureId);
+                glBindTexture(GL_TEXTURE_2D, ShootingEnemy::ShooterTex->TextureId);
                 glBufferSubData(VBO, 0, sizeof(temp->getVertices()), temp->getVertices());
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 glDisable(GL_BLEND);

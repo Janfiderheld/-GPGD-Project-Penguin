@@ -40,7 +40,7 @@ void ShootingEnemy::shootProjectile() {
 /// Empty constructor for the vector
 /// </summary>
 ShootingEnemy::ShootingEnemy() : 
-	MovingObject(position, *ShooterTex, getHitbox()),
+	MovingObject(position, getHitbox()),
 	DrawableVertices(getHitbox().getMinX(), getHitbox().getMinY(), getHitbox().getMaxX(), getHitbox().getMaxY()) {
 }
 
@@ -50,7 +50,7 @@ ShootingEnemy::ShootingEnemy() :
 /// <param name="pos">starting position for the character</param>
 /// <param name="boundBox">bounding box (= hitbox) for the character</param>
 ShootingEnemy::ShootingEnemy(glm::vec3 pos, AABB boundBox) :
-	MovingObject(pos, *ShooterTex, boundBox),
+	MovingObject(pos, boundBox),
 	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()) {
 }
 

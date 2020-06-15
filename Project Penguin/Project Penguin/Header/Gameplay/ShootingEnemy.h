@@ -2,6 +2,7 @@
 #define SHOOTENEMY_HEADER
 
 #include <Gameplay/MovingObject.h>
+#include <Technicals/Texture.h>
 
 class ShootingEnemy : public MovingObject, public DrawableVertices {
 private:
