@@ -77,7 +77,7 @@ bool Projectile::getStatus() {
 /// Checks if this projectile should be disabled
 /// </summary>
 void Projectile::shouldDeactivate() {
-	if(abs(startPos.x - position.x) >= MaxDistanceBeforeDestroy || checkForCollision(_movDir))	{
+	if(abs(startPos.x - position.x) >= MaxDistanceBeforeDestroy)	{
 		changeStatus(false);
 	}
 }
