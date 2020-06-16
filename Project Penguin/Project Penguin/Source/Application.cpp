@@ -256,22 +256,6 @@ int main(void) {
 
             // draw enemies
             for (int i = 0; i < enemyMan.getShooterAndProjectileAmount(); i++) {
-                ShootingEnemy* tempShoot = enemyMan.getShootingEnemyAtVectorPos(i);
-                glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, tempShoot->getPosition());
-                model = glm::scale(model, ShootingEnemy::getScale());
-                if (tempShoot->getCurrentSpeed().x < 0.0f) {
-                    model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
-                }
-                shader.setMat4Uniform("model", model);
-
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                glBindTexture(GL_TEXTURE_2D, ShootingEnemy::ShooterTex->TextureId);
-                glBufferSubData(VBO, 0, sizeof(tempShoot->getVertices()), tempShoot->getVertices());
-                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-                glDisable(GL_BLEND);
-
                 Projectile* tempProj = enemyMan.getProjectileAtVectorPos(i);
                 if (tempProj != NULL && tempProj->getStatus()) {
                     model = glm::mat4(1.0f);
@@ -286,6 +270,22 @@ int main(void) {
                     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                     glDisable(GL_BLEND);
                 }
+            	
+                ShootingEnemy* tempShoot = enemyMan.getShootingEnemyAtVectorPos(i);
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, tempShoot->getPosition());
+                model = glm::scale(model, ShootingEnemy::getScale());
+                if (tempShoot->getCurrentSpeed().x < 0.0f) {
+                    model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
+                }
+                shader.setMat4Uniform("model", model);
+
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                glBindTexture(GL_TEXTURE_2D, ShootingEnemy::ShooterTex->TextureId);
+                glBufferSubData(VBO, 0, sizeof(tempShoot->getVertices()), tempShoot->getVertices());
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                glDisable(GL_BLEND);                
             }
 
     		for(int i = 0; i < enemyMan.getWalkerAmount(); i++) {
