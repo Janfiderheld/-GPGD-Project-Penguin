@@ -157,10 +157,10 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 	case WALK_LEFT:
 		setVerticalSpeed(0.0f);
 
-		if (!hasTileLeft && !_beforePit && (startPos.x - position.x) <= MovementRadius 
-			&& !_reachedSpecialArea && !checkForDoubleWall(WALK_LEFT)) {
+		if (!hasTileLeft && !_beforePit && startPos.x - position.x <= MovementRadius &&
+			!_reachedSpecialArea && !checkForDoubleWall(WALK_LEFT)) {
 			setHorizontalSpeed(-WalkSpeed);
-		} else if(hasTileLeft && !checkForDoubleWall(WALK_LEFT)) {
+		} else if(hasTileLeft && !checkForDoubleWall(WALK_LEFT) && startPos.x - position.x <= MovementRadius) {
 			_lastDir = WALK_LEFT;
 			status = JUMP;
 			break;
@@ -180,10 +180,10 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 	case WALK_RIGHT:
 		setVerticalSpeed(0.0f);
 
-		if (!hasTileRight && !_beforePit && (position.x - startPos.x) <= MovementRadius 
-			&& !_reachedSpecialArea && !checkForDoubleWall(WALK_RIGHT)) {
+		if (!hasTileRight && !_beforePit && position.x - startPos.x <= MovementRadius &&
+			!_reachedSpecialArea && !checkForDoubleWall(WALK_RIGHT)) {
 			setHorizontalSpeed(WalkSpeed);
-		} else if (hasTileRight && !checkForDoubleWall(WALK_RIGHT)) {
+		} else if (hasTileRight && !checkForDoubleWall(WALK_RIGHT) && position.x - startPos.x <= MovementRadius) {
 			_lastDir = WALK_RIGHT;
 			status = JUMP;
 			break;
@@ -192,6 +192,7 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 			status = STAND;
 			break;
 		}
+		
 		if (!isOnGround) {
 			_lastDir = WALK_RIGHT;
 			status = FALL;
@@ -209,11 +210,11 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(glm::max(speed.y, MaxFallingSpeed));
 
 		if (_lastDir == WALK_LEFT && !hasTileLeft &&
-			!checkForPit(WALK_LEFT) && (startPos.x - position.x) <= MovementRadius &&
+			!checkForPit(WALK_LEFT) && startPos.x - position.x <= MovementRadius &&
 			!_reachedSpecialArea) {
 			setHorizontalSpeed(-SideSpeedAir);
 		} else if (_lastDir == WALK_RIGHT && !hasTileRight &&
-			!checkForPit(WALK_RIGHT) && (position.x - startPos.x) <= MovementRadius &&
+			!checkForPit(WALK_RIGHT) && position.x - startPos.x <= MovementRadius &&
 			!_reachedSpecialArea) {
 			setHorizontalSpeed(SideSpeedAir);
 		} else {
@@ -229,19 +230,19 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 				status = WALK_RIGHT;
 				break;
 			}
-			if (checkForPit(_lastDir)) {
-				status = STAND;
-				break;
-			}
 			if (hasTileLeft || hasTileRight) {
 				status = JUMP;
+				break;
+			}
+			if (checkForPit(_lastDir)) {
+				status = STAND;
 				break;
 			}
 		}		
 		break;
 	}
 	
-	updateBoundaries(deltaTime); 
+	updateBoundaries(deltaTime);
 	_currProj.calculateSpeed(deltaTime);
 	updateKillingBox();
 }
