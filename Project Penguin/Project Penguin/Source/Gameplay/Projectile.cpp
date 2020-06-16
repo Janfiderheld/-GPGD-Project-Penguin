@@ -59,7 +59,7 @@ void Projectile::calculateSpeed(float deltaTime) {
 	if(!getStatus()) {
 		return;
 	}
-	
+
 	setHorizontalSpeed(_movDir == WALK_LEFT ? -Speed : Speed);
 	updatePosition(deltaTime);
 	shouldDeactivate();
@@ -82,8 +82,8 @@ bool Projectile::getStatus() {
 /// <summary>
 /// Checks if this projectile should be disabled
 /// </summary>
-void Projectile::shouldDeactivate() {
-	if(abs(startPos.x - position.x) >= MaxDistanceBeforeDestroy)	{
+void Projectile::shouldDeactivate() {	
+	if (abs(startPos.x - position.x) >= MaxDistanceBeforeDestroy || LevelFacade->checkForCollision(&getHitbox())){
 		changeStatus(false);
 	}
 }

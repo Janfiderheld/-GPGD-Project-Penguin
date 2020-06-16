@@ -130,8 +130,8 @@ void EnemyManager::checkForCollision() {
 
 		if (PlayerChar->getHitbox().checkCollision(walker->getHitbox())) {
 			if (!_currCollisionWalker) {
-				_walkers.erase(_walkers.begin() + i);
 				PlayerChar->looseHealth();
+				_walkers.erase(_walkers.begin() + i);
 				_currCollisionWalker = true;
 			}
 		} else {

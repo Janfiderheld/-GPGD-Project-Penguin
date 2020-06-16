@@ -63,6 +63,17 @@ bool GridFacade::checkForSpecificArea(int x, int y, TileLocation area) {
 }
 
 /// <summary>
+/// Returns true if the given hitbox collides with a tile of the level
+/// </summary>
+/// <param name="hitbox">hitbox to check against</param>
+bool GridFacade::checkForCollision(AABB* hitbox) {
+	int x = floor(hitbox->getMinX());
+	int y = floor(hitbox->getMinY());
+
+	return _grid->getTileFromGrid(x, y).isFilled() ? hitbox->checkCollision(_grid->getTileFromGrid(x, y).getHitbox()) : false;
+}
+
+/// <summary>
 /// Returns a reference to the vector containing the collectable positions on top of the platforms
 /// </summary>
 std::vector<glm::vec2>* GridFacade::getCollectablePositions() {

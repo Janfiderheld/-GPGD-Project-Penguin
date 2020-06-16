@@ -9,9 +9,11 @@ class ShootingEnemy : public Enemy, public DrawableVertices {
 private:
 	static int MaxShootDistance;
 	static int MinShootDistance;
+	static int MaxCountsBetweenShots;
 
 	static glm::vec3 Scale;
-	
+
+	int _shootCounter = 0;
 	Projectile _currProj;
 	AABB _killBox;
 	glm::vec3 _killBoxPos;

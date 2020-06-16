@@ -19,6 +19,7 @@ public:
 	bool checkForTwoTiles(float minVal, float size);
 	bool checkForWall(int x, int y);
 	bool checkForSpecificArea(int x, int y, TileLocation area);
+	bool checkForCollision(AABB* hitbox);
 
 	std::vector<glm::vec2>* getCollectablePositions();
 	int getNumberOfSpecials();

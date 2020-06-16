@@ -11,6 +11,11 @@ int ShootingEnemy::MaxShootDistance = 5;
 int ShootingEnemy::MinShootDistance = 2;
 
 /// <summary>
+/// Counting towards this number to see how long an enemy waits before shooting again
+/// </summary>
+int ShootingEnemy::MaxCountsBetweenShots = 100;
+
+/// <summary>
 /// Scale of all shooting enemies
 /// </summary>
 glm::vec3 ShootingEnemy::Scale = glm::vec3(0.65f, 0.9f, 1.0f);
@@ -48,7 +53,7 @@ ShootingEnemy::ShootingEnemy(glm::vec3 pos, AABB boundBox) :
 /// Shoots projectile in the direction this enemy is looking when certain criteria are met
 /// </summary>
 void ShootingEnemy::shootProjectile(glm::vec3 playerPos) {
-	if (_currProj.getStatus()) {
+	if (_currProj.getStatus() || _shootCounter < MaxCountsBetweenShots) {
 		return;
 	}
 	
@@ -62,6 +67,7 @@ void ShootingEnemy::shootProjectile(glm::vec3 playerPos) {
 		_currProj.changeDirection(shootLeft ? WALK_LEFT : WALK_RIGHT);
 		_currProj.setPosition(position);
 		_currProj.changeStatus(true);
+		_shootCounter = 0;
 	}
 }
 
@@ -111,4 +117,5 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 	Enemy::calculateSpeed(deltaTime);
 	_currProj.calculateSpeed(deltaTime);
 	updateKillingBox();
+	_shootCounter++;
 }
