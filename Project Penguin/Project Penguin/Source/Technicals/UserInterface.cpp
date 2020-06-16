@@ -11,12 +11,6 @@ int UserInterface::Width = 1024;
 int UserInterface::Height = 900;
 
 /// <summary>
-/// Amount of specials for each level.
-/// Specials include enemies, pits & platforms
-/// </summary>
-int UserInterface::MaxSpecialAmount = 12;
-
-/// <summary>
 /// Facade of the level which is used to reset the level between games
 /// </summary>
 GridFacade* UserInterface::LevelGrid = nullptr;
@@ -35,6 +29,11 @@ HighscoreManager* UserInterface::HighscoreManager = nullptr;
 /// Reference to the CollectableManager, to regenerate the collectables after a level end
 /// </summary>
 CollectableManager* UserInterface::CollectableManager = nullptr;
+
+/// <summary>
+/// Reference to the EnemyManager, to reset & replace the different enemies
+/// </summary>
+EnemyManager* UserInterface::EnemyManager = nullptr;
 
 /// <summary>
 /// Reference to the main character, which is controlled by the player
@@ -369,8 +368,10 @@ void UserInterface::processInput(Camera* cam) {
         _currentMenu = GAME_OVER;
         PlayerCharacter->reset();
         cam->reset();
+    	
         LevelGrid->generateLevel();
         CollectableManager->generateCollectables();
+        EnemyManager->generateEnemies();
     }
 	
     if (!PlayerCharacter->hasReachedEnd() && !PlayerCharacter->hasDied() && hasGameStarted()) {

@@ -7,11 +7,11 @@
 #include <Gameplay/Projectile.h>
 #include <Gameplay/Character.h>
 #include <Managers/GridFacade.h>
-#include <Technicals/UserInterface.h>
 #include <Technicals/AABB.h>
 
 class EnemyManager {
 private:
+	static int MaxSpecialAmount;
 	const int ShooterProb = 60;
 
 	bool _currentlyColliding = false;
@@ -19,7 +19,7 @@ private:
 
 public: 
 	static GridFacade* LevelFacade;
-	static Character* PlayerChar;
+	static Character* PlayerChar;	
 
 	EnemyManager();
 

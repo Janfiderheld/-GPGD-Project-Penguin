@@ -1,6 +1,12 @@
 #include <Managers/EnemyManager.h>
 
 /// <summary>
+/// Amount of specials for each level.
+/// Specials include enemies, pits & platforms
+/// </summary>
+int EnemyManager::MaxSpecialAmount = 12;
+
+/// <summary>
 /// Facade to manage the access to the level for all placing the collectables
 /// </summary>
 GridFacade* EnemyManager::LevelFacade = nullptr;
@@ -37,7 +43,7 @@ void EnemyManager::updateEnemies(float delta) {
 /// </summary>
 void EnemyManager::generateEnemies() {
 	_shooters.clear();
-	int size = UserInterface::MaxSpecialAmount - LevelFacade->getNumberOfSpecials();
+	int size = MaxSpecialAmount - LevelFacade->getNumberOfSpecials();
 	_shooters.resize(size);
 	std::vector<int> positions;
 	

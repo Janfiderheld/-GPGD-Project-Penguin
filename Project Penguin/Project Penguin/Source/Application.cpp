@@ -68,7 +68,8 @@ int main(void) {
     EnemyManager::LevelFacade = &levelFacade;
     EnemyManager::PlayerChar = &character;
     Projectile::ProjectileTex = &testProj;
-    EnemyManager enemyMan;    
+    EnemyManager enemyMan;
+    UserInterface::EnemyManager = &enemyMan;
 
     // Collectables
     HighscoreManager highMan;
