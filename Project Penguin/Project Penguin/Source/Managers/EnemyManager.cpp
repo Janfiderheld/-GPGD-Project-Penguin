@@ -81,9 +81,13 @@ void EnemyManager::generateEnemies() {
 void EnemyManager::checkForCollision() {
 	for(int i = 0; i < _shooters.size(); i++) {
 		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
-		if(PlayerChar->getHitbox().checkCollision(shooter->getHitbox())) {
+		bool hurtfulColl = PlayerChar->getHitbox().checkCollision(shooter->getHitbox());
+		bool killingColl = PlayerChar->getHitbox().checkCollision(*shooter->getKillBox());
+		if(hurtfulColl || killingColl) {
 			if (!_currentlyColliding) {
-				PlayerChar->looseHealth();
+				if(!killingColl) {
+					PlayerChar->looseHealth();
+				}
 				_shooters.erase(_shooters.begin() + i);
 				_currentlyColliding = true;
 				continue;

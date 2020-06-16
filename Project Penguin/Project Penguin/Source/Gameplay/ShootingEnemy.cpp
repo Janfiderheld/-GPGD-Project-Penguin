@@ -50,8 +50,9 @@ Texture* ShootingEnemy::ShooterTex = nullptr;
 /// </summary>
 ShootingEnemy::ShootingEnemy() : 
 	MovingObject(position, getHitbox()),
-	DrawableVertices(getHitbox().getMinX(), getHitbox().getMinY(), getHitbox().getMaxX(), getHitbox().getMaxY()) {
-
+	DrawableVertices(getHitbox().getMinX(), getHitbox().getMinY(), getHitbox().getMaxX(), getHitbox().getMaxY()),
+	_killBox(glm::vec3(position.x, position.y + Scale.y, position.z), 0.1f, Scale.x / 2.0f) {
+	updateKillingBox();
 }
 
 /// <summary>
@@ -61,9 +62,11 @@ ShootingEnemy::ShootingEnemy() :
 /// <param name="boundBox">bounding box (= hitbox) for the character</param>
 ShootingEnemy::ShootingEnemy(glm::vec3 pos, AABB boundBox) :
 	MovingObject(pos, boundBox),
-	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()) {
+	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()),
+	_killBox(glm::vec3(position.x, position.y + Scale.y, position.z), 0.1f, Scale.x / 2.0f) {
 	_currProj = Projectile(pos, AABB(pos, Projectile::Scale.y, Projectile::Scale.x), WALK_RIGHT);
 	_currProj.changeStatus(false);
+	updateKillingBox();
 }
 
 /// <summary>
@@ -99,6 +102,23 @@ void ShootingEnemy::setCurrentProjectile(Projectile proj) {
 /// </summary>
 Projectile* ShootingEnemy::getCurrentProjectile() {
 	return &_currProj;
+}
+
+/// <summary>
+/// Returns the hitbox which is above this object for killing it
+/// </summary>
+AABB* ShootingEnemy::getKillBox() {
+	return &_killBox;
+}
+
+/// <summary>
+/// Updates the position of the hitbox used to kill this enemy
+/// </summary>
+void ShootingEnemy::updateKillingBox() {
+	_killBoxPos = position;
+	_killBoxPos.y += Scale.y;
+	_killBoxPos.x += Scale.x / 2.0f;
+	_killBox.setOrigin(_killBoxPos);
 }
 
 /// <summary>
@@ -223,6 +243,7 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 	
 	updateBoundaries(deltaTime); 
 	_currProj.calculateSpeed(deltaTime);
+	updateKillingBox();
 }
 
 /// <summary>

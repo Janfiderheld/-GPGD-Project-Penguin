@@ -24,6 +24,10 @@ private:
 
 	MovingObjectStatus _lastDir = WALK_LEFT;
 	Projectile _currProj;
+	AABB _killBox;
+	glm::vec3 _killBoxPos;
+
+	void updateKillingBox();
 
 public:
 	static Texture* ShooterTex;
@@ -35,6 +39,7 @@ public:
 	void shootProjectile(glm::vec3 playerPos);
 	void setCurrentProjectile(Projectile proj);
 	Projectile* getCurrentProjectile();
+	AABB* getKillBox();
 	
 	void calculateSpeed(float deltaTime) override;
 	void reset() override;
