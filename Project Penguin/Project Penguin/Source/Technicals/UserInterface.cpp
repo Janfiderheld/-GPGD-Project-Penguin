@@ -363,7 +363,7 @@ void UserInterface::processInput(Camera* cam) {
         closeWindow();
     }
 
-    if(PlayerCharacter->hasDied()) {
+    if(PlayerCharacter->hasDied() || PlayerCharacter->hasReachedEnd()) {
         _currentMenu = GAME_OVER;
         PlayerCharacter->reset();
         cam->reset();
