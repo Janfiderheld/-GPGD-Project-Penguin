@@ -77,8 +77,10 @@ void UserInterface::drawHighscoreMenu() {
     ImGui::Begin("Project Penguin - Highscores", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
     std::vector<Highscore> _highscores = HighscoreManager->getHighscores();
 	for(int i = 0; i < _highscores.size(); i++) {
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY()));
         ImGui::Text(formatHighscore(_highscores.at(i)).c_str());
 	}
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 50));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = MAIN;
     }
