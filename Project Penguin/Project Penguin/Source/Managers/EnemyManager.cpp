@@ -74,6 +74,18 @@ void EnemyManager::generateEnemies() {
 /// </summary>
 void EnemyManager::checkForCollision() {
 	for(int i = 0; i < _shooters.size(); i++) {
+		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
+		if(PlayerChar->getHitbox().checkCollision(shooter->getHitbox())) {
+			if (!_currentlyColliding) {
+				PlayerChar->looseHealth();
+				_shooters.erase(_shooters.begin() + i);
+				_currentlyColliding = true;
+				continue;
+			}
+		} else {
+			_currentlyColliding = false;
+		}
+		
 		Projectile* proj = _shooters.at(i).getCurrentProjectile();
 		if(!proj->getStatus()) {
 			continue;
