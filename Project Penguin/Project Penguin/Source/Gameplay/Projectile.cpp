@@ -21,6 +21,12 @@ Texture* Projectile::ProjectileTex = nullptr;
 glm::vec3 Projectile::Scale = glm::vec3(0.25f, 0.23f, 1.0f);
 
 /// <summary>
+/// Offset of the texture in relation to the origin.
+/// Can be calculated by subtracting the Scale from 1 and dividing by two
+/// </summary>
+glm::vec2 Projectile::TextureOffset = glm::vec2(0.375f, 0.385f);
+
+/// <summary>
 /// Empty Constructor
 /// </summary>
 Projectile::Projectile() :
@@ -36,7 +42,7 @@ Projectile::Projectile() :
 /// <param name="boundBox">hitbox for this projectile</param>
 /// <param name="dir">direction in that this projectile starts</param>
 Projectile::Projectile(glm::vec3 pos, AABB boundBox, MovingObjectStatus dir) :
-	MovingObject(pos, AABB(pos, Scale.y, Scale.x)),
+	MovingObject(pos, AABB(pos, TextureOffset, Scale.y, Scale.x)),
 	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()) {
 	if(dir != WALK_LEFT && dir != WALK_RIGHT) {
 		_movDir = WALK_LEFT;

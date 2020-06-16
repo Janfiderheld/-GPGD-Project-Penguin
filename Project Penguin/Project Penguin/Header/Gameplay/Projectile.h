@@ -9,6 +9,7 @@ class Projectile : public MovingObject, public DrawableVertices {
 private:
 	static int MaxDistanceBeforeDestroy;
 	static float Speed;
+	static glm::vec2 TextureOffset;
 
 	MovingObjectStatus _movDir = WALK_LEFT;
 	bool _isActive = false;

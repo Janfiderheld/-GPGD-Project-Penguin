@@ -7,6 +7,7 @@
 class WalkingEnemy : public Enemy, public DrawableVertices {
 private:
 	static glm::vec3 Scale;
+	static glm::vec2 TextureOffset;
 	
 public:
 	static Texture* WalkerTex;

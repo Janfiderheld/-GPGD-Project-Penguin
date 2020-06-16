@@ -6,6 +6,12 @@
 glm::vec3 WalkingEnemy::Scale = glm::vec3(0.6f, 0.46f, 1.0f);
 
 /// <summary>
+/// Offset of the texture in relation to the origin.
+/// Can be calculated by subtracting the Scale from 1 and dividing by two
+/// </summary>
+glm::vec2 WalkingEnemy::TextureOffset = glm::vec2(0.2f, 0.28f);
+
+/// <summary>
 /// Texture for the walking enemy
 /// </summary>
 Texture* WalkingEnemy::WalkerTex = nullptr;
