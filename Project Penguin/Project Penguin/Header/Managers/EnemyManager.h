@@ -14,6 +14,7 @@ class EnemyManager {
 private:
 	const int ShooterProb = 60;
 
+	bool _currentlyColliding = false;
 	std::vector<ShootingEnemy> _shooters;
 
 public: 

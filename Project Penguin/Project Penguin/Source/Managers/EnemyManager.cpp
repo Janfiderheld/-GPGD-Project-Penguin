@@ -23,6 +23,8 @@ EnemyManager::EnemyManager() {
 /// </summary>
 /// <param name="delta">time since last frame</param>
 void EnemyManager::updateEnemies(float delta) {
+	checkForCollision();
+	
 	for(int i = 0; i < _shooters.size(); i++) {
 		_shooters.at(i).calculateSpeed(delta);
 		_shooters.at(i).shootProjectile(PlayerChar->getPosition());
@@ -68,9 +70,25 @@ void EnemyManager::generateEnemies() {
 }
 
 /// <summary>
-///  Checks for collision with the player
+///  Checks if the player collides with either an enemy or a projectile
 /// </summary>
 void EnemyManager::checkForCollision() {
+	for(int i = 0; i < _shooters.size(); i++) {
+		Projectile* proj = _shooters.at(i).getCurrentProjectile();
+		if(!proj->getStatus()) {
+			continue;
+		}
+		
+		if(PlayerChar->getHitbox().checkCollision(proj->getHitbox())) 	{
+			if(!_currentlyColliding) {
+				PlayerChar->looseHealth();
+				proj->changeStatus(false);
+				_currentlyColliding = true;
+			}
+		} else {
+			_currentlyColliding = false;
+		}
+	}
 }
 
 /// <summary>
