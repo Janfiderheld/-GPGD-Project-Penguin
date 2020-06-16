@@ -18,7 +18,7 @@ Texture* Projectile::ProjectileTex = nullptr;
 /// <summary>
 /// Scale of the projectile
 /// </summary>
-glm::vec3 Projectile::Scale = glm::vec3(1.0f, 1.0f, 1.0f);
+glm::vec3 Projectile::Scale = glm::vec3(0.25f, 0.23f, 1.0f);
 
 /// <summary>
 /// Empty Constructor

@@ -63,7 +63,7 @@ int main(void) {
     UserInterface::PlayerCharacter = &character;
 
     // Enemies
-    Texture shooterTex("HeartFilled.png", GL_RGBA);
+    Texture shooterTex("Snowman.png", GL_RGBA);
     ShootingEnemy::ShooterTex = &shooterTex;
     EnemyManager::LevelFacade = &levelFacade;
     EnemyManager::PlayerChar = &character;
@@ -257,6 +257,10 @@ int main(void) {
                 ShootingEnemy* tempShoot = enemyMan.getShootingEnemyAtVectorPos(i);
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, tempShoot->getPosition());
+                model = glm::scale(model, ShootingEnemy::getScale());
+                if (tempShoot->getCurrentSpeed().x < 0.0f) {
+                    model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
+                }
                 shader.setMat4Uniform("model", model);
 
                 glEnable(GL_BLEND);
@@ -270,6 +274,7 @@ int main(void) {
                 if (tempProj != NULL && tempProj->getStatus()) {
                     model = glm::mat4(1.0f);
                     model = glm::translate(model, tempProj->getPosition());
+                    model = glm::scale(model, tempProj->Scale);
                     shader.setMat4Uniform("model", model);
 
                     glEnable(GL_BLEND);
@@ -286,7 +291,7 @@ int main(void) {
             for (int i = 0; i < collectMan.getAmountOfCollectables(); i++) {
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, collectMan.getCollectableAtPosition(i)->getPosition());
-                model = glm::scale(model, glm::vec3(collectMan.getCollectableAtPosition(i)->getScale(), 1.0f));
+                model = glm::scale(model, collectMan.getCollectableAtPosition(i)->getScale());
                 shader.setMat4Uniform("model", model);
 
                 glEnable(GL_BLEND);

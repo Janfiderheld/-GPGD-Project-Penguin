@@ -71,7 +71,7 @@ void EnemyManager::generateEnemies() {
 		positions.push_back(x + 1);
 		positions.push_back(x + 2);
 		glm::vec3 pos(x, LevelFacade->getHeightForXPos(x), -10.0f);
-		_shooters.at(i) = ShootingEnemy(pos, AABB(pos, 1.0f));
+		_shooters.at(i) = ShootingEnemy(pos, AABB(pos, ShootingEnemy::getScale().y, ShootingEnemy::getScale().x));
 	}
 }
 

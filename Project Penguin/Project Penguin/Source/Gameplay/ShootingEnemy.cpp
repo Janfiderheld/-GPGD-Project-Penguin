@@ -36,6 +36,11 @@ int ShootingEnemy::MaxShootDistance = 5;
 int ShootingEnemy::MinShootDistance = 2;
 
 /// <summary>
+/// Scale of all shooting enemies
+/// </summary>
+glm::vec3 ShootingEnemy::Scale = glm::vec3(0.65f, 0.9f, 1.0f);
+
+/// <summary>
 /// Texture for the shooting enemy
 /// </summary>
 Texture* ShootingEnemy::ShooterTex = nullptr;
@@ -94,6 +99,13 @@ void ShootingEnemy::setCurrentProjectile(Projectile proj) {
 /// </summary>
 Projectile* ShootingEnemy::getCurrentProjectile() {
 	return &_currProj;
+}
+
+/// <summary>
+/// Returns the scale of a shooting enemy
+/// </summary>
+glm::vec3 ShootingEnemy::getScale() {
+	return Scale;
 }
 
 /// <summary>

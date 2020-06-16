@@ -9,7 +9,7 @@
 class Collectable : public DrawableVertices{
 private:
 	static int ScoreValue;
-	static glm::vec2 Scale;
+	static glm::vec3 Scale;
 	static glm::vec2 TextureOffset;
 	
 	AABB _hitbox;
@@ -25,7 +25,7 @@ public:
 
 	AABB getHitbox();
 	glm::vec3 getPosition();
-	glm::vec2 getScale();
+	glm::vec3 getScale();
 	int getScore();
 
 	bool isCollected();

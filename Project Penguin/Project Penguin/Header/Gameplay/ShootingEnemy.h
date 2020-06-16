@@ -15,6 +15,8 @@ private:
 	static int MovementRadius;
 	static int MaxShootDistance;
 	static int MinShootDistance;
+
+	static glm::vec3 Scale;
 	
 	int _standCounter = 0;
 	bool _beforePit = false;
@@ -25,6 +27,7 @@ private:
 
 public:
 	static Texture* ShooterTex;
+	static glm::vec3 getScale();
 
 	ShootingEnemy();
 	ShootingEnemy(glm::vec3 pos, AABB boundBox);

@@ -8,7 +8,7 @@ int Collectable::ScoreValue = 10;
 /// <summary>
 /// Scale of a collectable
 /// </summary>
-glm::vec2 Collectable::Scale = glm::vec2(0.8f, 0.4f);
+glm::vec3 Collectable::Scale = glm::vec3(0.8f, 0.6f, 1.0f);
 
 /// <summary>
 /// Offset of the texture in relation to the origin.
@@ -61,7 +61,7 @@ glm::vec3 Collectable::getPosition() {
 /// <summary>
 /// Returns the scale of this collectable in all directions
 /// </summary>
-glm::vec2 Collectable::getScale() {
+glm::vec3 Collectable::getScale() {
 	return Scale;
 }
 
