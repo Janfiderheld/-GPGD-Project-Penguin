@@ -30,6 +30,8 @@
     <ClCompile Include="Source\Gameplay\ShootingEnemy.cpp" />
     <ClCompile Include="Source\Managers\EnemyManager.cpp" />
     <ClCompile Include="Source\Gameplay\Projectile.cpp" />
+    <ClCompile Include="Source\Gameplay\Enemy.cpp" />
+    <ClCompile Include="Source\Gameplay\WalkingEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Level\LevelGrid.h" />
@@ -69,6 +71,8 @@
     <ClInclude Include="Header\Gameplay\ShootingEnemy.h" />
     <ClInclude Include="Header\Managers\EnemyManager.h" />
     <ClInclude Include="Header\Gameplay\Projectile.h" />
+    <ClInclude Include="Header\Gameplay\Enemy.h" />
+    <ClInclude Include="Header\Gameplay\WalkingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

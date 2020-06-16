@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <Gameplay/ShootingEnemy.h>
+#include <Gameplay/WalkingEnemy.h>
 #include <Gameplay/Projectile.h>
 #include <Gameplay/Character.h>
 #include <Managers/GridFacade.h>
@@ -14,8 +15,9 @@ private:
 	static int MaxSpecialAmount;
 	const int ShooterProb = 60;
 
-	bool _currentlyColliding = false;
 	std::vector<ShootingEnemy> _shooters;
+	std::vector<WalkingEnemy> _walkers;
+	bool _currentlyColliding = false;
 
 public: 
 	static GridFacade* LevelFacade;
@@ -28,7 +30,9 @@ public:
 	void checkForCollision();
 
 	int getShooterAndProjectileAmount();
+	int getWalkerAmount();
 	ShootingEnemy* getShootingEnemyAtVectorPos(int pos);
+	WalkingEnemy* getWalkingEnemyAtVectorPos(int pos);
 	Projectile* getProjectileAtVectorPos(int pos);
 };
 

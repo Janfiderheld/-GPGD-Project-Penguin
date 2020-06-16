@@ -64,7 +64,9 @@ int main(void) {
 
     // Enemies
     Texture shooterTex("Snowman.png", GL_RGBA);
+    Texture walker("WalkingEnemy.png", GL_RGBA);
     ShootingEnemy::ShooterTex = &shooterTex;
+    WalkingEnemy::WalkerTex = &walker;
     EnemyManager::LevelFacade = &levelFacade;
     EnemyManager::PlayerChar = &character;
     Projectile::ProjectileTex = &testProj;
@@ -285,6 +287,24 @@ int main(void) {
                     glDisable(GL_BLEND);
                 }
             }
+
+    		for(int i = 0; i < enemyMan.getWalkerAmount(); i++) {
+                WalkingEnemy* tempWalker = enemyMan.getWalkingEnemyAtVectorPos(i);
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, tempWalker->getPosition());
+                model = glm::scale(model, WalkingEnemy::getScale());
+                if (tempWalker->getCurrentSpeed().x < 0.0f) {
+                    model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
+                }
+                shader.setMat4Uniform("model", model);
+
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                glBindTexture(GL_TEXTURE_2D, WalkingEnemy::WalkerTex->TextureId);
+                glBufferSubData(VBO, 0, sizeof(tempWalker->getVertices()), tempWalker->getVertices());
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+                glDisable(GL_BLEND);
+    		}
 
     		// draw Collectables
             collectMan.checkForCollection(character.getHitbox());

@@ -35,6 +35,10 @@ void EnemyManager::updateEnemies(float delta) {
 		_shooters.at(i).calculateSpeed(delta);
 		_shooters.at(i).shootProjectile(PlayerChar->getPosition());
 	}
+
+	for(int i = 0; i < _walkers.size(); i++) {
+		_walkers.at(i).calculateSpeed(delta);
+	}
 }
 
 /// <summary>
@@ -43,11 +47,11 @@ void EnemyManager::updateEnemies(float delta) {
 /// </summary>
 void EnemyManager::generateEnemies() {
 	_shooters.clear();
-	int size = MaxSpecialAmount - LevelFacade->getNumberOfSpecials();
-	_shooters.resize(size);
+	_walkers.clear();
+	int enemAmount = MaxSpecialAmount - LevelFacade->getNumberOfSpecials();
 	std::vector<int> positions;
 	
-	for (int i = 0; i < _shooters.size(); i++) {
+	for (int i = 0; i < enemAmount; i++) {
 		bool isUsableX = false;
 		int x = 0;
 		do {
@@ -65,13 +69,19 @@ void EnemyManager::generateEnemies() {
 				positions.push_back(x);
 			}
 		} while (!isUsableX);
+		
 		positions.push_back(x);
 		positions.push_back(x - 1);
 		positions.push_back(x - 2);
 		positions.push_back(x + 1);
 		positions.push_back(x + 2);
+
 		glm::vec3 pos(x, LevelFacade->getHeightForXPos(x), -10.0f);
-		_shooters.at(i) = ShootingEnemy(pos, AABB(pos, ShootingEnemy::getScale().y, ShootingEnemy::getScale().x));
+		if(rand() % 100 <= ShooterProb)	{
+			_shooters.emplace_back(pos, AABB(pos, ShootingEnemy::getScale().y, ShootingEnemy::getScale().x));
+		} else {
+			_walkers.emplace_back(pos, AABB(pos, WalkingEnemy::getScale().y, WalkingEnemy::getScale().x));
+		}
 	}
 }
 
@@ -111,6 +121,20 @@ void EnemyManager::checkForCollision() {
 			_currentlyColliding = false;
 		}
 	}
+
+	for(int i = 0; i < _walkers.size(); i++) {
+		WalkingEnemy* walker = getWalkingEnemyAtVectorPos(i);
+
+		if (PlayerChar->getHitbox().checkCollision(walker->getHitbox())) {
+			if (!_currentlyColliding) {
+				_walkers.erase(_walkers.begin() + i);
+				PlayerChar->looseHealth();
+				_currentlyColliding = true;
+			}
+		} else {
+			_currentlyColliding = false;
+		}
+	}
 }
 
 /// <summary>
@@ -118,6 +142,13 @@ void EnemyManager::checkForCollision() {
 /// </summary>
 int EnemyManager::getShooterAndProjectileAmount() {
 	return _shooters.size();
+}
+
+/// <summary>
+/// Returns the number of walking enemies currently managed
+/// </summary>
+int EnemyManager::getWalkerAmount() {
+	return _walkers.size();
 }
 
 /// <summary>
@@ -129,6 +160,17 @@ ShootingEnemy* EnemyManager::getShootingEnemyAtVectorPos(int pos) {
 	}
 
 	return &_shooters.at(pos);
+}
+
+/// <summary>
+/// Returns a reference to the walking enemy at the given position in the vector
+/// </summary>
+WalkingEnemy* EnemyManager::getWalkingEnemyAtVectorPos(int pos) {
+	if (pos < 0 || pos >= getWalkerAmount()) {
+		return nullptr;
+	}
+
+	return &_walkers.at(pos);
 }
 
 /// <summary>

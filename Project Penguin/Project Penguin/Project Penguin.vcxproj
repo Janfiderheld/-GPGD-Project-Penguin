@@ -157,8 +157,10 @@
     <ClCompile Include="ImGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="Source\Gameplay\Collectable.cpp" />
+    <ClCompile Include="Source\Gameplay\Enemy.cpp" />
     <ClCompile Include="Source\Gameplay\Projectile.cpp" />
     <ClCompile Include="Source\Gameplay\ShootingEnemy.cpp" />
+    <ClCompile Include="Source\Gameplay\WalkingEnemy.cpp" />
     <ClCompile Include="Source\Managers\CollectableManager.cpp" />
     <ClCompile Include="Source\Managers\EnemyManager.cpp" />
     <ClCompile Include="Source\Managers\HighscoreManager.cpp" />
@@ -187,6 +189,7 @@
     <ClInclude Include="Enums\MovingObjectStatus.h" />
     <ClInclude Include="Enums\TileLocation.h" />
     <ClInclude Include="Header\Gameplay\Collectable.h" />
+    <ClInclude Include="Header\Gameplay\Enemy.h" />
     <ClInclude Include="Header\Gameplay\Projectile.h" />
     <ClInclude Include="Header\Gameplay\ShootingEnemy.h" />
     <ClInclude Include="Header\Managers\CollectableManager.h" />
@@ -218,6 +221,7 @@
     <ClInclude Include="Header\Technicals\stb_image.h" />
     <ClInclude Include="Header\Technicals\Texture.h" />
     <ClInclude Include="Interfaces\IResetable.h" />
+    <ClInclude Include="Header\Gameplay\WalkingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicFragmentShader.frag" />

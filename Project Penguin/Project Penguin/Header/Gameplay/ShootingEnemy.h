@@ -1,28 +1,17 @@
 #ifndef SHOOTENEMY_HEADER
 #define SHOOTENEMY_HEADER
 
-#include <Gameplay/MovingObject.h>
+#include <Gameplay/Enemy.h>
 #include <Gameplay/Projectile.h>
 #include <Technicals/Texture.h>
 
-class ShootingEnemy : public MovingObject, public DrawableVertices {
+class ShootingEnemy : public Enemy, public DrawableVertices {
 private:
-	static float JumpSpeed;
-	static float WalkSpeed;
-	static float SideSpeedAir;
-
-	static int StandCountMax;
-	static int MovementRadius;
 	static int MaxShootDistance;
 	static int MinShootDistance;
 
 	static glm::vec3 Scale;
 	
-	int _standCounter = 0;
-	bool _beforePit = false;
-	bool _reachedSpecialArea = false;
-
-	MovingObjectStatus _lastDir = WALK_LEFT;
 	Projectile _currProj;
 	AABB _killBox;
 	glm::vec3 _killBoxPos;
@@ -42,7 +31,6 @@ public:
 	AABB* getKillBox();
 	
 	void calculateSpeed(float deltaTime) override;
-	void reset() override;
 };
 
 #endif // SHOOTENEMY_HEADER
