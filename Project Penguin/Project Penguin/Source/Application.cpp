@@ -122,7 +122,6 @@ int main(void) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ui.drawUI();
         ui.processInput(&cam);
     	if(ui.hasGameStarted()) {
             float delta = ui.calculateDeltaTime();
@@ -296,8 +295,9 @@ int main(void) {
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 glDisable(GL_BLEND);
             }
-    	}    	
-        
+    	}
+    	
+        ui.drawUI();
         glfwSwapBuffers(ui.getWindowPointer());
         glfwPollEvents();
     }

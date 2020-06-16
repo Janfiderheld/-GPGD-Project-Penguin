@@ -157,7 +157,7 @@ void UserInterface::drawIngameUI() {
 	curr.append(HighscoreManager->getScoreAsString());
     ImGui::Text(curr.c_str());
     ImGui::SameLine();
-    ImGui::Text("Health:");
+    ImGui::Text("\tHealth:");
     for(int i = 0; i < PlayerCharacter->getCurrentHealth(); i++) {
         ImGui::SameLine();
         ImGui::Image((ImTextureID)(intptr_t)_heartFill.TextureId, UserInterfaceParameters::HeartTextureSize,
