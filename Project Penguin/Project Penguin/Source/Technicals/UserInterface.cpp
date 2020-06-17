@@ -197,6 +197,7 @@ void UserInterface::drawGameOverScreen() {
     }
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 10));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
+        HighscoreManager->resetCurrentScore();
         _currentMenu = MAIN;
     }
     ImGui::End();

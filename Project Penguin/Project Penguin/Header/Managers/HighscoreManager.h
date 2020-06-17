@@ -47,7 +47,6 @@ private:
 	std::vector<Highscore> _highscores;
 
 	bool loadFromFile();
-	void resetCurrentScore();
 	void sortAndChangeRanks();
 
 public:
@@ -55,6 +54,7 @@ public:
 
 	void addToCurrentScore(int val);
 	void addNewHighscore(char* name);
+	void resetCurrentScore();
 	bool isNewHighscore();
 	bool saveToFile();
 	

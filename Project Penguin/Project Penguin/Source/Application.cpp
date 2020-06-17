@@ -75,6 +75,7 @@ int main(void) {
 
     // Collectables
     HighscoreManager highMan;
+    EnemyManager::HighscoreManager = &highMan;
     Texture collectTex("Collectable.png", GL_RGBA); 
     Collectable::CollectTex = &collectTex;
     CollectableManager::LevelFacade = &levelFacade;

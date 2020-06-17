@@ -7,6 +7,16 @@
 int EnemyManager::MaxSpecialAmount = 12;
 
 /// <summary>
+/// Points for killing a shooting enemy
+/// </summary>
+int EnemyManager::ShooterPoints = 50;
+
+/// <summary>
+/// Probability (in %) to spawn a shooting enemy
+/// </summary>
+int EnemyManager::ShooterProb = 60;
+
+/// <summary>
 /// Facade to manage the access to the level for all placing the collectables
 /// </summary>
 GridFacade* EnemyManager::LevelFacade = nullptr;
@@ -15,6 +25,11 @@ GridFacade* EnemyManager::LevelFacade = nullptr;
 /// Reference to the player character
 /// </summary>
 Character* EnemyManager::PlayerChar = nullptr;
+
+/// <summary>
+/// Reference to the highscore manager
+/// </summary>
+HighscoreManager* EnemyManager::HighscoreManager = nullptr;
 
 /// <summary>
 /// Generates the enemies and sets the seed for the randomizer
@@ -96,6 +111,9 @@ void EnemyManager::checkForCollision() {
 		if (hurtfulColl || killingColl && !_currCollision) {
 			if (!killingColl) {
 				PlayerChar->looseHealth();
+			}
+			if(killingColl)	{
+				HighscoreManager->addToCurrentScore(ShooterPoints);
 			}
 			_shooters.erase(_shooters.begin() + i);
 			_currCollision = true;
