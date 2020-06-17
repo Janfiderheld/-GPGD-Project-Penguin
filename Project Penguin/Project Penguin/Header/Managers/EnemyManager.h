@@ -18,9 +18,7 @@ private:
 	std::vector<ShootingEnemy> _shooters;
 	std::vector<WalkingEnemy> _walkers;
 	
-	bool _currCollisionShooter = false;
-	bool _currCollisionWalker = false;
-	bool _currCollisionProject = false;
+	bool _currCollision = false;
 
 public: 
 	static GridFacade* LevelFacade;

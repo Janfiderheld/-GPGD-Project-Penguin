@@ -93,49 +93,45 @@ void EnemyManager::checkForCollision() {
 		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
 		bool hurtfulColl = PlayerChar->getHitbox().checkCollision(shooter->getHitbox());
 		bool killingColl = PlayerChar->getHitbox().checkCollision(*shooter->getKillBox());
-		if(hurtfulColl || killingColl) {
-			if (!_currCollisionShooter && !_currCollisionProject && !_currCollisionWalker) {
-				if(!killingColl) {
-					PlayerChar->looseHealth();
-				}
-				_shooters.erase(_shooters.begin() + i);
-				_currCollisionShooter = true;
+		if (hurtfulColl || killingColl && !_currCollision) {
+			if (!killingColl) {
+				PlayerChar->looseHealth();
 			}
+			_shooters.erase(_shooters.begin() + i);
+			_currCollision = true;
+			return;
 		} else {
-			_currCollisionShooter = false;
+			_currCollision = false;
 		}
-		
+
 		Projectile* proj = _shooters.at(i).getCurrentProjectile();
-		if(!proj->getStatus() || _currCollisionShooter) {
+		if (!proj->getStatus()) {
 			continue;
 		}
-		
-		if(PlayerChar->getHitbox().checkCollision(proj->getHitbox())) 	{
-			if(!_currCollisionProject && !_currCollisionWalker) {
+
+		if (PlayerChar->getHitbox().checkCollision(proj->getHitbox())) {
+			if (!_currCollision) {
 				PlayerChar->looseHealth();
 				proj->changeStatus(false);
-				_currCollisionProject = true;
+				_currCollision = true;
+				return;
 			}
 		} else {
 			_currCollisionProject = false;
 		}
 	}
 
-	if(_currCollisionShooter || _currCollisionProject)	{
-		return;
-	}
-	
 	for(int i = 0; i < _walkers.size(); i++) {
 		WalkingEnemy* walker = getWalkingEnemyAtVectorPos(i);
-
 		if (PlayerChar->getHitbox().checkCollision(walker->getHitbox())) {
-			if (!_currCollisionWalker) {
+			if (!_currCollision) {
 				PlayerChar->looseHealth();
 				_walkers.erase(_walkers.begin() + i);
-				_currCollisionWalker = true;
+				_currCollision = true;
+				return;
 			}
 		} else {
-			_currCollisionWalker = false;
+			_currCollision = false;
 		}
 	}
 }
