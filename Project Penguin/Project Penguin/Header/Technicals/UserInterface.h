@@ -17,7 +17,7 @@
 
 class UserInterface {
 private:
-    const char TITLE[16] = "Project Penguin";
+    static const char* Title;
     const char* glsl_version = "#version 330";
 
     GLFWwindow* _window;

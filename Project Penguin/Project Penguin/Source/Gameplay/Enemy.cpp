@@ -36,6 +36,7 @@ int Enemy::MovementRadius = 12;
 /// <param name="pos">starting position for this enemy</param>
 /// <param name="boundBox">hitbox for this enemy</param>
 Enemy::Enemy(glm::vec3 pos, AABB boundBox) : MovingObject(pos, boundBox) {
+	_posLastFrame = pos.x;
 }
 
 /// <summary>

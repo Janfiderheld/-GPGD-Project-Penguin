@@ -1,6 +1,11 @@
 #include <Technicals/UserInterface.h>
 
 /// <summary>
+/// Title of the window
+/// </summary>
+const char* UserInterface::Title = "Project Penguin";
+
+/// <summary>
 /// Width of the application
 /// </summary>
 int UserInterface::Width = 1024;
@@ -239,7 +244,7 @@ UserInterface::UserInterface() {
         return;
     }
 
-    _window = glfwCreateWindow(Width, Height, TITLE, NULL, NULL);
+    _window = glfwCreateWindow(Width, Height, Title, NULL, NULL);
     if (!_window)
     {
         glfwTerminate();
