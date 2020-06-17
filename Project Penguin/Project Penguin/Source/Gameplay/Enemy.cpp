@@ -21,6 +21,11 @@ float Enemy::SideSpeedAir = 0.85f;
 int Enemy::StandCountMax = 60;
 
 /// <summary>
+/// Counting towards this number when no movement in x-direction is done and resetting the character as a fall back.
+/// </summary>
+int Enemy::StandCountError = 230;
+
+/// <summary>
 /// Maximum amount of tiles in any direction the enemy can move from its starting position
 /// </summary>
 int Enemy::MovementRadius = 12;
@@ -155,4 +160,12 @@ void Enemy::calculateSpeed(float deltaTime) {
 	}
 
 	updateBoundaries(deltaTime);
+	if(abs(_posLastFrame - position.x) <= 0.1f) {
+		_errorCounter++;
+	}
+	_posLastFrame = position.x;
+	if(_errorCounter >= StandCountError) {
+		status = STAND;
+		_errorCounter = 0;
+	}
 }
