@@ -15,8 +15,10 @@ protected:
 
 	int _standCounter = 0;
 	int _errorCounter = 0;
+	
 	bool _beforePit = false;
-	bool _reachedSpecialArea = false;
+	bool _reachedStart = false;
+	bool _reachedEnd = false;
 
 	MovingObjectStatus _lastDir = WALK_LEFT;
 	float _posLastFrame;

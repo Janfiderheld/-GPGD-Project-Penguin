@@ -45,18 +45,23 @@ Enemy::Enemy(glm::vec3 pos, AABB boundBox) : MovingObject(pos, boundBox) {
 /// <param name="deltaTime">time since last frame update</param>
 void Enemy::calculateSpeed(float deltaTime) {
 	_beforePit = checkForPit(status);
-	_reachedSpecialArea = checkForReachedArea(status, true) || checkForReachedArea(status, false);
+	_reachedStart = checkForReachedArea(status, true);
+	_reachedEnd = checkForReachedArea(status, false);
 
 	switch (status) {
 	case STAND:
 		setCompleteSpeed(glm::vec3(0.0f));
 
 		if (_standCounter >= StandCountMax) {
-			status = _lastDir == WALK_LEFT ? WALK_RIGHT : WALK_LEFT;
+			if(_reachedStart || _lastDir == WALK_LEFT) {
+				status = WALK_RIGHT;
+			}
+			if(_reachedEnd || _lastDir == WALK_RIGHT) {
+				status = WALK_LEFT;
+			}
 			_standCounter = 0;
 			break;
-		}
-		else {
+		} else {
 			_standCounter++;
 		}
 		if (!isOnGround) {
@@ -70,15 +75,13 @@ void Enemy::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(0.0f);
 
 		if (!hasTileLeft && !_beforePit && startPos.x - position.x <= MovementRadius &&
-			!_reachedSpecialArea && !checkForDoubleWall(WALK_LEFT)) {
+			!_reachedStart && !checkForDoubleWall(WALK_LEFT)) {
 			setHorizontalSpeed(-WalkSpeed);
-		}
-		else if (hasTileLeft && !checkForDoubleWall(WALK_LEFT) && startPos.x - position.x <= MovementRadius) {
+		} else if (hasTileLeft && !checkForDoubleWall(WALK_LEFT) && startPos.x - position.x <= MovementRadius) {
 			_lastDir = WALK_LEFT;
 			status = JUMP;
 			break;
-		}
-		else {
+		} else {
 			_lastDir = WALK_LEFT;
 			status = STAND;
 			break;
@@ -95,15 +98,13 @@ void Enemy::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(0.0f);
 
 		if (!hasTileRight && !_beforePit && position.x - startPos.x <= MovementRadius &&
-			!_reachedSpecialArea && !checkForDoubleWall(WALK_RIGHT)) {
+			!_reachedEnd && !checkForDoubleWall(WALK_RIGHT)) {
 			setHorizontalSpeed(WalkSpeed);
-		}
-		else if (hasTileRight && !checkForDoubleWall(WALK_RIGHT) && position.x - startPos.x <= MovementRadius) {
+		} else if (hasTileRight && !checkForDoubleWall(WALK_RIGHT) && position.x - startPos.x <= MovementRadius) {
 			_lastDir = WALK_RIGHT;
 			status = JUMP;
 			break;
-		}
-		else {
+		} else {
 			_lastDir = WALK_RIGHT;
 			status = STAND;
 			break;
@@ -127,15 +128,13 @@ void Enemy::calculateSpeed(float deltaTime) {
 
 		if (_lastDir == WALK_LEFT && !hasTileLeft &&
 			!checkForPit(WALK_LEFT) && startPos.x - position.x <= MovementRadius &&
-			!_reachedSpecialArea) {
+			!_reachedStart) {
 			setHorizontalSpeed(-SideSpeedAir);
-		}
-		else if (_lastDir == WALK_RIGHT && !hasTileRight &&
+		} else if (_lastDir == WALK_RIGHT && !hasTileRight &&
 			!checkForPit(WALK_RIGHT) && position.x - startPos.x <= MovementRadius &&
-			!_reachedSpecialArea) {
+			!_reachedEnd) {
 			setHorizontalSpeed(SideSpeedAir);
-		}
-		else {
+		} else {
 			setHorizontalSpeed(0.0f);
 		}
 
