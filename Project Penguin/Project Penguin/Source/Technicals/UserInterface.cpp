@@ -53,24 +53,36 @@ void UserInterface::drawMainMenu() {
 	
     ImGui::Begin("Project Penguin - Main Menu", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor( 22, 177, 103));
     if (ImGui::Button("New Game", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = GAME;
     }
+    ImGui::PopStyleColor(2);
 
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
 	if(ImGui::Button("Highscores", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = HIGHSCORE;
 	}
+    ImGui::PopStyleColor(2);
 
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
 	if(ImGui::Button("Settings", UserInterfaceParameters::MainMenuButtonSize))	{
         _currentMenu = SETTINGS;
 	}
+    ImGui::PopStyleColor(2);
 
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
 	if(ImGui::Button("Quit", UserInterfaceParameters::MainMenuButtonSize)) {
         closeWindow();
 	}
+    ImGui::PopStyleColor(2);
     ImGui::End();
 }
 
@@ -85,9 +97,12 @@ void UserInterface::drawHighscoreMenu() {
         ImGui::Text(formatHighscore(_highscores.at(i)).c_str());
 	}
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 50));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = MAIN;
     }
+    ImGui::PopStyleColor(2);
     ImGui::End();
 }
 
@@ -97,7 +112,7 @@ void UserInterface::drawHighscoreMenu() {
 void UserInterface::drawSettingsMenu() {
     float differenceInY = Height / 20.0;
 	
-	ImGui::Begin("Project Penguin - Settings", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);	
+	ImGui::Begin("Project Penguin - Settings", nullptr, _windowFlags);	
     ImGui::Text("NOTE: The functionalities for these options will be \n added in the next milestone");
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
@@ -148,9 +163,12 @@ void UserInterface::drawSettingsMenu() {
     ImGui::InputText("Walk right", right, IM_ARRAYSIZE(right));
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = MAIN;
     }
+    ImGui::PopStyleColor(2);
     ImGui::End();
 }
 
@@ -189,22 +207,31 @@ void UserInterface::drawGameOverScreen() {
     if(HighscoreManager->isNewHighscore())  {
         static char buf[HIGHSCORE_MAX_LENGTH] = "";
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 10));
+        ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 255, 255));
         ImGui::Text("Enter Your Name");
+        ImGui::PopStyleColor(1);
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 120, ImGui::GetCursorPosY() + 10));
     	ImGui::InputText("", buf, HIGHSCORE_MAX_LENGTH);
-        ImGui::SameLine();
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons + 200, ImGui::GetCursorPosY()));
+    	
+        ImGui::SameLine();    	
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons + 215, ImGui::GetCursorPosY()));
+        ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     	if(ImGui::Button("Confirm")){
             HighscoreManager->addNewHighscore(buf);
             buf[0] = '\0';
             _currentMenu = HIGHSCORE;
-    	}        
+    	}
+        ImGui::PopStyleColor(2);
     }
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 10));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
         HighscoreManager->resetCurrentScore();
         _currentMenu = MAIN;
     }
+    ImGui::PopStyleColor(2);
     ImGui::End();
 }
 
