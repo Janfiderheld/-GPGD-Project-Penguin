@@ -6,6 +6,7 @@
 void BackgroundManager::createLayers(glm::vec2 startPos) {
 	for(int i = 0; i < LayerAmount; i++) {
 		Texture layerTex(("BackgroundLayer" + std::to_string(i) + ".png").c_str(), GL_RGBA);
+		startPos.y += 2;
 		_layers.at(i) = BackgroundLayer(startPos, layerTex, i);
 	}
 }
