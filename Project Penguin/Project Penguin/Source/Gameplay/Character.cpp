@@ -155,6 +155,7 @@ void Character::calculateSpeed(float deltaTime) {
 void Character::reset() {
 	MovingObject::reset();
 	_rechedPitBottom = false;
+	_reachedEnd = false;
 	_currentHealth = MaxHealth;
 }
 
