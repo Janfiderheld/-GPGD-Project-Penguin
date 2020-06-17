@@ -7,6 +7,11 @@
 int EnemyManager::MaxSpecialAmount = 12;
 
 /// <summary>
+/// Counts towards this value between two possible collisions
+/// </summary>
+int EnemyManager::MaxCollisionDowntime = 45;
+
+/// <summary>
 /// Points for killing a shooting enemy
 /// </summary>
 int EnemyManager::ShooterPoints = 50;
@@ -104,11 +109,16 @@ void EnemyManager::generateEnemies() {
 ///  Checks if the player collides with either an enemy or a projectile
 /// </summary>
 void EnemyManager::checkForCollision() {
+	if(_collCounter <= MaxCollisionDowntime) {
+		_collCounter++;
+		return;
+	}
+	
 	for(int i = 0; i < _shooters.size(); i++) {
 		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
 		bool hurtfulColl = PlayerChar->getHitbox().checkCollision(shooter->getHitbox());
 		bool killingColl = PlayerChar->getHitbox().checkCollision(*shooter->getKillBox());
-		if (hurtfulColl || killingColl && !_currCollision) {
+		if (hurtfulColl || killingColl) {
 			if (!killingColl) {
 				PlayerChar->looseHealth();
 			}
@@ -116,11 +126,9 @@ void EnemyManager::checkForCollision() {
 				HighscoreManager->addToCurrentScore(ShooterPoints);
 			}
 			_shooters.erase(_shooters.begin() + i);
-			_currCollision = true;
+			_collCounter = 0;
 			return;
-		} else {
-			_currCollision = false;
-		}
+		} 
 
 		Projectile* proj = _shooters.at(i).getCurrentProjectile();
 		if (!proj->getStatus()) {
@@ -128,29 +136,21 @@ void EnemyManager::checkForCollision() {
 		}
 
 		if (PlayerChar->getHitbox().checkCollision(proj->getHitbox())) {
-			if (!_currCollision) {
-				PlayerChar->looseHealth();
-				proj->changeStatus(false);
-				_currCollision = true;
-				return;
-			}
-		} else {
-			_currCollision = false;
+			PlayerChar->looseHealth();
+			proj->changeStatus(false);
+			_collCounter = 0;
+			return;
 		}
 	}
 
 	for(int i = 0; i < _walkers.size(); i++) {
 		WalkingEnemy* walker = getWalkingEnemyAtVectorPos(i);
 		if (PlayerChar->getHitbox().checkCollision(walker->getHitbox())) {
-			if (!_currCollision) {
-				PlayerChar->looseHealth();
-				_walkers.erase(_walkers.begin() + i);
-				_currCollision = true;
-				return;
-			}
-		} else {
-			_currCollision = false;
-		}
+			PlayerChar->looseHealth();
+			_walkers.erase(_walkers.begin() + i);
+			_collCounter = 0;
+			return;
+		} 
 	}
 }
 

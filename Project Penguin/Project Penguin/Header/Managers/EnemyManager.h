@@ -14,13 +14,14 @@
 class EnemyManager {
 private:
 	static int MaxSpecialAmount;
+	static int MaxCollisionDowntime;
 	static int ShooterPoints;
 	static int ShooterProb;
 
 	std::vector<ShootingEnemy> _shooters;
 	std::vector<WalkingEnemy> _walkers;
-	
-	bool _currCollision = false;
+
+	int _collCounter = 0;
 
 public: 
 	static GridFacade* LevelFacade;
