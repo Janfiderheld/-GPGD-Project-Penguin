@@ -1,9 +1,47 @@
 #include <Gameplay/Character.h>
 
 /// <summary>
+/// Scale of the character
+/// </summary>
+glm::vec3 Character::Scale = glm::vec3(0.56f, 0.85f, 1.0f);
+
+/// <summary>
+/// Offset of the texture in relation to the origin.
+/// Can be calculated by subtracting the Scale from 1 and dividing by two
+/// </summary>
+glm::vec2 Character::TextureOffset = glm::vec2(0.22f, 0.075f);
+
+/// <summary>
+/// Initial speed in y direction for jumping
+/// </summary>
+float Character::JumpSpeed = 2.0f;
+
+/// <summary>
+/// speed for walking in x direction
+/// </summary>
+float Character::WalkSpeed = 2.0f;
+
+/// <summary>
+/// speed for moving the object in x direction in the air
+/// </summary>
+float Character::SideSpeedAir = 1.25f;
+
+/// <summary>
+/// Maximal Health of the player
+/// </summary>
+int Character::MaxHealth = 3;
+
+/// <summary>
 /// Reference to the InputManager, which saves which key is pressed.
 /// </summary>
 InputManager* Character::InputManager = nullptr;
+
+/// <summary>
+/// Returns the scale of the character
+/// </summary>
+glm::vec3 Character::getScale() {
+	return Scale;
+}
 
 /// <summary>
 /// Initializes the player character by setting the starting position, texture, bounding box and vertices.
@@ -210,4 +248,11 @@ int Character::getMaxHealth() {
 /// </summary>
 Texture* Character::getTexture() {
 	return _tex;
+}
+
+/// <summary>
+/// Returns the position with the texture offset for fitting drawing
+/// </summary>
+glm::vec3 Character::getTexturePosition() {
+	return glm::vec3(position.x - TextureOffset.x, position.y - TextureOffset.y, position.z);
 }

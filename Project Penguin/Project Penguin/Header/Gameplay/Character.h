@@ -9,11 +9,14 @@
 
 class Character : public MovingObject, public DrawableVertices {
 private:
-	const float JumpSpeed = 2.0f;
-	const float WalkSpeed = 2.0f;
-	const float SideSpeedAir = 1.25f;
+	static glm::vec3 Scale;
+	static glm::vec2 TextureOffset;
 	
-	const int MaxHealth = 3;	
+	static float JumpSpeed;
+	static float WalkSpeed;
+	static float SideSpeedAir;
+	
+	static int MaxHealth;
 	int _currentHealth = MaxHealth;
 	
 	bool _reachedEnd = false;
@@ -24,6 +27,7 @@ private:
 	
 public:
 	static InputManager* InputManager;
+	static glm::vec3 getScale();
 
 	Character(glm::vec3 pos, Texture* texture, AABB boundBox);
 
@@ -37,6 +41,7 @@ public:
 	int getCurrentHealth();
 	int getMaxHealth();
 	Texture* getTexture();
+	glm::vec3 getTexturePosition();
 };
 
 #endif // CHAR_HEADER

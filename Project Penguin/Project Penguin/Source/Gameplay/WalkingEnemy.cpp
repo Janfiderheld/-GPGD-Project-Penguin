@@ -42,3 +42,10 @@ WalkingEnemy::WalkingEnemy(glm::vec3 pos, AABB boundBox) :
 	DrawableVertices(boundBox.getMinX(), boundBox.getMinY(), boundBox.getMaxX(), boundBox.getMaxY()) {
 	
 }
+
+/// <summary>
+/// Returns the position with the texture offset for fitting drawing
+/// </summary>
+glm::vec3 WalkingEnemy::getTexturePosition() {
+	return glm::vec3(position.x - TextureOffset.x, position.y - TextureOffset.y, position.z);
+}

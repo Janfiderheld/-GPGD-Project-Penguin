@@ -56,8 +56,7 @@ int main(void) {
 
     // Character
     glm::vec3 charPos(1.0f, 3.0f, -10.0f);
-    glm::vec3 charScale(0.66f, 1.0f, 1.0f);
-    AABB charHitbox(charPos, charScale.y, charScale.x);
+    AABB charHitbox(charPos, Character::getScale().y, Character::getScale().x);
     Character character(charPos, &charText, charHitbox);
     MovingObject::LevelFacade = &levelFacade;
     Character::InputManager = &inpMan;
@@ -261,8 +260,8 @@ int main(void) {
 
             // draw character
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, character.getPosition());
-            model = glm::scale(model, charScale);
+            model = glm::translate(model, character.getTexturePosition());
+            model = glm::scale(model, Character::getScale());
             if (character.getCurrentSpeed().x < 0.0f) {
                 model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
             }
@@ -312,7 +311,7 @@ int main(void) {
     		for(int i = 0; i < enemyMan.getWalkerAmount(); i++) {
                 WalkingEnemy* tempWalker = enemyMan.getWalkingEnemyAtVectorPos(i);
                 glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, tempWalker->getPosition());
+                model = glm::translate(model, tempWalker->getTexturePosition());
                 model = glm::scale(model, WalkingEnemy::getScale());
                 if (tempWalker->getCurrentSpeed().x < 0.0f) {
                     model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));

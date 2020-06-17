@@ -15,6 +15,8 @@ public:
 
 	WalkingEnemy();
 	WalkingEnemy(glm::vec3 pos, AABB boundBox);
+
+	glm::vec3 getTexturePosition();
 };
 
 #endif // WALKENEMY_HEADER
