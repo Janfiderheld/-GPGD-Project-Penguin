@@ -7,19 +7,22 @@
 
 class BackgroundManager {
 private:
-	const int LayerAmount = 1;
+	const int LayerAmount = 2;
 
 	std::vector<BackgroundLayer> _layers;
 
-	void createLayers();
+	void createLayers(glm::vec2 startPos);
 	
 public:
-	BackgroundManager();
+	BackgroundManager(glm::vec2 startPos);
 
 	int getLayerAmount();
-	float getOffsetForLayer(int layerNo);
 	Texture* getTextureForLayer(int layerNo);
 	float* getVerticesForLayer(int layerNo);
+	glm::vec3 getPositionForLayer(int layerNo);
+	glm::vec3 getScaleForLayer(int layerNo);
+
+	void updateLayers(float camX);
 };
 
 #endif // BACKMAN_HEADER

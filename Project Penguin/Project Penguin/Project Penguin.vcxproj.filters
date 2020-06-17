@@ -79,6 +79,5 @@
     <None Include="Shaders\BasicFragmentShader.glsl" />
     <None Include="Shaders\BasicVertexShader.vert" />
     <None Include="Shaders\BasicFragmentShader.frag" />
-    <None Include="Shaders\ParallaxVertexShader.vert" />
   </ItemGroup>
 </Project>

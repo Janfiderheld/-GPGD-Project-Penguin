@@ -14,13 +14,15 @@ private:
 	int _layer;
 	
 public:
+	static glm::vec3 Scale;
+
 	BackgroundLayer();
 	BackgroundLayer(glm::vec2 pos, Texture toUse, int layer);
 
 	Texture getTexture();
 	glm::vec3 getPosition();
-
-	float getOffset();
+	
+	void upgradePosition(float camX);
 };
 
 #endif // BACKGROUND_HEADER

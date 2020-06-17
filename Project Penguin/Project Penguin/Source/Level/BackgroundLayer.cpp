@@ -3,13 +3,18 @@
 /// <summary>
 /// Factor by which each layers speed differentiates
 /// </summary>
-float BackgroundLayer::LayerSpeedFactor = 0.5;
+float BackgroundLayer::LayerSpeedFactor = 0.8;
+
+/// <summary>
+/// Scale of the Texture
+/// </summary>
+glm::vec3 BackgroundLayer::Scale = glm::vec3(40.0, 20.0f, 1.0f);
 
 /// <summary>
 /// Empty default constructor
 /// </summary>
-/// <returns></returns>
-BackgroundLayer::BackgroundLayer(): DrawableVertices(_position.x, _position.y, _position.x, _position.y) {
+BackgroundLayer::BackgroundLayer() :
+	DrawableVertices(_position.x, _position.y, _position.x, _position.y) {
 }
 
 /// <summary>
@@ -20,7 +25,6 @@ BackgroundLayer::BackgroundLayer(): DrawableVertices(_position.x, _position.y, _
 /// <param name="layer">number of this layer (0 = nearest to camera)</param>
 BackgroundLayer::BackgroundLayer(glm::vec2 pos, Texture toUse, int layer) : _background(toUse),
 	DrawableVertices(pos.x, pos.y, pos.x + toUse.getWidth(), pos.y + toUse.getHeight()) {
-	_z -= layer + 1;
 	_position = glm::vec3(pos, _z);
 	_layer = layer;
 }
@@ -40,8 +44,13 @@ glm::vec3 BackgroundLayer::getPosition() {
 }
 
 /// <summary>
-/// Calculates & returns the horizontal offset which is used when reading from the texture.
+/// Upgrades the position based on the camera position
 /// </summary>
-float BackgroundLayer::getOffset() {
-	return _layer * LayerSpeedFactor;
+/// <param name="camX">x position</param>
+void BackgroundLayer::upgradePosition(float camX) {
+	if(_layer == 0) {
+		_position.x = camX * LayerSpeedFactor;
+	} else {
+		_position.x = camX * (LayerSpeedFactor / _layer);
+	}	
 }

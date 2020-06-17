@@ -1,4 +1,5 @@
 #include <Technicals/UserInterface.h>
+#include <Managers/BackgroundManager.h>
 #include <Technicals/Shader.h>
 #include <Gameplay/Camera.h>
 #include <Gameplay/Character.h>
@@ -84,9 +85,13 @@ int main(void) {
     UserInterface::HighscoreManager = &highMan;
     UserInterface::CollectableManager = &collectMan;
 
+    // Backgrounds
+    glm::vec3 camP = glm::vec3(5.6f, 4.9f, 3.0f);
+    BackgroundManager backman(camP);
+	
     // Camera
     // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
-    Camera cam = Camera(glm::vec3(5.6f, 4.9f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), &character);
+    Camera cam = Camera(camP, glm::vec3(0.0f, 1.0f, 0.0f), &character);
 
     // 3x Positions 2x Texture
     float vertices[] = {
@@ -126,26 +131,41 @@ int main(void) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Wireframe for Debugging
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    	
+        // view transform
+        glm::mat4 view = cam.getViewMatrix();
+
+        // projection transform
+        glm::mat4 projection = glm::mat4(1.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float)UserInterface::Width / (float)UserInterface::Height, 0.1f, 100.0f);
+
+        shader.changeStatus(true);
+        shader.setMat4Uniform("view", view);
+        shader.setMat4Uniform("projection", projection);
+    	
+        backman.updateLayers(cam.getPosition().x);
+        for(int i = backman.getLayerAmount() - 1; i >= 0; i--) {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, backman.getPositionForLayer(i));
+            model = glm::scale(model, backman.getScaleForLayer(i));
+            shader.setMat4Uniform("model", model);
+
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBindTexture(GL_TEXTURE_2D, backman.getTextureForLayer(i)->TextureId);
+            glBufferSubData(VBO, 0, sizeof(backman.getVerticesForLayer(i)), backman.getVerticesForLayer(i));
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDisable(GL_BLEND);
+        }
+    	
         ui.processInput(&cam);
     	if(ui.hasGameStarted()) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
             cam.updatePosition(delta);
-            enemyMan.updateEnemies(delta);
-    		
-            // view transform
-            glm::mat4 view = cam.getViewMatrix();
-
-            // projection transform
-            glm::mat4 projection = glm::mat4(1.0f);
-            projection = glm::perspective(glm::radians(45.0f), (float)UserInterface::Width / (float)UserInterface::Height, 0.1f, 100.0f);
-
-            shader.changeStatus(true);
-            shader.setMat4Uniform("view", view);
-            shader.setMat4Uniform("projection", projection);
-
-            //// Wireframe for Debugging
-            //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            enemyMan.updateEnemies(delta);       
 
             // draw Level
             for (int x = 0; x < level.getWidth(); x++) {

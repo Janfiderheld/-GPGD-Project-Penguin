@@ -228,7 +228,6 @@
     <None Include="Shaders\BasicFragmentShader.glsl" />
     <None Include="Shaders\BasicVertexShader.glsl" />
     <None Include="Shaders\BasicVertexShader.vert" />
-    <None Include="Shaders\ParallaxVertexShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
