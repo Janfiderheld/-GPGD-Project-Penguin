@@ -49,10 +49,8 @@ Character* UserInterface::PlayerCharacter = nullptr;
 /// Draws the Main Menu
 /// </summary>
 void UserInterface::drawMainMenu() {
-    float differenceInY = Height / 20.0;
-	
-    ImGui::Begin("Project Penguin - Main Menu", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::Begin("Project Penguin - Main Menu", nullptr, _windowFlags);
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor( 22, 177, 103));
     if (ImGui::Button("New Game", UserInterfaceParameters::MainMenuButtonSize)) {
@@ -60,7 +58,7 @@ void UserInterface::drawMainMenu() {
     }
     ImGui::PopStyleColor(2);
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
 	if(ImGui::Button("Highscores", UserInterfaceParameters::MainMenuButtonSize)) {
@@ -68,7 +66,7 @@ void UserInterface::drawMainMenu() {
 	}
     ImGui::PopStyleColor(2);
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
 	if(ImGui::Button("Settings", UserInterfaceParameters::MainMenuButtonSize))	{
@@ -76,7 +74,7 @@ void UserInterface::drawMainMenu() {
 	}
     ImGui::PopStyleColor(2);
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
 	if(ImGui::Button("Quit", UserInterfaceParameters::MainMenuButtonSize)) {
@@ -90,13 +88,28 @@ void UserInterface::drawMainMenu() {
 /// Draws the Highscore-Menu
 /// </summary>
 void UserInterface::drawHighscoreMenu() {
-    ImGui::Begin("Project Penguin - Highscores", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
+    ImGui::Begin("Project Penguin - Highscores", nullptr, _windowFlags);
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
+    ImGui::Text("Current Highscores:");
+
     std::vector<Highscore> _highscores = HighscoreManager->getHighscores();
 	for(int i = 0; i < _highscores.size(); i++) {
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY()));
+        if (i == 0) {
+            ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 215, 0));
+        }
+        if (i == 1) {
+            ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(192, 192, 192));
+        }
+        if (i == 2) {
+            ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(184, 115, 51));
+        }
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY()));
         ImGui::Text(formatHighscore(_highscores.at(i)).c_str());
+        if (i == 0 || i == 1 || i == 2) {
+            ImGui::PopStyleColor(1);
+        }
 	}
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 50));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + 50));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
@@ -109,13 +122,11 @@ void UserInterface::drawHighscoreMenu() {
 /// <summary>
 /// Draws the Settings-Menu
 /// </summary>
-void UserInterface::drawSettingsMenu() {
-    float differenceInY = Height / 20.0;
-	
+void UserInterface::drawSettingsMenu() {	
 	ImGui::Begin("Project Penguin - Settings", nullptr, _windowFlags);	
     ImGui::Text("NOTE: The functionalities for these options will be \n added in the next milestone");
 	
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text("Choose a language:");
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleFlags, ImGui::GetCursorPosY()));
@@ -130,9 +141,9 @@ void UserInterface::drawSettingsMenu() {
         // TODO: Change language
     }
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text("Choose your resolution");
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
     const char* items[] = { "800x400", "1024x900", "1920x1080" };
     static int item_current = 0;
     if (ImGui::BeginCombo("", items[item_current], 0)) {
@@ -148,21 +159,21 @@ void UserInterface::drawSettingsMenu() {
         ImGui::EndCombo();
     }
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text("Change the Controls");
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
     static char jump[2];
     ImGui::InputText("Jump", jump, IM_ARRAYSIZE(jump));
 	
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
     static char left[2];
     ImGui::InputText("Walk left", left, IM_ARRAYSIZE(left));
 	
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 100, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
     static char right[2];
     ImGui::InputText("Walk right", right, IM_ARRAYSIZE(right));
 	
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + differenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
@@ -199,22 +210,22 @@ void UserInterface::drawIngameUI() {
 /// Draws a game over screen
 /// </summary>
 void UserInterface::drawGameOverScreen() {
-    ImGui::Begin("Project Penguin - Game Over", nullptr, _windowFlags | ImGuiWindowFlags_NoBackground);
+    ImGui::Begin("Project Penguin - Game Over", nullptr, _windowFlags);
     std::string curr = "Your Score: ";
     curr.append(HighscoreManager->getScoreAsString());
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text(curr.c_str());
     if(HighscoreManager->isNewHighscore())  {
         static char buf[HIGHSCORE_MAX_LENGTH] = "";
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 10));
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + 10));
         ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 255, 255));
         ImGui::Text("Enter Your Name");
         ImGui::PopStyleColor(1);
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons - 120, ImGui::GetCursorPosY() + 10));
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle - 100, ImGui::GetCursorPosY() + 10));
     	ImGui::InputText("", buf, HIGHSCORE_MAX_LENGTH);
     	
         ImGui::SameLine();    	
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons + 215, ImGui::GetCursorPosY()));
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle + 162, ImGui::GetCursorPosY()));
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     	if(ImGui::Button("Confirm")){
@@ -224,7 +235,7 @@ void UserInterface::drawGameOverScreen() {
     	}
         ImGui::PopStyleColor(2);
     }
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleButtons, ImGui::GetCursorPosY() + 10));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + 10));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
@@ -342,28 +353,30 @@ void UserInterface::drawUI() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    if (hasGameStarted()) {
-        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(Width, Height / 20), ImGuiCond_Always);
-    } else {
-        ImGui::SetNextWindowPos(ImVec2(Width / 4, Height / 4), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(UserInterfaceParameters::UiSize, ImGuiCond_Always);
-    }
-	
     switch(_currentMenu) {
     case MAIN:
+        ImGui::SetNextWindowPos(ImVec2(Width / 4, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::BigUiSize, ImGuiCond_Always);
         drawMainMenu();
         break;
     case HIGHSCORE:
+        ImGui::SetNextWindowPos(ImVec2(Width / 3, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::SmallUiSize, ImGuiCond_Always);
         drawHighscoreMenu();
         break;
     case SETTINGS:
+        ImGui::SetNextWindowPos(ImVec2(Width / 4, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::BigUiSize, ImGuiCond_Always);
         drawSettingsMenu();
         break;
     case GAME:
+        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(Width, Height / 20), ImGuiCond_Always);
         drawIngameUI();
         break;
     case GAME_OVER:
+        ImGui::SetNextWindowPos(ImVec2(Width / 3, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::SmallUiSize, ImGuiCond_Always);
         drawGameOverScreen();
         break;
     }
