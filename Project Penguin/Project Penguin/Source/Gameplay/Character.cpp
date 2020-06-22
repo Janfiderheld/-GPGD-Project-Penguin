@@ -95,6 +95,10 @@ void Character::calculateSpeed(float deltaTime) {
 		if (!hasTileLeft) {
 			setHorizontalSpeed(-WalkSpeed);
 		}
+		if(position.x <= 0.5f) {
+			setHorizontalSpeed(0.0f);
+		}
+		
 		if (InputManager->getInputStatus(LEFT) && InputManager->getInputStatus(RIGHT) ||
 			!InputManager->getInputStatus(LEFT) || hasTileLeft) {
 			status = STAND;
