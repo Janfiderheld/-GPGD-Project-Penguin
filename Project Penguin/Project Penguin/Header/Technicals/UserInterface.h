@@ -11,6 +11,7 @@
 #include <Managers/HighscoreManager.h>
 #include <Managers/CollectableManager.h>
 #include <Managers/EnemyManager.h>
+#include <Managers/SettingsManager.h>
 #include <Gameplay/Character.h>
 #include <Gameplay/Camera.h>
 #include <Technicals/UserInterfaceParameters.h>
@@ -32,6 +33,8 @@ private:
     float _lastFrame = 0.0f;
     float _deltaTime = 0.0f;
     bool _initStatus = false;
+    bool _firstSettingsFrame = true;
+    bool _wrongButtons = false;
 
     void drawMainMenu();
     void drawHighscoreMenu();
@@ -52,7 +55,8 @@ public:
     static CollectableManager* CollectableManager;
     static EnemyManager* EnemyManager;
     static Character* PlayerCharacter;
-
+    static SettingsManager* SettingsManager;
+	
     UserInterface();
 
     bool getInitStatus();

@@ -16,6 +16,11 @@ ImVec2 UserInterfaceParameters::SmallUiSize = ImVec2(UserInterface::Width / 2.5f
 ImVec2 UserInterfaceParameters::MainMenuButtonSize = ImVec2(150, 50);
 
 /// <summary>
+/// Size of the Save Button in the Settings Menu
+/// </summary>
+ImVec2 UserInterfaceParameters::SaveButtonSize = ImVec2(125, 35);
+
+/// <summary>
 /// Difference in y-direction between the different ui objects
 /// </summary>
 float UserInterfaceParameters::DifferenceInY = BigUiSize.y / 20.0f;

@@ -14,7 +14,9 @@
 
 int main(void) {
     UserInterface ui;
-
+    SettingsManager settings;
+    ui.SettingsManager = &settings;
+	
     if (!ui.getInitStatus()) {
         return -1;
     }

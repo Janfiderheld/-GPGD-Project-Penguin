@@ -46,6 +46,11 @@ EnemyManager* UserInterface::EnemyManager = nullptr;
 Character* UserInterface::PlayerCharacter = nullptr;
 
 /// <summary>
+/// Reference to the SettingsManager for loading and changing the settings
+/// </summary>
+SettingsManager* UserInterface::SettingsManager = nullptr;
+
+/// <summary>
 /// Draws the Main Menu
 /// </summary>
 void UserInterface::drawMainMenu() {
@@ -123,9 +128,7 @@ void UserInterface::drawHighscoreMenu() {
 /// Draws the Settings-Menu
 /// </summary>
 void UserInterface::drawSettingsMenu() {	
-	ImGui::Begin("Project Penguin - Settings", nullptr, _windowFlags);	
-    ImGui::Text("NOTE: The functionalities for these options will be \n added in the next milestone");
-	
+	ImGui::Begin("Project Penguin - Settings", nullptr, _windowFlags);		
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text("Choose a language:");
 	
@@ -163,24 +166,54 @@ void UserInterface::drawSettingsMenu() {
     ImGui::Text("Change the Controls");
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
     static char jump[2];
+	if(_firstSettingsFrame)	{
+        jump[0] = SettingsManager->getJumpButton();
+	}
     ImGui::InputText("Jump", jump, IM_ARRAYSIZE(jump));
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
     static char left[2];
+	if(_firstSettingsFrame) {
+        left[0] = SettingsManager->getLeftButton();
+	}
     ImGui::InputText("Walk left", left, IM_ARRAYSIZE(left));
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
     static char right[2];
+	if(_firstSettingsFrame)	{
+        right[0] = SettingsManager->getRightButton();
+	}
     ImGui::InputText("Walk right", right, IM_ARRAYSIZE(right));
+
+    if(_wrongButtons) {
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
+        ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 0, 0));
+        ImGui::Text("Error: Same key for two directions");
+        ImGui::PopStyleColor(1);
+    }
 	
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle + 10, ImGui::GetCursorPosY() + (UserInterfaceParameters::DifferenceInY / 2.0f)));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
+    if (ImGui::Button("Save", UserInterfaceParameters::SaveButtonSize)) {
+        _wrongButtons = jump[0] == left[0] || jump[0] == right[0] || left[0] == right[0];
+    	if(!_wrongButtons) {
+            SettingsManager->saveCurrentSettings(0, 0, jump[0], right[0], left[0]);
+    	}
+    }
+    ImGui::PopStyleColor(2);
+	
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + (UserInterfaceParameters::DifferenceInY / 2.0f)));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = MAIN;
     }
     ImGui::PopStyleColor(2);
+	
     ImGui::End();
+
+    _firstSettingsFrame = false;
 }
 
 /// <summary>
@@ -380,6 +413,8 @@ void UserInterface::drawUI() {
         drawGameOverScreen();
         break;
     }
+
+    _firstSettingsFrame = _currentMenu == SETTINGS ? _firstSettingsFrame : true;
 	
     ImGui::Render();
     int display_w, display_h;
@@ -421,8 +456,8 @@ void UserInterface::processInput(Camera* cam) {
     }
 	
     if (!PlayerCharacter->hasReachedEnd() && !PlayerCharacter->hasDied() && hasGameStarted()) {
-        InputManager->setInputStatus(LEFT, glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS);
-        InputManager->setInputStatus(RIGHT, glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS);
-        InputManager->setInputStatus(UP, glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS);
+        InputManager->setInputStatus(LEFT, glfwGetKey(_window, SettingsManager->getLeftButton()) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS);
+        InputManager->setInputStatus(RIGHT, glfwGetKey(_window, SettingsManager->getRightButton()) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS);
+        InputManager->setInputStatus(UP, glfwGetKey(_window, SettingsManager->getJumpButton()) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS);
     }    
 }

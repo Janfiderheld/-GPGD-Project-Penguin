@@ -10,6 +10,7 @@ public:
 	static ImVec2 SmallUiSize;
 	
 	static ImVec2 MainMenuButtonSize;
+	static ImVec2 SaveButtonSize;
 	static float DifferenceInY;
 	static float BigScreenMiddle;
 	static float SmallScreenMiddle;
