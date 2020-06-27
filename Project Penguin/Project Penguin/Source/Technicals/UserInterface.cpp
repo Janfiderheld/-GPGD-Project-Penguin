@@ -134,9 +134,9 @@ void UserInterface::drawSettingsMenu() {
         // TODO: Change language
     }
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text("Choose your resolution");
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
     static int currResolution = SettingsManager->getResolutionIndex();
     if (ImGui::BeginCombo("", SettingsManager->getResolutionAtPosition(currResolution), 0)) {
         for (int i = 0; i < RESOLUTIONS_NO; i++) {
@@ -151,23 +151,23 @@ void UserInterface::drawSettingsMenu() {
         ImGui::EndCombo();
     }
 
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text("Change the Controls");
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
     static char jump[2];
 	if(_firstSettingsFrame)	{
         jump[0] = SettingsManager->getJumpButton();
 	}
     ImGui::InputText("Jump", jump, IM_ARRAYSIZE(jump));
 	
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
     static char left[2];
 	if(_firstSettingsFrame) {
         left[0] = SettingsManager->getLeftButton();
 	}
     ImGui::InputText("Walk left", left, IM_ARRAYSIZE(left));
 	
-    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
     static char right[2];
 	if(_firstSettingsFrame)	{
         right[0] = SettingsManager->getRightButton();
@@ -175,7 +175,7 @@ void UserInterface::drawSettingsMenu() {
     ImGui::InputText("Walk right", right, IM_ARRAYSIZE(right));
 
     if(_wrongButtons) {
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
         ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 0, 0));
         ImGui::Text("Error: Same key for two directions");
         ImGui::PopStyleColor(1);
@@ -245,11 +245,10 @@ void UserInterface::drawGameOverScreen() {
         ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 255, 255));
         ImGui::Text("Enter Your Name");
         ImGui::PopStyleColor(1);
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle - 100, ImGui::GetCursorPosY() + 10));
+        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY() + 10));
     	ImGui::InputText("", buf, HIGHSCORE_MAX_LENGTH);
     	
         ImGui::SameLine();    	
-        ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle + 162, ImGui::GetCursorPosY()));
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     	if(ImGui::Button("Confirm")){
@@ -381,7 +380,7 @@ void UserInterface::drawUI() {
     switch(_currentMenu) {
     case MAIN:
         ImGui::SetNextWindowPos(UserInterfaceParameters::BigWindowPos, ImGuiCond_Always);
-        ImGui::SetNextWindowSize(UserInterfaceParameters::BigUiSize, ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::MainMenuUiSize, ImGuiCond_Always);
         drawMainMenu();
         break;
     case HIGHSCORE:
@@ -391,11 +390,11 @@ void UserInterface::drawUI() {
         break;
     case SETTINGS:
         ImGui::SetNextWindowPos(UserInterfaceParameters::BigWindowPos, ImGuiCond_Always);
-        ImGui::SetNextWindowSize(UserInterfaceParameters::BigUiSize, ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::SettingsUiSize, ImGuiCond_Always);
         drawSettingsMenu();
         break;
     case GAME:
-        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(ImVec2(5, 0), ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::IngameUiSize, ImGuiCond_Always);
         drawIngameUI();
         break;
