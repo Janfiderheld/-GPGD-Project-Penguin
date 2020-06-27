@@ -70,13 +70,45 @@ bool SettingsManager::saveToFile() {
 }
 
 /// <summary>
+/// Reads the localization from a file
+/// </summary>
+/// <returns>true if reading was successful</returns>
+bool SettingsManager::readFromLocalizationFile() {
+	std::string tempLocation = Location + (_settings.language == 0 ? EnglishFileName : GermanFileName);
+	std::ifstream in(tempLocation.c_str(), std::ios::in);
+	if (!in) {
+		return false;
+	}
+
+	try	{
+		std::string line;
+		while (std::getline(in, line)) {
+			std::istringstream is_line(line);
+			std::string key;
+			if (std::getline(is_line, key, '=')) {
+				std::string value;
+				if (std::getline(is_line, value)) {
+					_strings[key] = value;
+				}
+			}
+		}
+	} catch (const std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}	
+
+	in.close();
+	return in.good();
+}
+
+/// <summary>
 /// If a settings file exists, it will be loaded
-/// </summary>/// <returns></returns>
+/// </summary>
 SettingsManager::SettingsManager() {
 	std::ifstream loadFrom(FileName);
 	if ((bool)loadFrom) {
 		loadFromFile();
-	} 
+	}
+	readFromLocalizationFile();
 }
 
 /// <summary>
@@ -96,12 +128,29 @@ void SettingsManager::saveCurrentSettings(int lang, int res, int jump, int right
 	saveToFile();
 }
 
+/// <summary>
+/// Returns the index of the currently chosen language
+/// (0 for english, 1 for german)
+/// </summary>
 int SettingsManager::getLanguage() {
 	return _settings.language;
 }
 
+/// <summary>
+/// Sets the language and reloads the localization file accordingly
+/// </summary>
 void SettingsManager::setLanguage(int lang) {
-	_settings.language = lang;
+	if(_settings.language != lang) {
+		_settings.language = lang;
+		readFromLocalizationFile();
+	}
+}
+
+/// <summary>
+/// Returns the string with the given index as a char
+/// </summary>
+const char* SettingsManager::getStringForLanguage(int id) {
+	return _strings[std::to_string(id)].c_str();
 }
 
 /// <summary>

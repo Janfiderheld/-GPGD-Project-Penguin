@@ -6,10 +6,13 @@
 #define ASCII_SMALL_A 97
 #define ASCII_SMALL_Z 122
 #define RESOLUTIONS_NO 4
+#define STRING_NO 19
 
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <map>
 #include <GL/glfw3.h>
 
 struct Settings {
@@ -41,15 +44,21 @@ struct Settings {
 class SettingsManager {
 private:
 	const std::string FileName = "Settings.set";
-
+	const std::string Location = "../Assets/Localization/";
+	const std::string GermanFileName = "Deutsch.loc";
+	const std::string EnglishFileName = "English.loc";
+	
 	Settings _settings;
 
 	int _widths[RESOLUTIONS_NO] = { 800, 1024, 1440, 1920 };
 	int _heights[RESOLUTIONS_NO] = { 400, 768, 900, 1080 };
 
+	std::map<std::string, std::string> _strings;
+	
 	int checkAsciiConversion(int input);
 	bool loadFromFile();
 	bool saveToFile();
+	bool readFromLocalizationFile();
 	
 public:	
 	SettingsManager();
@@ -58,6 +67,7 @@ public:
 	
 	int getLanguage();
 	void setLanguage(int lang);
+	const char* getStringForLanguage(int id);
 
 	int getResolutionWidth();
 	int getResolutionHeight();

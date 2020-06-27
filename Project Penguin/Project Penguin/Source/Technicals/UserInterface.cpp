@@ -48,7 +48,7 @@ void UserInterface::drawMainMenu() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor( 22, 177, 103));
-    if (ImGui::Button("New Game", UserInterfaceParameters::MainMenuButtonSize)) {
+    if (ImGui::Button(SettingsManager->getStringForLanguage(0), UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = GAME;
     }
     ImGui::PopStyleColor(2);
@@ -56,7 +56,7 @@ void UserInterface::drawMainMenu() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
-	if(ImGui::Button("Highscores", UserInterfaceParameters::MainMenuButtonSize)) {
+	if(ImGui::Button(SettingsManager->getStringForLanguage(1), UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = HIGHSCORE;
 	}
     ImGui::PopStyleColor(2);
@@ -64,7 +64,7 @@ void UserInterface::drawMainMenu() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
-	if(ImGui::Button("Settings", UserInterfaceParameters::MainMenuButtonSize))	{
+	if(ImGui::Button(SettingsManager->getStringForLanguage(2), UserInterfaceParameters::MainMenuButtonSize))	{
         _currentMenu = SETTINGS;
 	}
     ImGui::PopStyleColor(2);
@@ -72,7 +72,7 @@ void UserInterface::drawMainMenu() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
-	if(ImGui::Button("Quit", UserInterfaceParameters::MainMenuButtonSize)) {
+	if(ImGui::Button(SettingsManager->getStringForLanguage(3), UserInterfaceParameters::MainMenuButtonSize)) {
         closeWindow();
 	}
     ImGui::PopStyleColor(2);
@@ -85,7 +85,7 @@ void UserInterface::drawMainMenu() {
 void UserInterface::drawHighscoreMenu() {
     ImGui::Begin("Project Penguin - Highscores", nullptr, _windowFlags);
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
-    ImGui::Text("Current Highscores:");
+    ImGui::Text(SettingsManager->getStringForLanguage(5));
 
     std::vector<Highscore> _highscores = HighscoreManager->getHighscores();
 	for(int i = 0; i < _highscores.size(); i++) {
@@ -107,7 +107,7 @@ void UserInterface::drawHighscoreMenu() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + 50));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
-    if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
+    if (ImGui::Button(SettingsManager->getStringForLanguage(4), UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = MAIN;
     }
     ImGui::PopStyleColor(2);
@@ -117,25 +117,35 @@ void UserInterface::drawHighscoreMenu() {
 /// <summary>
 /// Draws the Settings-Menu
 /// </summary>
-void UserInterface::drawSettingsMenu() {	
+void UserInterface::drawSettingsMenu() {
+    if(_firstSettingsFrame) {
+        _language = SettingsManager->getLanguage();
+    }
+	
 	ImGui::Begin("Project Penguin - Settings", nullptr, _windowFlags);		
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
-    ImGui::Text("Choose a language:");
+    ImGui::Text(SettingsManager->getStringForLanguage(6));
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleFlags, ImGui::GetCursorPosY()));
+    ImVec4 green = ImColor(0.0f, 1.0f, 0.0f);
+    ImVec4 red = ImColor(1.0f, 0.0f, 0.0f);
+    ImGui::PushStyleColor(ImGuiCol_Button, _language == 0 ? green : red);
 	if(ImGui::ImageButton((ImTextureID)(intptr_t)_ukFlag.TextureId, UserInterfaceParameters::LangFlagTextureSize,
         UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax))	{
-		// TODO: Change language
+        _language = 0;
 	}
+    ImGui::PopStyleColor(1);
     
     ImGui::SameLine();
+    ImGui::PushStyleColor(ImGuiCol_Button, _language == 1 ? green : red);
 	if(ImGui::ImageButton((ImTextureID)(intptr_t)_germanFlag.TextureId, UserInterfaceParameters::LangFlagTextureSize,
         UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax)) {
-        // TODO: Change language
+        _language = 1;
     }
+    ImGui::PopStyleColor(1);
 
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
-    ImGui::Text("Choose your resolution");
+    ImGui::Text(SettingsManager->getStringForLanguage(7));
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
     static int currResolution = SettingsManager->getResolutionIndex();
     if (ImGui::BeginCombo("", SettingsManager->getResolutionAtPosition(currResolution), 0)) {
@@ -152,42 +162,42 @@ void UserInterface::drawSettingsMenu() {
     }
 
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
-    ImGui::Text("Change the Controls");
+    ImGui::Text(SettingsManager->getStringForLanguage(8));
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
     static char jump[2];
 	if(_firstSettingsFrame)	{
         jump[0] = SettingsManager->getJumpButton();
 	}
-    ImGui::InputText("Jump", jump, IM_ARRAYSIZE(jump));
+    ImGui::InputText(SettingsManager->getStringForLanguage(9), jump, IM_ARRAYSIZE(jump));
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
     static char left[2];
 	if(_firstSettingsFrame) {
         left[0] = SettingsManager->getLeftButton();
 	}
-    ImGui::InputText("Walk left", left, IM_ARRAYSIZE(left));
+    ImGui::InputText(SettingsManager->getStringForLanguage(11), left, IM_ARRAYSIZE(left));
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
     static char right[2];
 	if(_firstSettingsFrame)	{
         right[0] = SettingsManager->getRightButton();
 	}
-    ImGui::InputText("Walk right", right, IM_ARRAYSIZE(right));
+    ImGui::InputText(SettingsManager->getStringForLanguage(10), right, IM_ARRAYSIZE(right));
 
     if(_wrongButtons) {
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
         ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 0, 0));
-        ImGui::Text("Error: Same key for two directions");
+        ImGui::Text(SettingsManager->getStringForLanguage(12));
         ImGui::PopStyleColor(1);
     }
 	
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle + 10, ImGui::GetCursorPosY() + (UserInterfaceParameters::DifferenceInY / 2.0f)));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
-    if (ImGui::Button("Save", UserInterfaceParameters::SaveButtonSize)) {
+    if (ImGui::Button(SettingsManager->getStringForLanguage(13), UserInterfaceParameters::SaveButtonSize)) {
         _wrongButtons = jump[0] == left[0] || jump[0] == right[0] || left[0] == right[0];
     	if(!_wrongButtons) {
-            SettingsManager->saveCurrentSettings(0, currResolution, jump[0], right[0], left[0]);
+            SettingsManager->saveCurrentSettings(_language, currResolution, jump[0], right[0], left[0]);
             UserInterfaceParameters::Recalculate();
             glfwSetWindowSize(_window, UserInterfaceParameters::Width, UserInterfaceParameters::Height);
     	}
@@ -197,11 +207,10 @@ void UserInterface::drawSettingsMenu() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + (UserInterfaceParameters::DifferenceInY / 2.0f)));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
-    if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
+    if (ImGui::Button(SettingsManager->getStringForLanguage(4), UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = MAIN;
     }
-    ImGui::PopStyleColor(2);
-	
+    ImGui::PopStyleColor(2);	
     ImGui::End();
 
     _firstSettingsFrame = false;
@@ -212,11 +221,11 @@ void UserInterface::drawSettingsMenu() {
 /// </summary>
 void UserInterface::drawIngameUI() {
     ImGui::Begin("Project Penguin - Game", nullptr, _windowFlags);
-    std::string curr = "Current Score: ";
+    std::string curr = SettingsManager->getStringForLanguage(14);
 	curr.append(HighscoreManager->getScoreAsString());
     ImGui::Text(curr.c_str());
     ImGui::SameLine();
-    ImGui::Text("\tHealth:");
+    ImGui::Text(SettingsManager->getStringForLanguage(15));
     for(int i = 0; i < PlayerCharacter->getCurrentHealth(); i++) {
         ImGui::SameLine();
         ImGui::Image((ImTextureID)(intptr_t)_heartFill.TextureId, UserInterfaceParameters::HeartTextureSize,
@@ -235,7 +244,7 @@ void UserInterface::drawIngameUI() {
 /// </summary>
 void UserInterface::drawGameOverScreen() {
     ImGui::Begin("Project Penguin - Game Over", nullptr, _windowFlags);
-    std::string curr = "Your Score: ";
+    std::string curr = SettingsManager->getStringForLanguage(16);
     curr.append(HighscoreManager->getScoreAsString());
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text(curr.c_str());
@@ -243,7 +252,7 @@ void UserInterface::drawGameOverScreen() {
         static char buf[HIGHSCORE_MAX_LENGTH] = "";
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + 10));
         ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 255, 255));
-        ImGui::Text("Enter Your Name");
+        ImGui::Text(SettingsManager->getStringForLanguage(17));
         ImGui::PopStyleColor(1);
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY() + 10));
     	ImGui::InputText("", buf, HIGHSCORE_MAX_LENGTH);
@@ -251,7 +260,7 @@ void UserInterface::drawGameOverScreen() {
         ImGui::SameLine();    	
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
-    	if(ImGui::Button("Confirm")){
+    	if(ImGui::Button(SettingsManager->getStringForLanguage(18))){
             HighscoreManager->addNewHighscore(buf);
             buf[0] = '\0';
             _currentMenu = HIGHSCORE;
@@ -261,7 +270,7 @@ void UserInterface::drawGameOverScreen() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + 10));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
-    if (ImGui::Button("Back to Main Menu", UserInterfaceParameters::MainMenuButtonSize)) {
+    if (ImGui::Button(SettingsManager->getStringForLanguage(4), UserInterfaceParameters::MainMenuButtonSize)) {
         HighscoreManager->resetCurrentScore();
         _currentMenu = MAIN;
     }

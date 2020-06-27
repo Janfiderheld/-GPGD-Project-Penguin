@@ -32,6 +32,8 @@ private:
 	
     float _lastFrame = 0.0f;
     float _deltaTime = 0.0f;
+    int _language = 0;
+	
     bool _initStatus = false;
     bool _firstSettingsFrame = true;
     bool _wrongButtons = false;
