@@ -46,9 +46,6 @@ private:
     std::string formatHighscore(Highscore toFormat);
 
 public:
-    static int Width;
-    static int Height;
-
     static GridFacade* LevelGrid;
     static InputManager* InputManager;
     static HighscoreManager* HighscoreManager;

@@ -1,14 +1,39 @@
 #include <Technicals/UserInterfaceParameters.h>
 
 /// <summary>
+/// Current width of the window
+/// </summary>
+int UserInterfaceParameters::Width = 1920;
+
+/// <summary>
+/// Current height of the window
+/// </summary>
+int UserInterfaceParameters::Height = 1080;
+
+/// <summary>
+/// Position of the top left corner of the big ui windows
+/// </summary>
+ImVec2 UserInterfaceParameters::BigWindowPos = ImVec2(Width / 4.0f, Height / 4.0f);
+
+/// <summary>
+/// Position of the top left corner of the small ui windows
+/// </summary>
+ImVec2 UserInterfaceParameters::SmallWindowPos = ImVec2(Width / 3.0f, Height / 4.0f);
+
+/// <summary>
 /// Size of the User Interface for the main and settings menu
 /// </summary>
-ImVec2 UserInterfaceParameters::BigUiSize = ImVec2(UserInterface::Width / 2.0f, UserInterface::Height / 1.85f);
+ImVec2 UserInterfaceParameters::BigUiSize = ImVec2(Width / 2.0f, Height / 1.85f);
 
 /// <summary>
 /// Size of the User Interface for the highscore menu and game over screen
 /// </summary>
-ImVec2 UserInterfaceParameters::SmallUiSize = ImVec2(UserInterface::Width / 2.5f, UserInterface::Height / 2.7f);
+ImVec2 UserInterfaceParameters::SmallUiSize = ImVec2(Width / 2.5f, Height / 2.7f);
+
+/// <summary>/// 
+/// Size of the User Interface during the game
+/// </summary>
+ImVec2 UserInterfaceParameters::IngameUiSize = ImVec2(Width, Height / 20.0f);
 
 /// <summary>
 /// Size of the buttons in the Main Menu
@@ -59,3 +84,28 @@ float UserInterfaceParameters::SmallScreenMiddle = SmallUiSize.x / 2.0f - MainMe
 /// Middle of the screen on the x-axis for the flag buttons in settings
 /// </summary>
 float UserInterfaceParameters::ScreenMiddleFlags = BigUiSize.x / 4.0f - LangFlagTextureSize.x / 6.0f;
+
+/// <summary>
+/// Settings Manager for updating the resolution
+/// </summary>
+SettingsManager* UserInterfaceParameters::SettingsManager = nullptr;
+
+/// <summary>
+/// Recalculates the UI Parameters after the resolution is changed
+/// </summary>
+void UserInterfaceParameters::Recalculate() {
+	Width = SettingsManager->getResolutionWidth();
+	Height = SettingsManager->getResolutionHeight();
+	
+	BigWindowPos = ImVec2(Width / 4.0f, Height / 4.0f);
+	SmallWindowPos = ImVec2(Width / 3.0f, Height / 4.0f);
+	
+	IngameUiSize = ImVec2(Width, Height / 20.0f);
+	BigUiSize = ImVec2(Width / 2.0f, Height / 1.85f);
+	SmallUiSize = ImVec2(Width / 2.5f, Height / 2.7f);
+	
+	DifferenceInY = BigUiSize.y / 20.0f;
+	BigScreenMiddle = BigUiSize.x / 2.0f - MainMenuButtonSize.x / 2.0f;
+	SmallScreenMiddle = SmallUiSize.x / 2.0f - MainMenuButtonSize.x / 2.0f;
+	ScreenMiddleFlags = BigUiSize.x / 4.0f - LangFlagTextureSize.x / 6.0f;
+}

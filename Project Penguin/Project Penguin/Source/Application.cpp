@@ -13,9 +13,10 @@
 #include <Gameplay/ShootingEnemy.h>
 
 int main(void) {
-    UserInterface ui;
     SettingsManager settings;
-    ui.SettingsManager = &settings;
+    UserInterface::SettingsManager = &settings;
+    UserInterfaceParameters::SettingsManager = &settings;
+    UserInterface ui;
 	
     if (!ui.getInitStatus()) {
         return -1;
@@ -140,7 +141,7 @@ int main(void) {
 
         // projection transform
         glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), (float)UserInterface::Width / (float)UserInterface::Height, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float)UserInterfaceParameters::Width / (float)UserInterfaceParameters::Height, 0.1f, 100.0f);
 
         shader.changeStatus(true);
         shader.setMat4Uniform("view", view);

@@ -2,12 +2,18 @@
 #define UI_PARAM_HEADER
 
 #include <imgui.h>
-#include <Technicals/UserInterface.h>
+#include <Managers/SettingsManager.h>
 
 class UserInterfaceParameters {
 public:
+	static int Width;
+	static int Height;
+	
+	static ImVec2 BigWindowPos;
+	static ImVec2 SmallWindowPos;
 	static ImVec2 BigUiSize;
 	static ImVec2 SmallUiSize;
+	static ImVec2 IngameUiSize;
 	
 	static ImVec2 MainMenuButtonSize;
 	static ImVec2 SaveButtonSize;
@@ -20,6 +26,9 @@ public:
 	static ImVec2 LangFlagTextureSize;
 	static ImVec2 TextureCoordMin;
 	static ImVec2 TextureCoordMax;
+
+	static SettingsManager* SettingsManager;
+	static void Recalculate();
 };
 
 #endif // UI_PARAM_HEADER

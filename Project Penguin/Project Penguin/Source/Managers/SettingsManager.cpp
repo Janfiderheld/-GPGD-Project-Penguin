@@ -104,14 +104,42 @@ void SettingsManager::setLanguage(int lang) {
 	_settings.language = lang;
 }
 
+/// <summary>
+/// Returns the width for the current resolution
+/// </summary>
 int SettingsManager::getResolutionWidth() {
-	return 0;
+	return _widths[_settings.resolution];
 }
 
+/// <summary>
+/// Returns the height for the current resolution
+/// </summary>
 int SettingsManager::getResolutionHeight() {
-	return 0;
+	return _heights[_settings.resolution];
 }
 
+/// <summary>
+/// Returns the current resolutions index
+/// </summary>
+int SettingsManager::getResolutionIndex() {
+	return _settings.resolution;
+}
+
+/// <summary>
+/// Returns the resolution for a given index as a char to display in combo box
+/// </summary>
+/// <param name="pos">index to get values for</param>
+char* SettingsManager::getResolutionAtPosition(int pos) {
+	std::string temp = std::to_string(_widths[pos]) + " x " + std::to_string(_heights[pos]);
+	char* toReturn = new char[temp.size() + 1];
+	std::copy(temp.begin(), temp.end(), toReturn);
+	toReturn[temp.size()] = '\0';
+	return toReturn;
+}
+
+/// <summary>
+/// Sets the index of the currently used resolution to the given parameter
+/// </summary>
 void SettingsManager::setResolution(int no) {
 	_settings.resolution = no;
 }

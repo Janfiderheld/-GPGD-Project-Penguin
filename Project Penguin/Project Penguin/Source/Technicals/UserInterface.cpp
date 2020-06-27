@@ -6,16 +6,6 @@
 const char* UserInterface::Title = "Project Penguin";
 
 /// <summary>
-/// Width of the application
-/// </summary>
-int UserInterface::Width = 1024;
-
-/// <summary>
-/// Height of the application
-/// </summary>
-int UserInterface::Height = 900;
-
-/// <summary>
 /// Facade of the level which is used to reset the level between games
 /// </summary>
 GridFacade* UserInterface::LevelGrid = nullptr;
@@ -147,15 +137,14 @@ void UserInterface::drawSettingsMenu() {
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::Text("Choose your resolution");
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle - 100, ImGui::GetCursorPosY()));
-    const char* items[] = { "800x400", "1024x900", "1920x1080" };
-    static int item_current = 0;
-    if (ImGui::BeginCombo("", items[item_current], 0)) {
-        for (int n = 0; n < IM_ARRAYSIZE(items); n++) {
-            const bool is_selected = (item_current == n);
-            if (ImGui::Selectable(items[n], is_selected)) {
-                item_current = n;
+    static int currResolution = SettingsManager->getResolutionIndex();
+    if (ImGui::BeginCombo("", SettingsManager->getResolutionAtPosition(currResolution), 0)) {
+        for (int i = 0; i < RESOLUTIONS_NO; i++) {
+            bool selected = (currResolution == i);
+            if (ImGui::Selectable(SettingsManager->getResolutionAtPosition(i), selected)) {
+                currResolution = i;
             }
-            if (is_selected) {
+            if (selected) {
                 ImGui::SetItemDefaultFocus();
             }
         }
@@ -198,7 +187,9 @@ void UserInterface::drawSettingsMenu() {
     if (ImGui::Button("Save", UserInterfaceParameters::SaveButtonSize)) {
         _wrongButtons = jump[0] == left[0] || jump[0] == right[0] || left[0] == right[0];
     	if(!_wrongButtons) {
-            SettingsManager->saveCurrentSettings(0, 0, jump[0], right[0], left[0]);
+            SettingsManager->saveCurrentSettings(0, currResolution, jump[0], right[0], left[0]);
+            UserInterfaceParameters::Recalculate();
+            glfwSetWindowSize(_window, UserInterfaceParameters::Width, UserInterfaceParameters::Height);
     	}
     }
     ImGui::PopStyleColor(2);
@@ -315,7 +306,8 @@ UserInterface::UserInterface() {
         return;
     }
 
-    _window = glfwCreateWindow(Width, Height, Title, NULL, NULL);
+    UserInterfaceParameters::Recalculate();
+    _window = glfwCreateWindow(UserInterfaceParameters::Width, UserInterfaceParameters::Height, Title, glfwGetPrimaryMonitor(), NULL);
     if (!_window)
     {
         glfwTerminate();
@@ -388,27 +380,27 @@ void UserInterface::drawUI() {
 
     switch(_currentMenu) {
     case MAIN:
-        ImGui::SetNextWindowPos(ImVec2(Width / 4, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(UserInterfaceParameters::BigWindowPos, ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::BigUiSize, ImGuiCond_Always);
         drawMainMenu();
         break;
     case HIGHSCORE:
-        ImGui::SetNextWindowPos(ImVec2(Width / 3, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(UserInterfaceParameters::SmallWindowPos, ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::SmallUiSize, ImGuiCond_Always);
         drawHighscoreMenu();
         break;
     case SETTINGS:
-        ImGui::SetNextWindowPos(ImVec2(Width / 4, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(UserInterfaceParameters::BigWindowPos, ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::BigUiSize, ImGuiCond_Always);
         drawSettingsMenu();
         break;
     case GAME:
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(Width, Height / 20), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::IngameUiSize, ImGuiCond_Always);
         drawIngameUI();
         break;
     case GAME_OVER:
-        ImGui::SetNextWindowPos(ImVec2(Width / 3, Height / 4), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(UserInterfaceParameters::SmallWindowPos, ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::SmallUiSize, ImGuiCond_Always);
         drawGameOverScreen();
         break;
