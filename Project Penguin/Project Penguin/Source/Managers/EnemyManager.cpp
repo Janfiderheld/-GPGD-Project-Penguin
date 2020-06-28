@@ -32,9 +32,14 @@ GridFacade* EnemyManager::LevelFacade = nullptr;
 Character* EnemyManager::PlayerChar = nullptr;
 
 /// <summary>
-/// Reference to the highscore manager
+/// Reference to the HighscoreManager
 /// </summary>
 HighscoreManager* EnemyManager::HighscoreManager = nullptr;
+
+/// <summary>
+/// Reference to the ThemeChangingManager, which sets the barrier
+/// </summary>
+ThemeChangingManager* EnemyManager::ThemeChanger = nullptr;
 
 /// <summary>
 /// Generates the enemies and sets the seed for the randomizer
@@ -49,7 +54,7 @@ EnemyManager::EnemyManager() {
 /// </summary>
 /// <param name="delta">time since last frame</param>
 void EnemyManager::updateEnemies(float delta) {
-	checkForCollision();
+	checkForCollisionWithPlayer();
 	
 	for(int i = 0; i < _shooters.size(); i++) {
 		_shooters.at(i).calculateSpeed(delta);
@@ -108,7 +113,7 @@ void EnemyManager::generateEnemies() {
 /// <summary>
 ///  Checks if the player collides with either an enemy or a projectile
 /// </summary>
-void EnemyManager::checkForCollision() {
+void EnemyManager::checkForCollisionWithPlayer() {
 	if(_collCounter <= MaxCollisionDowntime) {
 		_collCounter++;
 		return;

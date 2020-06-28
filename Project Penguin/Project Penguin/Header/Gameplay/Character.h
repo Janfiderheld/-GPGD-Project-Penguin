@@ -37,6 +37,7 @@ public:
 	bool hasReachedEnd();
 	bool hasDied();
 	void looseHealth();
+	void dieInstantly();
 	
 	int getCurrentHealth();
 	int getMaxHealth();

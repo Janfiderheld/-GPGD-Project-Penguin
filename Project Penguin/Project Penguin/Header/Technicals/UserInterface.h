@@ -12,6 +12,7 @@
 #include <Managers/CollectableManager.h>
 #include <Managers/EnemyManager.h>
 #include <Managers/SettingsManager.h>
+#include <Managers/ThemeChangingManager.h>
 #include <Gameplay/Character.h>
 #include <Gameplay/Camera.h>
 #include <Technicals/UserInterfaceParameters.h>
@@ -55,6 +56,7 @@ public:
     static EnemyManager* EnemyManager;
     static Character* PlayerCharacter;
     static SettingsManager* SettingsManager;
+    static ThemeChangingManager* ThemeChangingManager;
 	
     UserInterface();
 

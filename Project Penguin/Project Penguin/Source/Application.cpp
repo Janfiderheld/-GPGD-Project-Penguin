@@ -9,6 +9,7 @@
 #include <Managers/GridFacade.h>
 #include <Managers/CollectableManager.h>
 #include <Managers/EnemyManager.h>
+#include <Managers/ThemeChangingManager.h>
 #include <Gameplay/Collectable.h>
 #include <Gameplay/ShootingEnemy.h>
 
@@ -64,6 +65,9 @@ int main(void) {
     MovingObject::LevelFacade = &levelFacade;
     Character::InputManager = &inpMan;
     UserInterface::PlayerCharacter = &character;
+    ThemeChangingManager levelBarrier(glm::vec3(-5.0f, 0.0f, 0.0f));
+    ThemeChangingManager::PlayerChar = &character;
+    UserInterface::ThemeChangingManager = &levelBarrier;
 
     // Enemies
     Texture shooterTex("Snowman.png", GL_RGBA);
@@ -72,6 +76,7 @@ int main(void) {
     WalkingEnemy::WalkerTex = &walker;
     EnemyManager::LevelFacade = &levelFacade;
     EnemyManager::PlayerChar = &character;
+    EnemyManager::ThemeChanger = &levelBarrier;
     Projectile::ProjectileTex = &testProj;
     EnemyManager enemyMan;
     UserInterface::EnemyManager = &enemyMan;
@@ -167,7 +172,8 @@ int main(void) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
             cam.updatePosition(delta);
-            enemyMan.updateEnemies(delta);       
+            enemyMan.updateEnemies(delta);
+            levelBarrier.updatePosition(delta);
 
             // draw Level
             for (int x = 0; x < level.getWidth(); x++) {

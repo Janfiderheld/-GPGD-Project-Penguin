@@ -41,6 +41,11 @@ Character* UserInterface::PlayerCharacter = nullptr;
 SettingsManager* UserInterface::SettingsManager = nullptr;
 
 /// <summary>
+/// Reference to the ThemeChangingManager for reseting and checking for collisions
+/// </summary>
+ThemeChangingManager* UserInterface::ThemeChangingManager = nullptr;
+
+/// <summary>
 /// Draws the Main Menu
 /// </summary>
 void UserInterface::drawMainMenu() {
@@ -461,6 +466,7 @@ void UserInterface::processInput(Camera* cam) {
         _currentMenu = GAME_OVER;
         PlayerCharacter->reset();
         cam->reset();
+        ThemeChangingManager->reset();
     	
         LevelGrid->generateLevel();
         CollectableManager->generateCollectables();

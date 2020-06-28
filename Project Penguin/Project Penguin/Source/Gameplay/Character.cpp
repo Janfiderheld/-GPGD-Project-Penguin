@@ -234,6 +234,13 @@ void Character::looseHealth() {
 }
 
 /// <summary>
+/// Kills the player instantly by setting its current health to 0
+/// </summary>
+void Character::dieInstantly() {
+	_currentHealth = 0;
+}
+
+/// <summary>
 /// Returns the current health of the player
 /// </summary>
 int Character::getCurrentHealth() {

@@ -33,6 +33,7 @@
     <ClCompile Include="Source\Gameplay\Enemy.cpp" />
     <ClCompile Include="Source\Gameplay\WalkingEnemy.cpp" />
     <ClCompile Include="Source\Managers\SettingsManager.cpp" />
+    <ClCompile Include="Source\Managers\ThemeChangingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Level\LevelGrid.h" />
@@ -75,6 +76,7 @@
     <ClInclude Include="Header\Gameplay\Enemy.h" />
     <ClInclude Include="Header\Gameplay\WalkingEnemy.h" />
     <ClInclude Include="Header\Managers\SettingsManager.h" />
+    <ClInclude Include="Header\Managers\ThemeChangingManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />
