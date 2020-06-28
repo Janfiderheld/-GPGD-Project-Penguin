@@ -55,6 +55,7 @@ EnemyManager::EnemyManager() {
 /// <param name="delta">time since last frame</param>
 void EnemyManager::updateEnemies(float delta) {
 	checkForCollisionWithPlayer();
+	checkForCollisionWithBarrier();
 	
 	for(int i = 0; i < _shooters.size(); i++) {
 		_shooters.at(i).calculateSpeed(delta);
@@ -157,6 +158,32 @@ void EnemyManager::checkForCollisionWithPlayer() {
 			return;
 		} 
 	}
+}
+
+/// <summary>
+/// Checks if an enemy collides with the level changing barrier and kills the enemy accordingly
+/// </summary>
+void EnemyManager::checkForCollisionWithBarrier() {
+	for(int i = 0; i < _shooters.size(); i++) {
+		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
+		Projectile* proj = shooter->getCurrentProjectile();
+		
+		if(shooter->getPosition().x < ThemeChanger->getCurrentPosition()) {
+			proj->changeStatus(false);
+			_shooters.erase(_shooters.begin() + i);
+		}
+		if (proj->getPosition().x < ThemeChanger->getCurrentPosition()) {
+			proj->changeStatus(false);
+		}
+	}
+
+	for(int i = 0; i < _walkers.size(); i++) {
+		WalkingEnemy* walker = getWalkingEnemyAtVectorPos(i);
+
+		if(walker->getPosition().x < ThemeChanger->getCurrentPosition()) {
+			_walkers.erase(_walkers.begin() + i);
+		}
+	}	
 }
 
 /// <summary>

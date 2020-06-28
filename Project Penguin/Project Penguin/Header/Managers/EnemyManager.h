@@ -35,6 +35,7 @@ public:
 	void updateEnemies(float delta);	
 	void generateEnemies();
 	void checkForCollisionWithPlayer();
+	void checkForCollisionWithBarrier();
 
 	int getShooterAndProjectileAmount();
 	int getWalkerAmount();
