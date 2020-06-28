@@ -184,7 +184,7 @@ void UserInterface::drawSettingsMenu() {
 	}
     ImGui::InputText(SettingsManager->getStringForLanguage(10), right, IM_ARRAYSIZE(right));
 
-    if(_wrongButtons) {
+    if(_wrongInput) {
         ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
         ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 0, 0));
         ImGui::Text(SettingsManager->getStringForLanguage(12));
@@ -195,8 +195,8 @@ void UserInterface::drawSettingsMenu() {
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     if (ImGui::Button(SettingsManager->getStringForLanguage(13), UserInterfaceParameters::SaveButtonSize)) {
-        _wrongButtons = jump[0] == left[0] || jump[0] == right[0] || left[0] == right[0];
-    	if(!_wrongButtons) {
+        _wrongInput = jump[0] == left[0] || jump[0] == right[0] || left[0] == right[0];
+    	if(!_wrongInput) {
             SettingsManager->saveCurrentSettings(_language, currResolution, jump[0], right[0], left[0]);
             UserInterfaceParameters::Recalculate();
             glfwSetWindowSize(_window, UserInterfaceParameters::Width, UserInterfaceParameters::Height);
@@ -261,11 +261,23 @@ void UserInterface::drawGameOverScreen() {
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
     	if(ImGui::Button(SettingsManager->getStringForLanguage(18))){
-            HighscoreManager->addNewHighscore(buf);
-            buf[0] = '\0';
-            _currentMenu = HIGHSCORE;
+    		if(buf[0] != '\0') {
+                _wrongInput = false;
+                HighscoreManager->addNewHighscore(buf);
+                buf[0] = '\0';
+                _currentMenu = HIGHSCORE;
+    		} else {
+                _wrongInput = true;
+    		}
     	}
         ImGui::PopStyleColor(2);
+
+        if (_wrongInput) {
+            ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::ScreenMiddleInput, ImGui::GetCursorPosY()));
+            ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor(255, 0, 0));
+            ImGui::Text(SettingsManager->getStringForLanguage(19));
+            ImGui::PopStyleColor(1);
+        }
     }
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::SmallScreenMiddle, ImGui::GetCursorPosY() + 10));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
@@ -315,7 +327,7 @@ UserInterface::UserInterface() {
     }
 
     UserInterfaceParameters::Recalculate();
-    _window = glfwCreateWindow(UserInterfaceParameters::Width, UserInterfaceParameters::Height, Title, glfwGetPrimaryMonitor(), NULL);
+    _window = glfwCreateWindow(UserInterfaceParameters::Width, UserInterfaceParameters::Height, Title, 0, NULL);
     if (!_window)
     {
         glfwTerminate();

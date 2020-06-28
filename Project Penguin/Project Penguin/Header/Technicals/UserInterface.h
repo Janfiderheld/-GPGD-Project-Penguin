@@ -36,7 +36,7 @@ private:
 	
     bool _initStatus = false;
     bool _firstSettingsFrame = true;
-    bool _wrongButtons = false;
+    bool _wrongInput = false;
 
     void drawMainMenu();
     void drawHighscoreMenu();

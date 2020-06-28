@@ -12,8 +12,9 @@
 11=Walk left
 12=Error: Same key for different directions
 13=Save
-14=Current Score; 
+14=Current Score: 
 15=Health: 
 16=Your Score: 
 17=Enter your name
 18=Confirm
+19=Error: empty name
