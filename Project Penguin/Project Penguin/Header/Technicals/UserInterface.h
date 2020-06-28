@@ -49,12 +49,12 @@ private:
     std::string formatHighscore(Highscore toFormat);
 
 public:
-    static GridFacade* LevelGrid;
+    static GridFacade* LevelFacade;
     static InputManager* InputManager;
     static HighscoreManager* HighscoreManager;
     static CollectableManager* CollectableManager;
     static EnemyManager* EnemyManager;
-    static Character* PlayerCharacter;
+    static Character* PlayerChar;
     static SettingsManager* SettingsManager;
     static ThemeChangingManager* ThemeChangingManager;
 	

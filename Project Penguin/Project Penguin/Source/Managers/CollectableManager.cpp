@@ -18,7 +18,7 @@ GridFacade* CollectableManager::LevelFacade = nullptr;
 /// <summary>
 /// Manages the highscores and the current score
 /// </summary>
-HighscoreManager* CollectableManager::HighscoreMan = nullptr;
+HighscoreManager* CollectableManager::HighscoreManager = nullptr;
 
 /// <summary>
 /// Places a random number of collectables at random points throughout the levels.
@@ -81,7 +81,7 @@ void CollectableManager::checkForCollection(AABB playerHitbox) {
 		if (playerHitbox.checkCollision(temp->getHitbox())) {
 			temp->collect();
 			_collectables.erase(_collectables.begin() + i);
-			HighscoreMan->addToCurrentScore(temp->getScore());
+			HighscoreManager->addToCurrentScore(temp->getScore());
 		}
 	}
 }

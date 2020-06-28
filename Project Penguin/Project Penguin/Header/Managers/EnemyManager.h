@@ -28,7 +28,7 @@ public:
 	static GridFacade* LevelFacade;
 	static Character* PlayerChar;
 	static HighscoreManager* HighscoreManager;
-	static ThemeChangingManager* ThemeChanger;
+	static ThemeChangingManager* ThemeChangingManager;
 
 	EnemyManager();
 

@@ -8,7 +8,7 @@ const char* UserInterface::Title = "Project Penguin";
 /// <summary>
 /// Facade of the level which is used to reset the level between games
 /// </summary>
-GridFacade* UserInterface::LevelGrid = nullptr;
+GridFacade* UserInterface::LevelFacade = nullptr;
 
 /// <summary>
 /// Reference to the InputManager, which saves which key is pressed.
@@ -33,7 +33,7 @@ EnemyManager* UserInterface::EnemyManager = nullptr;
 /// <summary>
 /// Reference to the main character, which is controlled by the player
 /// </summary>
-Character* UserInterface::PlayerCharacter = nullptr;
+Character* UserInterface::PlayerChar = nullptr;
 
 /// <summary>
 /// Reference to the SettingsManager for loading and changing the settings
@@ -231,12 +231,12 @@ void UserInterface::drawIngameUI() {
     ImGui::Text(curr.c_str());
     ImGui::SameLine();
     ImGui::Text(SettingsManager->getStringForLanguage(15));
-    for(int i = 0; i < PlayerCharacter->getCurrentHealth(); i++) {
+    for(int i = 0; i < PlayerChar->getCurrentHealth(); i++) {
         ImGui::SameLine();
         ImGui::Image((ImTextureID)(intptr_t)_heartFill.TextureId, UserInterfaceParameters::HeartTextureSize,
             UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax);
     }
-	for(int i = 0; i < PlayerCharacter->getMaxHealth() - PlayerCharacter->getCurrentHealth(); i++) {
+	for(int i = 0; i < PlayerChar->getMaxHealth() - PlayerChar->getCurrentHealth(); i++) {
         ImGui::SameLine();
         ImGui::Image((ImTextureID)(intptr_t)_heartUnfill.TextureId, UserInterfaceParameters::HeartTextureSize,
             UserInterfaceParameters::TextureCoordMin, UserInterfaceParameters::TextureCoordMax);
@@ -462,18 +462,18 @@ void UserInterface::processInput(Camera* cam) {
         closeWindow();
     }
 
-    if(PlayerCharacter->hasDied() || PlayerCharacter->hasReachedEnd()) {
+    if(PlayerChar->hasDied() || PlayerChar->hasReachedEnd()) {
         _currentMenu = GAME_OVER;
-        PlayerCharacter->reset();
+        PlayerChar->reset();
         cam->reset();
         ThemeChangingManager->reset();
     	
-        LevelGrid->generateLevel();
+        LevelFacade->generateLevel();
         CollectableManager->generateCollectables();
         EnemyManager->generateEnemies();
     }
 	
-    if (!PlayerCharacter->hasReachedEnd() && !PlayerCharacter->hasDied() && hasGameStarted()) {
+    if (!PlayerChar->hasReachedEnd() && !PlayerChar->hasDied() && hasGameStarted()) {
         InputManager->setInputStatus(LEFT, glfwGetKey(_window, SettingsManager->getLeftButton()) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_LEFT) == GLFW_PRESS);
         InputManager->setInputStatus(RIGHT, glfwGetKey(_window, SettingsManager->getRightButton()) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_RIGHT) == GLFW_PRESS);
         InputManager->setInputStatus(UP, glfwGetKey(_window, SettingsManager->getJumpButton()) == GLFW_PRESS || glfwGetKey(_window, GLFW_KEY_UP) == GLFW_PRESS);

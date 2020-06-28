@@ -39,7 +39,7 @@ HighscoreManager* EnemyManager::HighscoreManager = nullptr;
 /// <summary>
 /// Reference to the ThemeChangingManager, which sets the barrier
 /// </summary>
-ThemeChangingManager* EnemyManager::ThemeChanger = nullptr;
+ThemeChangingManager* EnemyManager::ThemeChangingManager = nullptr;
 
 /// <summary>
 /// Generates the enemies and sets the seed for the randomizer
@@ -168,11 +168,11 @@ void EnemyManager::checkForCollisionWithBarrier() {
 		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
 		Projectile* proj = shooter->getCurrentProjectile();
 		
-		if(shooter->getPosition().x < ThemeChanger->getCurrentPosition()) {
+		if(shooter->getPosition().x < ThemeChangingManager->getCurrentPosition()) {
 			proj->changeStatus(false);
 			_shooters.erase(_shooters.begin() + i);
 		}
-		if (proj->getPosition().x < ThemeChanger->getCurrentPosition()) {
+		if (proj->getPosition().x < ThemeChangingManager->getCurrentPosition()) {
 			proj->changeStatus(false);
 		}
 	}
@@ -180,7 +180,7 @@ void EnemyManager::checkForCollisionWithBarrier() {
 	for(int i = 0; i < _walkers.size(); i++) {
 		WalkingEnemy* walker = getWalkingEnemyAtVectorPos(i);
 
-		if(walker->getPosition().x < ThemeChanger->getCurrentPosition()) {
+		if(walker->getPosition().x < ThemeChangingManager->getCurrentPosition()) {
 			_walkers.erase(_walkers.begin() + i);
 		}
 	}	

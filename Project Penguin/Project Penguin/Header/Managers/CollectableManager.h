@@ -16,7 +16,7 @@ private:
 
 public:
 	static GridFacade* LevelFacade;
-	static HighscoreManager* HighscoreMan;
+	static HighscoreManager* HighscoreManager;
 	
 	CollectableManager();
 

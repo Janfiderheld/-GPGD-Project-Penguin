@@ -1,37 +1,99 @@
-#include <Technicals/UserInterface.h>
-#include <Managers/BackgroundManager.h>
-#include <Technicals/Shader.h>
 #include <Gameplay/Camera.h>
 #include <Gameplay/Character.h>
-#include <Technicals/Texture.h>
-#include <Technicals/AABB.h>
+#include <Gameplay/Collectable.h>
+#include <Gameplay/ShootingEnemy.h>
+
 #include <Level/LevelGrid.h>
+
+#include <Managers/BackgroundManager.h>
 #include <Managers/GridFacade.h>
 #include <Managers/CollectableManager.h>
 #include <Managers/EnemyManager.h>
 #include <Managers/ThemeChangingManager.h>
-#include <Gameplay/Collectable.h>
-#include <Gameplay/ShootingEnemy.h>
+
+#include <Technicals/UserInterface.h>
+#include <Technicals/Shader.h>
+#include <Technicals/Texture.h>
+#include <Technicals/AABB.h>
 
 int main(void) {
+	// Settings
     SettingsManager settings;
     UserInterface::SettingsManager = &settings;
     UserInterfaceParameters::SettingsManager = &settings;
-    UserInterface ui;
-	
+
+    // User Interface
+    UserInterface ui;	
     if (!ui.getInitStatus()) {
         return -1;
     }
 
-    Shader shader("BasicVertexShader.vert", "BasicFragmentShader.frag");
-    Texture iceTileStart("IceTileStart.png", GL_RGBA);
-    Texture testProj("Projectile.png", GL_RGBA);
-    Texture iceTileStartBorder("IceTileStartLeftBorder.png", GL_RGBA);
+    // Input Manager
+    InputManager inputs;
+    UserInterface::InputManager = &inputs;
+    Character::InputManager = &inputs;
+	
+	// Level
+    LevelGrid level;
+    GridFacade levelFacade(&level);
+    UserInterface::LevelFacade = &levelFacade;
+    MovingObject::LevelFacade = &levelFacade;
+    CollectableManager::LevelFacade = &levelFacade;
+    EnemyManager::LevelFacade = &levelFacade;
 
+    // Character
+    Texture charText("Penguin.png", GL_RGBA);
+    glm::vec3 charPos(1.0f, 3.0f, -10.0f);
+    AABB charHitbox(charPos, Character::getScale().y, Character::getScale().x);
+    Character character(charPos, &charText, charHitbox);
+    UserInterface::PlayerChar = &character;
+    ThemeChangingManager::PlayerChar = &character;
+    EnemyManager::PlayerChar = &character;
+
+    // Theme Changing Manager
+    ThemeChangingManager levelBarrier(glm::vec3(-5.0f, 0.0f, 0.0f));
+    UserInterface::ThemeChangingManager = &levelBarrier;
+    EnemyManager::ThemeChangingManager = &levelBarrier;
+
+	// Enemies
+    Texture shooterTex("Snowman.png", GL_RGBA);
+    Texture walkerTex("WalkingEnemy.png", GL_RGBA);
+    Texture projectileTex("Projectile.png", GL_RGBA);
+    ShootingEnemy::ShooterTex = &shooterTex;
+    WalkingEnemy::WalkerTex = &walkerTex;
+    Projectile::ProjectileTex = &projectileTex;
+    EnemyManager enemies;
+    UserInterface::EnemyManager = &enemies;
+
+    // Highscores
+    HighscoreManager highscores;
+    EnemyManager::HighscoreManager = &highscores;
+    CollectableManager::HighscoreManager = &highscores;
+    UserInterface::HighscoreManager = &highscores;
+
+	// Collectables
+    Texture collectTex("Collectable.png", GL_RGBA);
+    Collectable::CollectTex = &collectTex;
+    CollectableManager collectables;
+    UserInterface::CollectableManager = &collectables;
+
+    // Backgrounds
+    glm::vec3 camPos = glm::vec3(5.6f, 4.9f, 3.0f);
+    BackgroundManager backgrounds(camPos);
+
+    // Camera
+    // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
+    Camera cam = Camera(camPos, glm::vec3(0.0f, 1.0f, 0.0f), &character);
+	
+	// Shader
+    Shader shader("BasicVertexShader.vert", "BasicFragmentShader.frag");
+
+	// Level Texture
+	// TODO: Instead of using 16 different textures use a shader
+    Texture iceTileStart("IceTileStart.png", GL_RGBA);   
+    Texture iceTileStartBorder("IceTileStartLeftBorder.png", GL_RGBA);
     Texture iceTileEnd("IceTileEnd.png", GL_RGBA);
     Texture iceTileEndBorder("IceTileEndBorderRight.png", GL_RGBA);
-
-    // TODO: Instead of using 16 different textures use a shader
     Texture iceTileNormal0("IceTileNormalBorder0.png", GL_RGBA);
     Texture iceTileNormal1("IceTileNormalBorder1.png", GL_RGBA);
     Texture iceTileNormal2("IceTileNormalBorder2.png", GL_RGBA);
@@ -47,60 +109,9 @@ int main(void) {
     Texture iceTileNormal12("IceTileNormalBorder12.png", GL_RGBA);
     Texture iceTileNormal13("IceTileNormalBorder13.png", GL_RGBA);
     Texture iceTileNormal14("IceTileNormalBorder14.png", GL_RGBA);
-    Texture iceTileNormal15("IceTileNormalBorder15.png", GL_RGBA);
+    Texture iceTileNormal15("IceTileNormalBorder15.png", GL_RGBA);    
 
-    Texture charText("Penguin.png", GL_RGBA);
-
-    // Level
-    LevelGrid level;
-    GridFacade levelFacade(&level); 
-    InputManager inpMan;
-    UserInterface::InputManager = &inpMan;
-    UserInterface::LevelGrid = &levelFacade;
-
-    // Character
-    glm::vec3 charPos(1.0f, 3.0f, -10.0f);
-    AABB charHitbox(charPos, Character::getScale().y, Character::getScale().x);
-    Character character(charPos, &charText, charHitbox);
-    MovingObject::LevelFacade = &levelFacade;
-    Character::InputManager = &inpMan;
-    UserInterface::PlayerCharacter = &character;
-    ThemeChangingManager levelBarrier(glm::vec3(-5.0f, 0.0f, 0.0f));
-    ThemeChangingManager::PlayerChar = &character;
-    UserInterface::ThemeChangingManager = &levelBarrier;
-
-    // Enemies
-    Texture shooterTex("Snowman.png", GL_RGBA);
-    Texture walker("WalkingEnemy.png", GL_RGBA);
-    ShootingEnemy::ShooterTex = &shooterTex;
-    WalkingEnemy::WalkerTex = &walker;
-    EnemyManager::LevelFacade = &levelFacade;
-    EnemyManager::PlayerChar = &character;
-    EnemyManager::ThemeChanger = &levelBarrier;
-    Projectile::ProjectileTex = &testProj;
-    EnemyManager enemyMan;
-    UserInterface::EnemyManager = &enemyMan;
-
-    // Collectables
-    HighscoreManager highMan;
-    EnemyManager::HighscoreManager = &highMan;
-    Texture collectTex("Collectable.png", GL_RGBA); 
-    Collectable::CollectTex = &collectTex;
-    CollectableManager::LevelFacade = &levelFacade;
-    CollectableManager::HighscoreMan = &highMan;
-    CollectableManager collectMan;
-    UserInterface::HighscoreManager = &highMan;
-    UserInterface::CollectableManager = &collectMan;
-
-    // Backgrounds
-    glm::vec3 camP = glm::vec3(5.6f, 4.9f, 3.0f);
-    BackgroundManager backman(camP);
-	
-    // Camera
-    // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
-    Camera cam = Camera(camP, glm::vec3(0.0f, 1.0f, 0.0f), &character);
-
-    // 3x Positions 2x Texture
+    // default vertices
     float vertices[] = {
          0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
          0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
@@ -108,28 +119,22 @@ int main(void) {
         -0.5f,  0.5f, 0.0f, 0.0f, 1.0f      
     };
 
+    // Indices for vertices
     unsigned int indices[] = {
         0, 1, 3,
         1, 2, 3
     };
 
-    // fill Vertex Buffer 
-    unsigned int VBO, VAO, EBO;
-    glGenVertexArrays(1, &VAO);
+    // Vertex Buffer Object
+    unsigned int VBO, EBO;
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-    glBindVertexArray(VAO);
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // position
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);	
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    // textures
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
@@ -152,17 +157,17 @@ int main(void) {
         shader.setMat4Uniform("view", view);
         shader.setMat4Uniform("projection", projection);
     	
-        backman.updateLayers(cam.getPosition().x);
-        for(int i = backman.getLayerAmount() - 1; i >= 0; i--) {
+        backgrounds.updateLayers(cam.getPosition().x);
+        for(int i = backgrounds.getLayerAmount() - 1; i >= 0; i--) {
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, backman.getPositionForLayer(i));
-            model = glm::scale(model, backman.getScaleForLayer(i));
+            model = glm::translate(model, backgrounds.getPositionForLayer(i));
+            model = glm::scale(model, backgrounds.getScaleForLayer(i));
             shader.setMat4Uniform("model", model);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glBindTexture(GL_TEXTURE_2D, backman.getTextureForLayer(i)->TextureId);
-            glBufferSubData(VBO, 0, sizeof(backman.getVerticesForLayer(i)), backman.getVerticesForLayer(i));
+            glBindTexture(GL_TEXTURE_2D, backgrounds.getTextureForLayer(i)->TextureId);
+            glBufferSubData(VBO, 0, sizeof(backgrounds.getVerticesForLayer(i)), backgrounds.getVerticesForLayer(i));
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glDisable(GL_BLEND);
         }
@@ -172,7 +177,7 @@ int main(void) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
             cam.updatePosition(delta);
-            enemyMan.updateEnemies(delta);
+            enemies.updateEnemies(delta);
             levelBarrier.updatePosition(delta);
 
             // draw Level
@@ -284,8 +289,8 @@ int main(void) {
             glDisable(GL_BLEND);
 
             // draw enemies
-            for (int i = 0; i < enemyMan.getShooterAndProjectileAmount(); i++) {
-                Projectile* tempProj = enemyMan.getProjectileAtVectorPos(i);
+            for (int i = 0; i < enemies.getShooterAndProjectileAmount(); i++) {
+                Projectile* tempProj = enemies.getProjectileAtVectorPos(i);
                 if (tempProj != NULL && tempProj->getStatus()) {
                     model = glm::mat4(1.0f);
                     model = glm::translate(model, tempProj->getPosition());
@@ -300,7 +305,7 @@ int main(void) {
                     glDisable(GL_BLEND);
                 }
             	
-                ShootingEnemy* tempShoot = enemyMan.getShootingEnemyAtVectorPos(i);
+                ShootingEnemy* tempShoot = enemies.getShootingEnemyAtVectorPos(i);
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, tempShoot->getPosition());
                 model = glm::scale(model, ShootingEnemy::getScale());
@@ -317,8 +322,8 @@ int main(void) {
                 glDisable(GL_BLEND);                
             }
 
-    		for(int i = 0; i < enemyMan.getWalkerAmount(); i++) {
-                WalkingEnemy* tempWalker = enemyMan.getWalkingEnemyAtVectorPos(i);
+    		for(int i = 0; i < enemies.getWalkerAmount(); i++) {
+                WalkingEnemy* tempWalker = enemies.getWalkingEnemyAtVectorPos(i);
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, tempWalker->getTexturePosition());
                 model = glm::scale(model, WalkingEnemy::getScale());
@@ -336,17 +341,17 @@ int main(void) {
     		}
 
     		// draw Collectables
-            collectMan.checkForCollection(character.getHitbox());
-            for (int i = 0; i < collectMan.getAmountOfCollectables(); i++) {
+            collectables.checkForCollection(character.getHitbox());
+            for (int i = 0; i < collectables.getAmountOfCollectables(); i++) {
                 glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, collectMan.getCollectableAtPosition(i)->getPosition());
-                model = glm::scale(model, collectMan.getCollectableAtPosition(i)->getScale());
+                model = glm::translate(model, collectables.getCollectableAtPosition(i)->getPosition());
+                model = glm::scale(model, collectables.getCollectableAtPosition(i)->getScale());
                 shader.setMat4Uniform("model", model);
 
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 glBindTexture(GL_TEXTURE_2D, Collectable::CollectTex->TextureId);
-                glBufferSubData(VBO, 0, sizeof(collectMan.getCollectableAtPosition(i)->getVertices()), collectMan.getCollectableAtPosition(i)->getVertices());
+                glBufferSubData(VBO, 0, sizeof(collectables.getCollectableAtPosition(i)->getVertices()), collectables.getCollectableAtPosition(i)->getVertices());
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 glDisable(GL_BLEND);
             }
@@ -357,7 +362,6 @@ int main(void) {
         glfwPollEvents();
     }
 
-    glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     shader.changeStatus(false);
     ui.cleanUp();
