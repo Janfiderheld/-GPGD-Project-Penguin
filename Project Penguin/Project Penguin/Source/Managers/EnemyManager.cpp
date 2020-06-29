@@ -168,11 +168,11 @@ void EnemyManager::checkForCollisionWithBarrier() {
 		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
 		Projectile* proj = shooter->getCurrentProjectile();
 		
-		if(shooter->getPosition().x < ThemeChangingManager->getCurrentPosition()) {
+		if(shooter->getPosition().x < ThemeChangingManager->getCurrentX()) {
 			proj->changeStatus(false);
 			_shooters.erase(_shooters.begin() + i);
 		}
-		if (proj->getPosition().x < ThemeChangingManager->getCurrentPosition()) {
+		if (proj->getPosition().x < ThemeChangingManager->getCurrentX()) {
 			proj->changeStatus(false);
 		}
 	}
@@ -180,7 +180,7 @@ void EnemyManager::checkForCollisionWithBarrier() {
 	for(int i = 0; i < _walkers.size(); i++) {
 		WalkingEnemy* walker = getWalkingEnemyAtVectorPos(i);
 
-		if(walker->getPosition().x < ThemeChangingManager->getCurrentPosition()) {
+		if(walker->getPosition().x < ThemeChangingManager->getCurrentX()) {
 			_walkers.erase(_walkers.begin() + i);
 		}
 	}	

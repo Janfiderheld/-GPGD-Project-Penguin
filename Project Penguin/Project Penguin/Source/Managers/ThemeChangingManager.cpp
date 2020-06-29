@@ -43,6 +43,13 @@ void ThemeChangingManager::reset() {
 /// Returns the current position on the x-axis of the barrier
 /// </summary>
 /// <returns></returns>
-float ThemeChangingManager::getCurrentPosition() {
+float ThemeChangingManager::getCurrentX() {
 	return _position.x;
+}
+
+/// <summary>
+/// Returns the current position
+/// </summary>
+glm::vec3 ThemeChangingManager::getPosition() {
+	return _position;
 }

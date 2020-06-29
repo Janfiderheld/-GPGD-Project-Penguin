@@ -22,6 +22,7 @@ public:
     void changeStatus(bool activate);
     void setMat4Uniform(const std::string& name, glm::mat4 value) const;
     void setFloatUniform(const std::string& name, float value) const;
+    void setBoolUniform(const std::string& name, bool value) const;
 };
 
 #endif // SHADER_HEADER

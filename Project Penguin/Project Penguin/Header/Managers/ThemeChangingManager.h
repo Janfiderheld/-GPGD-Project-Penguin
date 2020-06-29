@@ -7,7 +7,7 @@
 
 class ThemeChangingManager : public IResetable {
 private:
-	const float MovementSpeed = 0.75f;
+	const float MovementSpeed = 0.85f;
 	
 	glm::vec3 _position;
 
@@ -20,7 +20,8 @@ public:
 	void checkForPlayerCollision();
 	void reset() override;
 
-	float getCurrentPosition();	
+	float getCurrentX();
+	glm::vec3 getPosition();
 };
 
 #endif // THEME_CHANGER_HEADER

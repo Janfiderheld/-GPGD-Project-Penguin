@@ -20,7 +20,7 @@
 class UserInterface {
 private:
     static const char* Title;
-    const char* glsl_version = "#version 330";
+    const char* glsl_version = "#version 330 core";
 
     GLFWwindow* _window;
     MenuType _currentMenu = MAIN;

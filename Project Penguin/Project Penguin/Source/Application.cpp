@@ -51,7 +51,7 @@ int main(void) {
     EnemyManager::PlayerChar = &character;
 
     // Theme Changing Manager
-    ThemeChangingManager levelBarrier(glm::vec3(-5.0f, 0.0f, 0.0f));
+    ThemeChangingManager levelBarrier(glm::vec3(-5.0f, 0.0f, -10.0f));
     UserInterface::ThemeChangingManager = &levelBarrier;
     EnemyManager::ThemeChangingManager = &levelBarrier;
 
@@ -86,7 +86,7 @@ int main(void) {
     Camera cam = Camera(camPos, glm::vec3(0.0f, 1.0f, 0.0f), &character);
 	
 	// Shader
-    Shader shader("BasicVertexShader.vert", "BasicFragmentShader.frag");
+    Shader textureShader("SimpleTexture.vert", "SimpleTexture.frag");
 
 	// Level Texture
 	// TODO: Instead of using 16 different textures use a shader
@@ -153,16 +153,17 @@ int main(void) {
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), (float)UserInterfaceParameters::Width / (float)UserInterfaceParameters::Height, 0.1f, 100.0f);
 
-        shader.changeStatus(true);
-        shader.setMat4Uniform("view", view);
-        shader.setMat4Uniform("projection", projection);
+        textureShader.changeStatus(true);
+        textureShader.setMat4Uniform("view", view);
+        textureShader.setMat4Uniform("projection", projection);
+        textureShader.setBoolUniform("drawTexture", true);
     	
         backgrounds.updateLayers(cam.getPosition().x);
         for(int i = backgrounds.getLayerAmount() - 1; i >= 0; i--) {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, backgrounds.getPositionForLayer(i));
             model = glm::scale(model, backgrounds.getScaleForLayer(i));
-            shader.setMat4Uniform("model", model);
+            textureShader.setMat4Uniform("model", model);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -264,7 +265,7 @@ int main(void) {
                         // model transform
                         glm::mat4 model = glm::mat4(1.0f);
                         model = glm::translate(model, currTile.getPosition());
-                        shader.setMat4Uniform("model", model);
+                        textureShader.setMat4Uniform("model", model);
 
                         glBufferSubData(VBO, 0, sizeof(currTile.getVertices()), currTile.getVertices());
                         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -279,7 +280,7 @@ int main(void) {
             if (character.getCurrentSpeed().x < 0.0f) {
                 model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
             }
-            shader.setMat4Uniform("model", model);
+            textureShader.setMat4Uniform("model", model);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -295,7 +296,7 @@ int main(void) {
                     model = glm::mat4(1.0f);
                     model = glm::translate(model, tempProj->getPosition());
                     model = glm::scale(model, tempProj->Scale);
-                    shader.setMat4Uniform("model", model);
+                    textureShader.setMat4Uniform("model", model);
 
                     glEnable(GL_BLEND);
                     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -312,7 +313,7 @@ int main(void) {
                 if (tempShoot->getCurrentSpeed().x < 0.0f) {
                     model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
                 }
-                shader.setMat4Uniform("model", model);
+                textureShader.setMat4Uniform("model", model);
 
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -330,7 +331,7 @@ int main(void) {
                 if (tempWalker->getCurrentSpeed().x < 0.0f) {
                     model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
                 }
-                shader.setMat4Uniform("model", model);
+                textureShader.setMat4Uniform("model", model);
 
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -346,7 +347,7 @@ int main(void) {
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, collectables.getCollectableAtPosition(i)->getPosition());
                 model = glm::scale(model, collectables.getCollectableAtPosition(i)->getScale());
-                shader.setMat4Uniform("model", model);
+                textureShader.setMat4Uniform("model", model);
 
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -355,15 +356,34 @@ int main(void) {
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 glDisable(GL_BLEND);
             }
+
+    		// draw Theme Changing
+            GLfloat lineVertices[] = {
+                levelBarrier.getCurrentX(), 0, -10,
+            	levelBarrier.getCurrentX(), 0, -10
+            };
+    		
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, levelBarrier.getPosition());
+            model = glm::scale(model, glm::vec3(-1.0f, 45.0f, 1.0f));
+            textureShader.setMat4Uniform("model", model);
+            textureShader.setBoolUniform("drawTexture", false);
+
+            glLineWidth(8.0f);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBufferSubData(VBO, 0, sizeof(lineVertices), lineVertices);
+            glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);
+            glDisable(GL_BLEND);
     	}
-    	
+
         ui.drawUI();
         glfwSwapBuffers(ui.getWindowPointer());
         glfwPollEvents();
     }
 
     glDeleteBuffers(1, &VBO);
-    shader.changeStatus(false);
+    textureShader.changeStatus(false);
     ui.cleanUp();
     return 0;
 }

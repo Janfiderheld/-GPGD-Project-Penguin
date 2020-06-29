@@ -228,10 +228,10 @@
     <ClInclude Include="Header\Gameplay\WalkingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\BasicFragmentShader.frag" />
+    <None Include="Shaders\SimpleTexture.frag" />
     <None Include="Shaders\BasicFragmentShader.glsl" />
     <None Include="Shaders\BasicVertexShader.glsl" />
-    <None Include="Shaders\BasicVertexShader.vert" />
+    <None Include="Shaders\SimpleTexture.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
