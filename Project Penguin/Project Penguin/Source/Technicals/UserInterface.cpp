@@ -332,7 +332,7 @@ UserInterface::UserInterface() {
     }
 
     UserInterfaceParameters::Recalculate();
-    _window = glfwCreateWindow(UserInterfaceParameters::Width, UserInterfaceParameters::Height, Title, 0, NULL);
+    _window = glfwCreateWindow(UserInterfaceParameters::Width, UserInterfaceParameters::Height, Title, glfwGetPrimaryMonitor(), NULL);
     if (!_window)
     {
         glfwTerminate();
