@@ -61,10 +61,12 @@ Character::Character(glm::vec3 pos, Texture* texture, AABB boundBox) :
 /// </summary>
 /// <param name="deltaTime">time since last frame</param>
 void Character::calculateSpeed(float deltaTime) {
-	if(_rechedPitBottom || _reachedEnd)	{
+	if(_reachedPitBottom || _reachedEnd)	{
 		setCompleteSpeed(glm::vec3(0.0f));
 		return;
 	}
+
+	_atLeftLevelEnd = position.x <= 0.5f;
 	
 	switch (status)	{
 	case STAND:
@@ -95,7 +97,7 @@ void Character::calculateSpeed(float deltaTime) {
 		if (!hasTileLeft) {
 			setHorizontalSpeed(-WalkSpeed);
 		}
-		if(position.x <= 0.5f) {
+		if(_atLeftLevelEnd) {
 			setHorizontalSpeed(0.0f);
 		}
 		
@@ -155,7 +157,7 @@ void Character::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(speed.y + Gravity * deltaTime);
 		setVerticalSpeed(glm::max(speed.y, MaxFallingSpeed));
 
-		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) && !hasTileLeft) {
+		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) && !hasTileLeft && !_atLeftLevelEnd) {
 			setHorizontalSpeed(-SideSpeedAir);
 		} else if(InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT) && !hasTileRight) {
 			setHorizontalSpeed(SideSpeedAir);
@@ -196,7 +198,7 @@ void Character::calculateSpeed(float deltaTime) {
 /// </summary>
 void Character::reset() {
 	MovingObject::reset();
-	_rechedPitBottom = false;
+	_reachedPitBottom = false;
 	_reachedEnd = false;
 	_currentHealth = MaxHealth;
 }
@@ -206,7 +208,7 @@ void Character::reset() {
 /// </summary>
 void Character::checkForPitBottom() {
 	if(round(position.y) <= 0.0f) {
-		_rechedPitBottom = true;
+		_reachedPitBottom = true;
 	}
 }
 
@@ -221,7 +223,7 @@ bool Character::hasReachedEnd() {
 /// Returns true if the character has died either by loosing all its health or by reaching the bottom of a pit
 /// </summary>
 bool Character::hasDied() {
-	return _rechedPitBottom || _currentHealth <= 0;
+	return _reachedPitBottom || _currentHealth <= 0;
 }
 
 /// <summary>

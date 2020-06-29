@@ -20,7 +20,9 @@ private:
 	int _currentHealth = MaxHealth;
 	
 	bool _reachedEnd = false;
-	bool _rechedPitBottom = false;
+	bool _reachedPitBottom = false;
+	bool _atLeftLevelEnd = false;
+	
 	Texture* _tex;
 	
 	void checkForPitBottom();
