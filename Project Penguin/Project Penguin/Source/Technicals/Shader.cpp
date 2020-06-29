@@ -178,3 +178,12 @@ void Shader::setFloatUniform(const std::string& name, float value) const {
 void Shader::setBoolUniform(const std::string& name, bool value) const {
 	glUniform1i(glGetUniformLocation(ProgramId, name.c_str()), value);
 }
+
+/// <summary>
+/// Sets an int uniform value for the shaders of this object to the given value
+/// </summary>
+/// <param name="name">Name of the uniform parameter</param>
+/// <param name="value">value to set</param>
+void Shader::setIntUniform(const std::string& name, int value) const {
+	glUniform1i(glGetUniformLocation(ProgramId, name.c_str()), value);
+}
