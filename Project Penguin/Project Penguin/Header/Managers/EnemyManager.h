@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <random>
+#include <EnemyType.h>
 #include <Gameplay/ShootingEnemy.h>
 #include <Gameplay/WalkingEnemy.h>
 #include <Gameplay/Projectile.h>
@@ -32,10 +33,10 @@ public:
 
 	EnemyManager();
 
-	void updateEnemies(float delta);	
+	void updateEnemies(float delta, glm::mat4 view, glm::mat4 proj);	
 	void generateEnemies();
-	void checkForCollisionWithPlayer();
-	void checkForCollisionWithBarrier();
+	bool checkForCollisionWithPlayer(int index, EnemyType type);
+	bool checkForCollisionWithBarrier(int index, EnemyType type);
 
 	int getShooterAndProjectileAmount();
 	int getWalkerAmount();

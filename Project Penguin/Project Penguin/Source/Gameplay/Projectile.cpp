@@ -80,6 +80,26 @@ bool Projectile::getStatus() {
 }
 
 /// <summary>
+/// Checks if this projectile object is inside the view frustum of the camera with the given view matrix.
+/// This is used to optimize the performance and only calculate the position and collision for projectile who can be seen
+///</summary>
+/// <param name="view">view matrix of the camera</param>
+/// <param name="proj">projection matrix of the application</param>
+/// <returns>true if this projectile is inside the view frustum</returns>
+bool Projectile::checkWithCameraArea(glm::mat4 view, glm::mat4 proj) {
+	glm::vec4 posInClip = proj * view * glm::vec4(position, 1.0f);
+	glm::vec3 posDehom = glm::vec3(posInClip.x / posInClip.w, posInClip.y / posInClip.w, posInClip.z / posInClip.w);
+
+	if (posDehom.x <= 1.0f && posDehom.x >= -1.0f &&
+		posDehom.y <= 1.0f && posDehom.y >= -1.0f) {
+		return true;
+	}
+
+	_isActive = false;
+	return false;
+}
+
+/// <summary>
 /// Checks if this projectile should be disabled
 /// </summary>
 void Projectile::shouldDeactivate() {	

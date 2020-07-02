@@ -151,8 +151,7 @@ int main(void) {
         glm::mat4 view = cam.getViewMatrix();
 
         // projection transform
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), (float)UserInterfaceParameters::Width / (float)UserInterfaceParameters::Height, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)UserInterfaceParameters::Width / (float)UserInterfaceParameters::Height, 5.0f, 15.0f);
 
         textureShader.changeStatus(true);
         textureShader.setMat4Uniform("view", view);
@@ -178,8 +177,8 @@ int main(void) {
     	if(ui.hasGameStarted()) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
+            enemies.updateEnemies(delta, view, projection);
             cam.updatePosition(delta);
-            enemies.updateEnemies(delta);
             levelBarrier.updatePosition(delta);
             textureShader.setFloatUniform("barrierPos", levelBarrier.getCurrentX());
 

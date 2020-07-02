@@ -53,17 +53,49 @@ EnemyManager::EnemyManager() {
 /// Updates the position of all enemies & projectiles each frame
 /// </summary>
 /// <param name="delta">time since last frame</param>
-void EnemyManager::updateEnemies(float delta) {
-	checkForCollisionWithPlayer();
-	checkForCollisionWithBarrier();
+void EnemyManager::updateEnemies(float delta, glm::mat4 view, glm::mat4 proj) {
+	if (_collCounter <= MaxCollisionDowntime) {
+		_collCounter++;
+	}
 	
 	for(int i = 0; i < _shooters.size(); i++) {
-		_shooters.at(i).calculateSpeed(delta);
-		_shooters.at(i).shootProjectile(PlayerChar->getPosition());
+		if(_shooters.at(i).checkWithCameraArea(view, proj))	{
+			if(!checkForCollisionWithPlayer(i, SHOOTER))	{
+				if(!checkForCollisionWithBarrier(i, SHOOTER)) {
+					_shooters.at(i).calculateSpeed(delta);
+				} else {
+					continue;
+				}
+			} else {
+				continue;
+			}
+		}
+		
+		if(_shooters.at(i).getCurrentProjectile()->checkWithCameraArea(view, proj)) {
+			if(!checkForCollisionWithPlayer(i, PROJECTILE))	{
+				if(!checkForCollisionWithBarrier(i, PROJECTILE)) {
+					_shooters.at(i).shootProjectile(PlayerChar->getPosition());
+				} else {
+					continue;
+				}
+			} else {
+				continue;
+			}
+		}
 	}
-
-	for(int i = 0; i < _walkers.size(); i++) {
-		_walkers.at(i).calculateSpeed(delta);
+	
+	for (int i = 0; i < _walkers.size(); i++) {
+		if(_walkers.at(i).checkWithCameraArea(view, proj)) {
+			if (!checkForCollisionWithPlayer(i, WALKER)) {
+				if (!checkForCollisionWithBarrier(i, WALKER)) {
+					_walkers.at(i).calculateSpeed(delta);
+				} else {
+					continue;
+				}
+			} else {
+				continue;
+			}
+		}
 	}
 }
 
@@ -114,76 +146,107 @@ void EnemyManager::generateEnemies() {
 /// <summary>
 ///  Checks if the player collides with either an enemy or a projectile
 /// </summary>
-void EnemyManager::checkForCollisionWithPlayer() {
-	if(_collCounter <= MaxCollisionDowntime) {
-		_collCounter++;
-		return;
+bool EnemyManager::checkForCollisionWithPlayer(int index, EnemyType type) {
+	if (_collCounter <= MaxCollisionDowntime) {
+		return false;
 	}
+
+	switch (type)
+	{
+	case SHOOTER: {
+			ShootingEnemy* shooter = getShootingEnemyAtVectorPos(index);
+			bool hurtfulColl = PlayerChar->getHitbox().checkCollision(shooter->getHitbox());
+			bool killingColl = PlayerChar->getHitbox().checkCollision(*shooter->getKillBox());
+
+			if (hurtfulColl || killingColl) {
+				if (!killingColl) {
+					PlayerChar->looseHealth();
+				}
+				if (killingColl) {
+					HighscoreManager->addToCurrentScore(ShooterPoints);
+				}
+				_shooters.erase(_shooters.begin() + index);
+				_collCounter = 0;
+				return true;
+			}
+
+		}
+		
+		break;
 	
-	for(int i = 0; i < _shooters.size(); i++) {
-		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
-		bool hurtfulColl = PlayerChar->getHitbox().checkCollision(shooter->getHitbox());
-		bool killingColl = PlayerChar->getHitbox().checkCollision(*shooter->getKillBox());
-		if (hurtfulColl || killingColl) {
-			if (!killingColl) {
+	case WALKER: {
+			WalkingEnemy* walker = getWalkingEnemyAtVectorPos(index);
+			if (PlayerChar->getHitbox().checkCollision(walker->getHitbox())) {
 				PlayerChar->looseHealth();
+				_walkers.erase(_walkers.begin() + index);
+				_collCounter = 0;
+				return true;
 			}
-			if(killingColl)	{
-				HighscoreManager->addToCurrentScore(ShooterPoints);
+		}
+		
+		break;
+
+	case PROJECTILE: {
+			Projectile* proj = _shooters.at(index).getCurrentProjectile();
+			if (!proj->getStatus()) {
+				return false;
 			}
-			_shooters.erase(_shooters.begin() + i);
-			_collCounter = 0;
-			return;
-		} 
 
-		Projectile* proj = _shooters.at(i).getCurrentProjectile();
-		if (!proj->getStatus()) {
-			continue;
+			if (PlayerChar->getHitbox().checkCollision(proj->getHitbox())) {
+				PlayerChar->looseHealth();
+				proj->changeStatus(false);
+				_collCounter = 0;
+				return true;
+			}
 		}
-
-		if (PlayerChar->getHitbox().checkCollision(proj->getHitbox())) {
-			PlayerChar->looseHealth();
-			proj->changeStatus(false);
-			_collCounter = 0;
-			return;
-		}
+		
+		break;
 	}
 
-	for(int i = 0; i < _walkers.size(); i++) {
-		WalkingEnemy* walker = getWalkingEnemyAtVectorPos(i);
-		if (PlayerChar->getHitbox().checkCollision(walker->getHitbox())) {
-			PlayerChar->looseHealth();
-			_walkers.erase(_walkers.begin() + i);
-			_collCounter = 0;
-			return;
-		} 
-	}
+	return false;
 }
 
 /// <summary>
 /// Checks if an enemy collides with the level changing barrier and kills the enemy accordingly
 /// </summary>
-void EnemyManager::checkForCollisionWithBarrier() {
-	for(int i = 0; i < _shooters.size(); i++) {
-		ShootingEnemy* shooter = getShootingEnemyAtVectorPos(i);
-		Projectile* proj = shooter->getCurrentProjectile();
+bool EnemyManager::checkForCollisionWithBarrier(int index, EnemyType type) {
+	switch (type)
+	{
+	case SHOOTER: {
+			ShootingEnemy* shooter = getShootingEnemyAtVectorPos(index);
+			if (shooter->getPosition().x < ThemeChangingManager->getCurrentX()) {
+				shooter->getCurrentProjectile()->changeStatus(false);
+				_shooters.erase(_shooters.begin() + index);
+				return true;
+			}
+		}
+
+		break;
+
+	case WALKER: {
+			WalkingEnemy* walker = getWalkingEnemyAtVectorPos(index);
+			if (walker->getPosition().x < ThemeChangingManager->getCurrentX()) {
+				_walkers.erase(_walkers.begin() + index);
+				return true;
+			}
+		}
 		
-		if(shooter->getPosition().x < ThemeChangingManager->getCurrentX()) {
-			proj->changeStatus(false);
-			_shooters.erase(_shooters.begin() + i);
+		break;
+
+	case PROJECTILE: {
+			Projectile* proj = _shooters.at(index).getCurrentProjectile();
+			if (proj->getStatus()) {
+				if (proj->getPosition().x < ThemeChangingManager->getCurrentX()) {
+					proj->changeStatus(false);
+					return true;
+				}
+			}
 		}
-		if (proj->getPosition().x < ThemeChangingManager->getCurrentX()) {
-			proj->changeStatus(false);
-		}
+		
+		break;
 	}
 
-	for(int i = 0; i < _walkers.size(); i++) {
-		WalkingEnemy* walker = getWalkingEnemyAtVectorPos(i);
-
-		if(walker->getPosition().x < ThemeChangingManager->getCurrentX()) {
-			_walkers.erase(_walkers.begin() + i);
-		}
-	}	
+	return false;
 }
 
 /// <summary>

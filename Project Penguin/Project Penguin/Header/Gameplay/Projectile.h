@@ -25,7 +25,8 @@ public:
 	void shouldDeactivate();
 	
 	static Texture* getTexture();
-	bool getStatus();	
+	bool getStatus();
+	bool checkWithCameraArea(glm::mat4 view, glm::mat4 proj);
 	
 	void changeStatus(bool state);
 	void setPosition(glm::vec3 newPos);

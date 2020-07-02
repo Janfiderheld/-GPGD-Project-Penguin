@@ -28,7 +28,8 @@ protected:
 public:
 	Enemy(glm::vec3 pos, AABB boundBox);
 
-	void calculateSpeed(float deltaTime) override;
+	void calculateSpeed(float deltaTime) override;	
+	bool checkWithCameraArea(glm::mat4 view, glm::mat4 proj);
 };
 
 #endif // ENEMY_HEADER 
