@@ -9,10 +9,12 @@ protected:
 	static float WalkSpeed;
 	static float SideSpeedAir;
 
+	static int StandCountMin;
 	static int StandCountMax;
 	static int StandCountError;
 	static int MovementRadius;
 
+	int _standCounterMax = 0;
 	int _standCounter = 0;
 	int _errorCounter = 0;
 	

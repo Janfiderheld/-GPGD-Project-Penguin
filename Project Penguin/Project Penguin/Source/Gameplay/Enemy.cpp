@@ -16,9 +16,14 @@ float Enemy::WalkSpeed = 1.25f;
 float Enemy::SideSpeedAir = 0.85f;
 
 /// <summary>
-/// Counting towards this number to see how long an enemy keeps standing
+/// Minimum counter to see how long an enemy keeps standing
 /// </summary>
-int Enemy::StandCountMax = 60;
+int Enemy::StandCountMin = 60;
+
+/// <summary>
+/// Maxmimum counter to see how long an enemy keeps standing
+/// </summary>
+int Enemy::StandCountMax = 120;
 
 /// <summary>
 /// Counting towards this number when no movement in x-direction is done and resetting the character as a fall back.
@@ -36,6 +41,7 @@ int Enemy::MovementRadius = 12;
 /// <param name="pos">starting position for this enemy</param>
 /// <param name="boundBox">hitbox for this enemy</param>
 Enemy::Enemy(glm::vec3 pos, AABB boundBox) : MovingObject(pos, boundBox) {
+	_standCounterMax = rand() % (StandCountMax - StandCountMin) + StandCountMin;
 	_posLastFrame = pos.x;
 }
 
@@ -52,7 +58,7 @@ void Enemy::calculateSpeed(float deltaTime) {
 	case STAND:
 		setCompleteSpeed(glm::vec3(0.0f));
 
-		if (_standCounter >= StandCountMax) {
+		if (_standCounter >= _standCounterMax) {
 			if(_reachedStart || _lastDir == WALK_LEFT) {
 				status = WALK_RIGHT;
 			}
