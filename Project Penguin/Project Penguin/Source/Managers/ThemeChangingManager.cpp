@@ -1,6 +1,11 @@
 #include <Managers/ThemeChangingManager.h>
 
 /// <summary>
+/// Points the Player gets for every tile between them and the theme barrier when the end is reached
+/// </summary>
+int ThemeChangingManager::PointsPerTile = 5;
+
+/// <summary>
 /// Main Character to check for collision
 /// </summary>
 Character* ThemeChangingManager::PlayerChar = nullptr;

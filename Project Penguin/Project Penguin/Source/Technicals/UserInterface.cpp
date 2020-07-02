@@ -463,6 +463,11 @@ void UserInterface::processInput(Camera* cam) {
     }
 
     if(PlayerChar->hasDied() || PlayerChar->hasReachedEnd()) {
+        if (PlayerChar->hasReachedEnd()) {
+            float dist = PlayerChar->getPosition().x - ThemeChangingManager->getCurrentX();
+            HighscoreManager->addToCurrentScore(round(dist) * ThemeChangingManager::PointsPerTile);
+        }
+
         _currentMenu = GAME_OVER;
         PlayerChar->reset();
         cam->reset();

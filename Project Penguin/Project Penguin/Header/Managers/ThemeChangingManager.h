@@ -12,6 +12,7 @@ private:
 	glm::vec3 _position;
 
 public:
+	static int PointsPerTile;
 	static Character* PlayerChar;
 	
 	ThemeChangingManager(glm::vec3 pos);
