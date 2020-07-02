@@ -67,7 +67,8 @@ void Character::calculateSpeed(float deltaTime) {
 	}
 
 	_atLeftLevelEnd = position.x <= 0.5f;
-	
+	float distToRightTile = floor(position.x) + 1 - getHitbox().getMaxX();
+
 	switch (status)	{
 	case STAND:
 		setCompleteSpeed(glm::vec3(0.0f));
@@ -124,11 +125,14 @@ void Character::calculateSpeed(float deltaTime) {
 	case WALK_RIGHT:
 		setVerticalSpeed(0.0f);
 
-		if (!hasTileRight) {
+		if (!hasTileRight || distToRightTile >= 0.0f) {
 			setHorizontalSpeed(WalkSpeed);
+		} else {
+			setHorizontalSpeed(0.0f);
 		}
+
 		if (InputManager->getInputStatus(LEFT) && InputManager->getInputStatus(RIGHT) ||
-			!InputManager->getInputStatus(RIGHT) || hasTileRight) {
+			!InputManager->getInputStatus(RIGHT)) {
 			status = STAND;
 			break;
 		}
@@ -159,8 +163,12 @@ void Character::calculateSpeed(float deltaTime) {
 
 		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) && !hasTileLeft && !_atLeftLevelEnd) {
 			setHorizontalSpeed(-SideSpeedAir);
-		} else if(InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT) && !hasTileRight) {
-			setHorizontalSpeed(SideSpeedAir);
+		} else if(InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT)) {
+			if (!hasTileRight || distToRightTile >= 0.0f) {
+				setHorizontalSpeed(SideSpeedAir);
+			} else {	
+				setHorizontalSpeed(0.0f);
+			}
 		} else {
 			setHorizontalSpeed(0.0f);
 		}
