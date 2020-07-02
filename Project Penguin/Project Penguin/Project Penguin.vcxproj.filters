@@ -77,6 +77,7 @@
     <ClInclude Include="Header\Gameplay\WalkingEnemy.h" />
     <ClInclude Include="Header\Managers\SettingsManager.h" />
     <ClInclude Include="Header\Managers\ThemeChangingManager.h" />
+    <ClInclude Include="Enums\EnemyType.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />

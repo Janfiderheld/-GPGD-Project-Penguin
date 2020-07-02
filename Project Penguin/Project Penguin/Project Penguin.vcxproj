@@ -185,6 +185,7 @@
     <ClCompile Include="Source\Technicals\UserInterfaceParameters.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enums\EnemyType.h" />
     <ClInclude Include="Enums\InputDirection.h" />
     <ClInclude Include="Enums\LevelGenerationStates.h" />
     <ClInclude Include="Enums\MenuType.h" />
