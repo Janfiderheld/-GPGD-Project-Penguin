@@ -12,7 +12,9 @@ protected:
 	static int StandCountMin;
 	static int StandCountMax;
 	static int StandCountError;
+
 	static int MovementRadius;
+	static float FrustumCullingRadius;
 
 	int _standCounterMax = 0;
 	int _standCounter = 0;

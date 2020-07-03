@@ -36,6 +36,11 @@ int Enemy::StandCountError = 230;
 int Enemy::MovementRadius = 12;
 
 /// <summary>
+/// Describes the area of the View Frustum (in NDC) in which calculations are allowed
+/// </summary>
+float Enemy::FrustumCullingRadius = 1.1f;
+
+/// <summary>
 /// Sets the position and the hitbox box
 /// </summary>
 /// <param name="pos">starting position for this enemy</param>
@@ -186,8 +191,8 @@ bool Enemy::checkWithCameraArea(glm::mat4 view, glm::mat4 proj) {
 	glm::vec4 posInClip = proj * view * glm::vec4(position, 1.0f);
 	glm::vec3 posDehom = glm::vec3(posInClip.x / posInClip.w, posInClip.y / posInClip.w, posInClip.z / posInClip.w);
 
-	if (posDehom.x <= 1.0f && posDehom.x >= -1.0f &&
-		posDehom.y <= 1.0f && posDehom.y >= -1.0f) {
+	if (posDehom.x <= FrustumCullingRadius && posDehom.x >= -FrustumCullingRadius &&
+		posDehom.y <= FrustumCullingRadius && posDehom.y >= -FrustumCullingRadius) {
 		return true;
 	}
 
