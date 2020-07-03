@@ -33,6 +33,8 @@ Projectile::Projectile() :
 	MovingObject(getPosition(), getHitbox()),
 	DrawableVertices(getHitbox().getMinX(), getHitbox().getMinY(), getHitbox().getMaxX(), getHitbox().getMaxY()) {
 	changeStatus(true);
+	setRadius(6);
+	setColorAndBrightness(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 }
 
 /// <summary>
@@ -49,6 +51,8 @@ Projectile::Projectile(glm::vec3 pos, AABB boundBox, MovingObjectStatus dir) :
 	}
 	_movDir = dir;
 	changeStatus(true);
+	setRadius(6);
+	setColorAndBrightness(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
 }
 
 /// <summary>
@@ -120,6 +124,13 @@ void Projectile::changeStatus(bool state) {
 /// </summary>
 void Projectile::setPosition(glm::vec3 newPos) {
 	position = newPos;
+}
+
+/// <summary>
+/// Returns the position with the texture offset for fitting drawing
+/// </summary>
+glm::vec3 Projectile::getTexturePosition() {
+	return glm::vec3(position.x - TextureOffset.x, position.y - TextureOffset.y, position.z);
 }
 
 /// <summary>

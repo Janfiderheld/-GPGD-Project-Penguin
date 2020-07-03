@@ -218,6 +218,7 @@
     <ClInclude Include="ImGUI\imstb_rectpack.h" />
     <ClInclude Include="ImGUI\imstb_textedit.h" />
     <ClInclude Include="ImGUI\imstb_truetype.h" />
+    <ClInclude Include="Interfaces\ILighting.h" />
     <ClInclude Include="Interfaces\IMoveable.h" />
     <ClInclude Include="Header\Level\LevelGrid.h" />
     <ClInclude Include="Header\Level\LevelGridTile.h" />
@@ -229,6 +230,7 @@
     <ClInclude Include="Header\Gameplay\WalkingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\SimpleLighting.frag" />
     <None Include="Shaders\SimpleTexture.frag" />
     <None Include="Shaders\BasicFragmentShader.glsl" />
     <None Include="Shaders\BasicVertexShader.glsl" />

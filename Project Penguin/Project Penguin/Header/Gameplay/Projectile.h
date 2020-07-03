@@ -1,11 +1,12 @@
 #ifndef PROJECTILE_HEADER
 #define PROJECTILE_HEADER
 
+#include <ILighting.h>
 #include <Gameplay/MovingObject.h>
 #include <Technicals/Texture.h>
 #include <Technicals/DrawableVertices.h>
 
-class Projectile : public MovingObject, public DrawableVertices {
+class Projectile : public MovingObject, public DrawableVertices, public ILighting {
 private:
 	static int MaxDistanceBeforeDestroy;
 	static float Speed;
@@ -29,8 +30,9 @@ public:
 	bool checkWithCameraArea(glm::mat4 view, glm::mat4 proj);
 	
 	void changeStatus(bool state);
-	void setPosition(glm::vec3 newPos);
 	void changeDirection(MovingObjectStatus dir);
+	void setPosition(glm::vec3 newPos);
+	glm::vec3 getTexturePosition();
 };
 
 #endif // PROJECTILE_HEADER

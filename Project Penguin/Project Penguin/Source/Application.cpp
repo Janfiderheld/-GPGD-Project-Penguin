@@ -87,6 +87,7 @@ int main(void) {
 	
 	// Shader
     Shader textureShader("SimpleTexture.vert", "SimpleTexture.frag");
+    Shader lightShader("SimpleLighting.frag");
 
 	// Level Texture
 	// TODO: Instead of using 16 different textures use a shader
@@ -141,7 +142,7 @@ int main(void) {
 
     // Loop until the user closes the window
     while (!glfwWindowShouldClose(ui.getWindowPointer())) {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Wireframe for Debugging
@@ -156,7 +157,7 @@ int main(void) {
         textureShader.changeStatus(true);
         textureShader.setMat4Uniform("view", view);
         textureShader.setMat4Uniform("projection", projection);
-        textureShader.setBoolUniform("drawTexture", true);
+        textureShader.setBoolUniform("drawTexture", true);        
     	
         backgrounds.updateLayers(cam.getPosition().x);
         for(int i = backgrounds.getLayerAmount() - 1; i >= 0; i--) {
@@ -172,9 +173,9 @@ int main(void) {
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glDisable(GL_BLEND);
         }
-    	
+    	        
         ui.processInput(&cam);
-    	if(ui.hasGameStarted()) {
+        if (ui.hasGameStarted()) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
             enemies.updateEnemies(delta, view, projection);
@@ -196,65 +197,65 @@ int main(void) {
                             switch (currTile.getBorderForTexture())
                             {
                             case 0x01:
-                            	glBindTexture(GL_TEXTURE_2D, iceTileNormal1.TextureId);
+                                glBindTexture(GL_TEXTURE_2D, iceTileNormal1.TextureId);
                                 break;
-                            	
+
                             case 0x02:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal2.TextureId);
                                 break;
-                            	
+
                             case 0x03:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal3.TextureId);
                                 break;
-                            	
+
                             case 0x04:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal4.TextureId);
                                 break;
-                            	
+
                             case 0x05:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal5.TextureId);
                                 break;
-                            	
+
                             case 0x06:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal6.TextureId);
                                 break;
-                            	
+
                             case 0x07:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal7.TextureId);
                                 break;
-                            	
+
                             case 0x08:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal8.TextureId);
                                 break;
-                            	
+
                             case 0x09:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal9.TextureId);
                                 break;
-                            	
+
                             case 0x0A:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal10.TextureId);
                                 break;
-                            	
+
                             case 0x0B:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal11.TextureId);
                                 break;
-                            	
+
                             case 0x0C:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal12.TextureId);
                                 break;
-                            	
+
                             case 0x0D:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal13.TextureId);
                                 break;
-                            	
+
                             case 0x0E:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal14.TextureId);
                                 break;
-                            	
+
                             case 0x0F:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal15.TextureId);
                                 break;
-                            	
+
                             case 0x00:
                                 glBindTexture(GL_TEXTURE_2D, iceTileNormal0.TextureId);
                                 break;
@@ -262,7 +263,7 @@ int main(void) {
                             break;
 
                         case START_AREA:
-                            if (currTile.getBorderForTexture() == 0x0A) { 
+                            if (currTile.getBorderForTexture() == 0x0A) {
                                 glBindTexture(GL_TEXTURE_2D, iceTileStartBorder.TextureId);
                             } else {
                                 glBindTexture(GL_TEXTURE_2D, iceTileStart.TextureId);
@@ -284,10 +285,10 @@ int main(void) {
                         textureShader.setMat4Uniform("model", model);
                         textureShader.setIntUniform("changed", 1);
                         textureShader.setBoolUniform("changeTexture", true);
-                    	
+
                         glActiveTexture(GL_TEXTURE1);
-                        glBindTexture(GL_TEXTURE_2D, desert.TextureId);                    	
-                    	
+                        glBindTexture(GL_TEXTURE_2D, desert.TextureId);
+
                         glBufferSubData(VBO, 0, sizeof(currTile.getVertices()), currTile.getVertices());
                         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                     }
@@ -296,7 +297,7 @@ int main(void) {
 
             textureShader.setBoolUniform("changeTexture", false);
             glActiveTexture(GL_TEXTURE0);
-    		
+
             // draw character
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, character.getTexturePosition());
@@ -313,10 +314,41 @@ int main(void) {
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glDisable(GL_BLEND);
 
-            // draw enemies
+            // draw enemies in this order:
+            // 1) Lighting of projectiles
+            // 2) projectiles
+            // 3) shooting enemies
+            // 4) walking enemies
             for (int i = 0; i < enemies.getShooterAndProjectileAmount(); i++) {
                 Projectile* tempProj = enemies.getProjectileAtVectorPos(i);
                 if (tempProj != NULL && tempProj->getStatus()) {
+                    textureShader.changeStatus(false);
+                    lightShader.changeStatus(true);
+
+                    GLfloat lightQuadPositions[] = {
+                        -1.0f, -1.0f, 0.0f, 1.0f,
+                        -1.0f,  1.0f, 0.0f, 1.0f,
+                         1.0f,  1.0f, 0.0f, 1.0f,
+                         1.0f, -1.0f, 0.0f, 1.0f,
+                        -1.0f, -1.0f, 0.0f, 1.0f,
+                    };                
+
+                    lightShader.setIntUniform("height", UserInterfaceParameters::Height);
+                    lightShader.setIntUniform("width", UserInterfaceParameters::Width);
+                    lightShader.setMat4Uniform("VP", projection * view);
+                    lightShader.setIntUniform("lightRadius", tempProj->getRadius());
+                    lightShader.setVec3Uniform("lightLocation", tempProj->getPosition());
+                    lightShader.setVec4Uniform("lightColor", tempProj->getColorAndBrightness());
+
+                    glEnable(GL_BLEND);
+                    glBlendFunc(GL_ONE, GL_ONE);
+                    glBufferSubData(VBO, 0, sizeof(lightQuadPositions), lightQuadPositions);
+                    glDrawElements(GL_TRIANGLE_STRIP, 5, GL_UNSIGNED_INT, 0);
+                    glDisable(GL_BLEND);
+
+                    lightShader.changeStatus(false);
+                    textureShader.changeStatus(true);
+
                     model = glm::mat4(1.0f);
                     model = glm::translate(model, tempProj->getPosition());
                     model = glm::scale(model, tempProj->Scale);
@@ -329,9 +361,9 @@ int main(void) {
                     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                     glDisable(GL_BLEND);
                 }
-            	
+
                 ShootingEnemy* tempShoot = enemies.getShootingEnemyAtVectorPos(i);
-                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::mat4(1.0f);
                 model = glm::translate(model, tempShoot->getPosition());
                 model = glm::scale(model, ShootingEnemy::getScale());
                 if (tempShoot->getCurrentSpeed().x < 0.0f) {
@@ -344,12 +376,12 @@ int main(void) {
                 glBindTexture(GL_TEXTURE_2D, ShootingEnemy::ShooterTex->TextureId);
                 glBufferSubData(VBO, 0, sizeof(tempShoot->getVertices()), tempShoot->getVertices());
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-                glDisable(GL_BLEND);                
+                glDisable(GL_BLEND);
             }
 
-    		for(int i = 0; i < enemies.getWalkerAmount(); i++) {
+            for (int i = 0; i < enemies.getWalkerAmount(); i++) {
                 WalkingEnemy* tempWalker = enemies.getWalkingEnemyAtVectorPos(i);
-                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::mat4(1.0f);
                 model = glm::translate(model, tempWalker->getTexturePosition());
                 model = glm::scale(model, WalkingEnemy::getScale());
                 if (tempWalker->getCurrentSpeed().x < 0.0f) {
@@ -363,12 +395,12 @@ int main(void) {
                 glBufferSubData(VBO, 0, sizeof(tempWalker->getVertices()), tempWalker->getVertices());
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                 glDisable(GL_BLEND);
-    		}
+            }
 
-    		// draw Collectables
+            // draw Collectables
             collectables.checkForCollection(character.getHitbox());
             for (int i = 0; i < collectables.getAmountOfCollectables(); i++) {
-                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::mat4(1.0f);
                 model = glm::translate(model, collectables.getCollectableAtPosition(i)->getPosition());
                 model = glm::scale(model, collectables.getCollectableAtPosition(i)->getScale());
                 textureShader.setMat4Uniform("model", model);
@@ -381,12 +413,12 @@ int main(void) {
                 glDisable(GL_BLEND);
             }
 
-    		// draw Theme Changing
+            // draw Theme Changing
             GLfloat lineVertices[] = {
                 levelBarrier.getCurrentX(), 0, -10,
-            	levelBarrier.getCurrentX(), 0, -10
+                levelBarrier.getCurrentX(), 0, -10
             };
-    		
+
             model = glm::mat4(1.0f);
             model = glm::translate(model, levelBarrier.getPosition());
             model = glm::scale(model, glm::vec3(-1.0f, 45.0f, 1.0f));
@@ -399,7 +431,7 @@ int main(void) {
             glBufferSubData(VBO, 0, sizeof(lineVertices), lineVertices);
             glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, 0);
             glDisable(GL_BLEND);
-    	}
+        }
 
         ui.drawUI();
         glfwSwapBuffers(ui.getWindowPointer());
@@ -407,7 +439,8 @@ int main(void) {
     }
 
     glDeleteBuffers(1, &VBO);
-    textureShader.changeStatus(false);
+    textureShader.deleteThisShader();
+    lightShader.deleteThisShader();
     ui.cleanUp();
     return 0;
 }

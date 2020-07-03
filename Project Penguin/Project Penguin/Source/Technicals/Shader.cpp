@@ -56,6 +56,43 @@ const char* Shader::addCurrentDirectory(std::string fileName) {
 }
 
 /// <summary>
+/// Opens, compiles and links the given fragment shader file
+/// </summary>
+/// <param name="fragmentFileName">Name of the fragment shader file</param>
+Shader::Shader(const char* fragmentFileName) {
+	std::string fragmentCodeString;
+	std::ifstream fragmentFile;
+	fragmentFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
+	try {
+		fragmentFile.open(fragmentFileName);
+		std::stringstream fragmentStream, geometryStream;
+		fragmentStream << fragmentFile.rdbuf();
+		fragmentFile.close();
+		fragmentCodeString = fragmentStream.str();
+	} catch (std::ifstream::failure ex) {
+		std::cout << "Error: Shader file could not be read - " << ex.what() << std::endl;
+	}
+
+	const char* fragmentCodeChar = fragmentCodeString.c_str();
+	unsigned int fragmentId, geometryId;
+
+	// fragment Shader
+	fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentId, 1, &fragmentCodeChar, NULL);
+	glCompileShader(fragmentId);
+	checkAndPrintErrors(fragmentId, true);
+
+	// create Shader Program
+	ProgramId = glCreateProgram();
+	glAttachShader(ProgramId, fragmentId);
+	glLinkProgram(ProgramId);
+	checkAndPrintErrors(ProgramId, false);
+
+	glDeleteShader(fragmentId);
+}
+
+/// <summary>
 /// Opens, compiles and links the given shader files.
 /// </summary>
 /// <param name="vertexFileName">Name of the vertex shader file</param>
@@ -141,15 +178,22 @@ Shader::Shader(const char* vertexFileName, const char* fragmentFileName, const c
 }
 
 /// <summary>
-/// Either activates or deactivates (= deletes) this shader program
+/// Activates this shader on true and deactivates all shaders on false
 /// </summary>
 /// <param name="activate">true to activate</param>
 void Shader::changeStatus(bool activate) {
 	if (activate) {
 		glUseProgram(ProgramId);
 	} else {
-		glDeleteProgram(ProgramId);
+		glUseProgram(0);
 	}	
+}
+
+/// <summary>
+/// Deletes this shader for cleanup
+/// </summary>
+void Shader::deleteThisShader() {
+	glDeleteProgram(ProgramId);
 }
 
 /// <summary>
@@ -159,6 +203,24 @@ void Shader::changeStatus(bool activate) {
 /// <param name="value">value to set</param>
 void Shader::setMat4Uniform(const std::string& name, glm::mat4 value) const {
 	glUniformMatrix4fv(glGetUniformLocation(ProgramId, name.c_str()), 1, GL_FALSE, &value[0][0]);
+}
+
+/// <summary>
+/// Sets a vec3 uniform value for the shaders of this object to the given value
+/// </summary>
+/// <param name="name">Name of the uniform parameter</param>
+/// <param name="value">value to set</param>
+void Shader::setVec3Uniform(const std::string& name, glm::vec3 value) const {
+	glUniform3fv(glGetUniformLocation(ProgramId, name.c_str()), 1, &value[0]);
+}
+
+/// <summary>
+/// Sets a vec4 uniform value for the shaders of this object to the given value
+/// </summary>
+/// <param name="name">Name of the uniform parameter</param>
+/// <param name="value">value to set</param>
+void Shader::setVec4Uniform(const std::string& name, glm::vec4 value) const {
+	glUniform4fv(glGetUniformLocation(ProgramId, name.c_str()), 1, &value[0]);
 }
 
 /// <summary>
