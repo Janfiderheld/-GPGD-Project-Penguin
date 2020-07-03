@@ -50,11 +50,23 @@ ThemeChangingManager* UserInterface::ThemeChangingManager = nullptr;
 /// </summary>
 void UserInterface::drawMainMenu() {
     ImGui::Begin("Project Penguin - Main Menu", nullptr, _windowFlags);
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle + 20, ImGui::GetCursorPosY()));
+    ImGui::Text("Project Penguin");
+
     ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
     ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor( 22, 177, 103));
     if (ImGui::Button(SettingsManager->getStringForLanguage(0), UserInterfaceParameters::MainMenuButtonSize)) {
         _currentMenu = GAME;
+    }
+    ImGui::PopStyleColor(2);
+
+    ImGui::SameLine();
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle + UserInterfaceParameters::MainMenuButtonSize.x + 25, ImGui::GetCursorPosY()));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
+    if (ImGui::Button("?", UserInterfaceParameters::HeartTextureSize)) {
+        _currentMenu = TUTORIAL;
     }
     ImGui::PopStyleColor(2);
 
@@ -296,6 +308,39 @@ void UserInterface::drawGameOverScreen() {
 }
 
 /// <summary>
+/// Draws the tutorial screen
+/// </summary>
+void UserInterface::drawTutorialMenu() {
+    ImGui::Begin("Project Penguin - Tutorial", nullptr, _windowFlags);
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle + 20, ImGui::GetCursorPosY()));
+    ImGui::Text("Project Penguin");
+
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
+    ImGui::TextWrapped(SettingsManager->getStringForLanguage(20));
+
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
+    ImGui::TextWrapped(SettingsManager->getStringForLanguage(21));
+
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
+    ImGui::TextWrapped(SettingsManager->getStringForLanguage(22));
+
+    ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPosX(), ImGui::GetCursorPosY() + UserInterfaceParameters::DifferenceInY));
+    ImGui::TextWrapped(SettingsManager->getStringForLanguage(23));
+
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle + 40, ImGui::GetCursorPosY()));
+    ImGui::Text(SettingsManager->getStringForLanguage(24));
+
+    ImGui::SetCursorPos(ImVec2(UserInterfaceParameters::BigScreenMiddle, ImGui::GetCursorPosY() + (UserInterfaceParameters::DifferenceInY / 2.0f)));
+    ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(44, 32, 148));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor(22, 177, 103));
+    if (ImGui::Button(SettingsManager->getStringForLanguage(4), UserInterfaceParameters::MainMenuButtonSize)) {
+        _currentMenu = MAIN;
+    }
+    ImGui::PopStyleColor(2);
+    ImGui::End();
+}
+
+/// <summary>
 /// Closes the window and ends the application
 /// </summary>
 void UserInterface::closeWindow() {
@@ -415,25 +460,35 @@ void UserInterface::drawUI() {
         ImGui::SetNextWindowSize(UserInterfaceParameters::MainMenuUiSize, ImGuiCond_Always);
         drawMainMenu();
         break;
+
     case HIGHSCORE:
         ImGui::SetNextWindowPos(UserInterfaceParameters::SmallWindowPos, ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::SmallUiSize, ImGuiCond_Always);
         drawHighscoreMenu();
         break;
+
     case SETTINGS:
         ImGui::SetNextWindowPos(UserInterfaceParameters::BigWindowPos, ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::SettingsUiSize, ImGuiCond_Always);
         drawSettingsMenu();
         break;
+
     case GAME:
         ImGui::SetNextWindowPos(ImVec2(5, 0), ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::IngameUiSize, ImGuiCond_Always);
         drawIngameUI();
         break;
+
     case GAME_OVER:
         ImGui::SetNextWindowPos(UserInterfaceParameters::SmallWindowPos, ImGuiCond_Always);
         ImGui::SetNextWindowSize(UserInterfaceParameters::SmallUiSize, ImGuiCond_Always);
         drawGameOverScreen();
+        break;
+
+    case TUTORIAL:
+        ImGui::SetNextWindowPos(UserInterfaceParameters::BigWindowPos, ImGuiCond_Always);
+        ImGui::SetNextWindowSize(UserInterfaceParameters::MainMenuUiSize, ImGuiCond_Always);
+        drawTutorialMenu();
         break;
     }
 

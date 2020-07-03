@@ -44,6 +44,7 @@ private:
     void drawSettingsMenu();
     void drawIngameUI();
     void drawGameOverScreen();
+    void drawTutorialMenu();
 	
     void closeWindow();	
     std::string formatHighscore(Highscore toFormat);
