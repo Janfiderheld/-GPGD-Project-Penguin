@@ -85,6 +85,7 @@
     <None Include="Shaders\BasicFragmentShader.glsl" />
     <None Include="Shaders\SimpleTexture.frag" />
     <None Include="Shaders\SimpleTexture.vert" />
-    <None Include="Shaders\SimpleLighting.frag" />
+    <None Include="Shaders\ThemeChangingLine.frag" />
+    <None Include="Shaders\ProjectileLighting.frag" />
   </ItemGroup>
 </Project>
