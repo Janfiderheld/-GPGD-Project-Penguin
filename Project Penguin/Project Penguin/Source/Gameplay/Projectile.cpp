@@ -120,9 +120,11 @@ void Projectile::changeStatus(bool state) {
 }
 
 /// <summary>
-/// Sets the position to the given position
+/// Sets the position to the given position when this projectile is shot.
+/// Also sets the starting position for maximal movement
 /// </summary>
 void Projectile::setPosition(glm::vec3 newPos) {
+	startPos = newPos;
 	position = newPos;
 }
 
