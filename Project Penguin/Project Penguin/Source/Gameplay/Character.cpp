@@ -61,7 +61,7 @@ Character::Character(glm::vec3 pos, Texture* texture, AABB boundBox) :
 /// </summary>
 /// <param name="deltaTime">time since last frame</param>
 void Character::calculateSpeed(float deltaTime) {
-	if(_reachedPitBottom || _reachedEnd)	{
+	if(hasDied() || hasReachedEnd())	{
 		setCompleteSpeed(glm::vec3(0.0f));
 		return;
 	}
@@ -224,7 +224,7 @@ void Character::checkForPitBottom() {
 /// Returns true if the player has reached an ending tile
 /// </summary>
 bool Character::hasReachedEnd() {
-	return _reachedEnd;
+	return _reachedEnd && isOnGround;
 }
 
 /// <summary>
