@@ -53,7 +53,6 @@ int main(void) {
     // Theme Changing Manager
     ThemeChangingManager levelBarrier(glm::vec3(-5.0f, 0.0f, -10.0f));
     UserInterface::ThemeChangingManager = &levelBarrier;
-    EnemyManager::ThemeChangingManager = &levelBarrier;
 
 	// Enemies
     Texture shooterTex("Snowman.png", GL_RGBA);
@@ -190,7 +189,7 @@ int main(void) {
         if (ui.hasGameStarted()) {
             float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
-            enemies.updateEnemies(delta, view, projection);
+            enemies.updateEnemies(delta, levelBarrier.getCurrentX(), view, projection);
             cam.updatePosition(delta);
             levelBarrier.updatePosition(delta);
             textureShader.setFloatUniform("barrierPos", levelBarrier.getCurrentX());
@@ -415,7 +414,7 @@ int main(void) {
             }
 
             // draw Collectables
-            collectables.checkForCollection(character.getHitbox());
+            collectables.checkForCollision(character.getHitbox(), levelBarrier.getCurrentX());
             for (int i = 0; i < collectables.getAmountOfCollectables(); i++) {
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, collectables.getCollectableAtPosition(i)->getPosition());

@@ -21,7 +21,7 @@ public:
 	CollectableManager();
 
 	void generateCollectables();
-	void checkForCollection(AABB playerHitbox);
+	void checkForCollision(AABB playerHitbox, float barrierPos);
 	int getAmountOfCollectables();
 	Collectable* getCollectableAtPosition(int pos);
 };

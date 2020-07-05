@@ -75,13 +75,18 @@ CollectableManager::CollectableManager() {
 /// If a collision is found, that collectable is marked and deleted.
 /// </summary>
 /// <param name="playerHitbox">Hitbox of the player to check against</param>
-void CollectableManager::checkForCollection(AABB playerHitbox) {
+void CollectableManager::checkForCollision(AABB playerHitbox, float barrierPos) {
 	for (int i = 0; i < _collectables.size(); i++) {
 		Collectable* temp = &_collectables.at(i);
-		if (playerHitbox.checkCollision(temp->getHitbox())) {
+		bool playerColl = playerHitbox.checkCollision(temp->getHitbox());
+		bool barrierColl = temp->getPosition().x < barrierPos;
+
+		if (playerColl || barrierColl) {
 			temp->collect();
 			_collectables.erase(_collectables.begin() + i);
-			HighscoreManager->addToCurrentScore(temp->getScore());
+			if (playerColl) {
+				HighscoreManager->addToCurrentScore(temp->getScore());
+			}
 		}
 	}
 }

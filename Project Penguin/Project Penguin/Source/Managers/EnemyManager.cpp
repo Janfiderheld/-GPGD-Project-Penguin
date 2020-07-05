@@ -37,11 +37,6 @@ Character* EnemyManager::PlayerChar = nullptr;
 HighscoreManager* EnemyManager::HighscoreManager = nullptr;
 
 /// <summary>
-/// Reference to the ThemeChangingManager, which sets the barrier
-/// </summary>
-ThemeChangingManager* EnemyManager::ThemeChangingManager = nullptr;
-
-/// <summary>
 /// Generates the enemies and sets the seed for the randomizer
 /// </summary>
 EnemyManager::EnemyManager() {
@@ -53,7 +48,7 @@ EnemyManager::EnemyManager() {
 /// Updates the position of all enemies & projectiles each frame
 /// </summary>
 /// <param name="delta">time since last frame</param>
-void EnemyManager::updateEnemies(float delta, glm::mat4 view, glm::mat4 proj) {
+void EnemyManager::updateEnemies(float delta, float barrierPos, glm::mat4 view, glm::mat4 proj) {
 	if (_collCounter <= MaxCollisionDowntime) {
 		_collCounter++;
 	}
@@ -61,7 +56,7 @@ void EnemyManager::updateEnemies(float delta, glm::mat4 view, glm::mat4 proj) {
 	for(int i = 0; i < _shooters.size(); i++) {
 		if(_shooters.at(i).checkWithCameraArea(view, proj))	{
 			if(!checkForCollisionWithPlayer(i, SHOOTER))	{
-				if(!checkForCollisionWithBarrier(i, SHOOTER)) {
+				if(!checkForCollisionWithBarrier(i, SHOOTER, barrierPos)) {
 					_shooters.at(i).calculateSpeed(delta);
 				} else {
 					continue;
@@ -73,7 +68,7 @@ void EnemyManager::updateEnemies(float delta, glm::mat4 view, glm::mat4 proj) {
 		
 		if(_shooters.at(i).getCurrentProjectile()->checkWithCameraArea(view, proj)) {
 			if(!checkForCollisionWithPlayer(i, PROJECTILE))	{
-				if(!checkForCollisionWithBarrier(i, PROJECTILE)) {
+				if(!checkForCollisionWithBarrier(i, PROJECTILE, barrierPos)) {
 					_shooters.at(i).shootProjectile(PlayerChar->getPosition());
 				} else {
 					continue;
@@ -87,7 +82,7 @@ void EnemyManager::updateEnemies(float delta, glm::mat4 view, glm::mat4 proj) {
 	for (int i = 0; i < _walkers.size(); i++) {
 		if(_walkers.at(i).checkWithCameraArea(view, proj)) {
 			if (!checkForCollisionWithPlayer(i, WALKER)) {
-				if (!checkForCollisionWithBarrier(i, WALKER)) {
+				if (!checkForCollisionWithBarrier(i, WALKER, barrierPos)) {
 					_walkers.at(i).calculateSpeed(delta);
 				} else {
 					continue;
@@ -209,12 +204,12 @@ bool EnemyManager::checkForCollisionWithPlayer(int index, EnemyType type) {
 /// <summary>
 /// Checks if an enemy collides with the level changing barrier and kills the enemy accordingly
 /// </summary>
-bool EnemyManager::checkForCollisionWithBarrier(int index, EnemyType type) {
+bool EnemyManager::checkForCollisionWithBarrier(int index, EnemyType type, float barrierPos) {
 	switch (type)
 	{
 	case SHOOTER: {
 			ShootingEnemy* shooter = getShootingEnemyAtVectorPos(index);
-			if (shooter->getPosition().x < ThemeChangingManager->getCurrentX()) {
+			if (shooter->getPosition().x < barrierPos) {
 				shooter->getCurrentProjectile()->changeStatus(false);
 				_shooters.erase(_shooters.begin() + index);
 				return true;
@@ -225,7 +220,7 @@ bool EnemyManager::checkForCollisionWithBarrier(int index, EnemyType type) {
 
 	case WALKER: {
 			WalkingEnemy* walker = getWalkingEnemyAtVectorPos(index);
-			if (walker->getPosition().x < ThemeChangingManager->getCurrentX()) {
+			if (walker->getPosition().x < barrierPos) {
 				_walkers.erase(_walkers.begin() + index);
 				return true;
 			}
@@ -236,7 +231,7 @@ bool EnemyManager::checkForCollisionWithBarrier(int index, EnemyType type) {
 	case PROJECTILE: {
 			Projectile* proj = _shooters.at(index).getCurrentProjectile();
 			if (proj->getStatus()) {
-				if (proj->getPosition().x < ThemeChangingManager->getCurrentX()) {
+				if (proj->getPosition().x < barrierPos) {
 					proj->changeStatus(false);
 					return true;
 				}

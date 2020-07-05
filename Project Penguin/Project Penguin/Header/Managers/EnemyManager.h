@@ -10,7 +10,6 @@
 #include <Gameplay/Character.h>
 #include <Managers/GridFacade.h>
 #include <Managers/HighscoreManager.h>
-#include <Managers/ThemeChangingManager.h>
 #include <Technicals/AABB.h>
 
 class EnemyManager {
@@ -29,14 +28,13 @@ public:
 	static GridFacade* LevelFacade;
 	static Character* PlayerChar;
 	static HighscoreManager* HighscoreManager;
-	static ThemeChangingManager* ThemeChangingManager;
 
 	EnemyManager();
 
-	void updateEnemies(float delta, glm::mat4 view, glm::mat4 proj);	
+	void updateEnemies(float delta, float barrierPos, glm::mat4 view, glm::mat4 proj);
 	void generateEnemies();
 	bool checkForCollisionWithPlayer(int index, EnemyType type);
-	bool checkForCollisionWithBarrier(int index, EnemyType type);
+	bool checkForCollisionWithBarrier(int index, EnemyType type, float barrierPos);
 
 	int getShooterAndProjectileAmount();
 	int getWalkerAmount();
