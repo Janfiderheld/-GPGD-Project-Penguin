@@ -235,7 +235,7 @@
     <None Include="Shaders\BasicFragmentShader.glsl" />
     <None Include="Shaders\BasicVertexShader.glsl" />
     <None Include="Shaders\SimpleTexture.vert" />
-    <None Include="Shaders\ThemeChangingLine.frag" />
+    <None Include="Shaders\ThemeChanging.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

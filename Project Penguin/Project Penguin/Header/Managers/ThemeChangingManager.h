@@ -1,11 +1,12 @@
 #ifndef THEME_CHANGER_HEADER
 #define THEME_CHANGER_HEADER
 
+#include <IResetable.h>
+#include <ILighting.h>
 #include <GLM/glm.hpp>
 #include <Gameplay/Character.h>
-#include <IResetable.h>
 
-class ThemeChangingManager : public IResetable {
+class ThemeChangingManager : public IResetable, public ILighting {
 private:
 	const float MovementSpeed = 0.85f;
 	

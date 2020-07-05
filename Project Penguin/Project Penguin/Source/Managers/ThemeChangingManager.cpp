@@ -16,6 +16,8 @@ Character* ThemeChangingManager::PlayerChar = nullptr;
 ThemeChangingManager::ThemeChangingManager(glm::vec3 pos) {
 	startPos = pos;
 	_position = pos;
+	setRadius(4);
+	setColorAndBrightness(glm::vec4(1.0, 0.73, 0.2, 0.6));
 }
 
 /// <summary>

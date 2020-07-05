@@ -88,7 +88,7 @@ int main(void) {
 	// Shader
     Shader textureShader("SimpleTexture.vert", "SimpleTexture.frag");
     Shader projectileLightShader("ProjectileLighting.frag");
-    Shader themeChangingShader("ThemeChangingLine.frag");
+    Shader themeChangingShader("ThemeChanging.frag");
 
 	// Level Texture
 	// TODO: Instead of using 16 different textures use a shader
@@ -442,9 +442,19 @@ int main(void) {
             themeChangingShader.setMat4Uniform("VP", projection * view);
             themeChangingShader.setFloatUniform("barrierSize", 8.0f);
             themeChangingShader.setVec3Uniform("barrierPos", levelBarrier.getPosition());
+            themeChangingShader.setIntUniform("lightRadius", levelBarrier.getRadius());
+            themeChangingShader.setVec4Uniform("lightColor", levelBarrier.getColorAndBrightness());
 
+            themeChangingShader.setBoolUniform("drawLight", false);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadPos), quadPos, GL_DYNAMIC_DRAW);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+            glDisable(GL_BLEND);
+
+            themeChangingShader.setBoolUniform("drawLight", true);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_ONE, GL_ONE);
             glBufferData(GL_ARRAY_BUFFER, sizeof(quadPos), quadPos, GL_DYNAMIC_DRAW);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
             glDisable(GL_BLEND);
