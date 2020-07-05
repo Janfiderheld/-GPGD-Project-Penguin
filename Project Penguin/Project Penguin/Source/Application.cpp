@@ -130,11 +130,12 @@ int main(void) {
 
     // fullscreen quad positions
     GLfloat quadPos[] = {
-        -1.0f, -1.0f, 0.0f, 1.0f,
-        -1.0f,  1.0f, 0.0f, 1.0f,
          1.0f,  1.0f, 0.0f, 1.0f,
          1.0f, -1.0f, 0.0f, 1.0f,
+        -1.0f,  1.0f, 0.0f, 1.0f,
+         1.0f, -1.0f, 0.0f, 1.0f,
         -1.0f, -1.0f, 0.0f, 1.0f,
+        -1.0f,  1.0f, 0.0f, 1.0f,
     };
 
     // Vertex Buffer Objects
@@ -215,7 +216,7 @@ int main(void) {
                     glEnable(GL_BLEND);
                     glBlendFunc(GL_ONE, GL_ONE);
                     glBufferData(GL_ARRAY_BUFFER, sizeof(quadPos), quadPos, GL_DYNAMIC_DRAW);
-                    glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+                    glDrawArrays(GL_TRIANGLES, 0, 6);
                     glDisable(GL_BLEND);
                 }
             }
@@ -449,14 +450,14 @@ int main(void) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glBufferData(GL_ARRAY_BUFFER, sizeof(quadPos), quadPos, GL_DYNAMIC_DRAW);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
             glDisable(GL_BLEND);
 
             themeChangingShader.setBoolUniform("drawLight", true);
             glEnable(GL_BLEND);
             glBlendFunc(GL_ONE, GL_ONE);
             glBufferData(GL_ARRAY_BUFFER, sizeof(quadPos), quadPos, GL_DYNAMIC_DRAW);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
             glDisable(GL_BLEND);
 
             themeChangingShader.changeStatus(false);
