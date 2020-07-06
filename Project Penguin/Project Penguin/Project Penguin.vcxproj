@@ -230,6 +230,7 @@
     <ClInclude Include="Header\Gameplay\WalkingEnemy.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\ParallaxScrolling.frag" />
     <None Include="Shaders\ProjectileLighting.frag" />
     <None Include="Shaders\SimpleTexture.frag" />
     <None Include="Shaders\BasicFragmentShader.glsl" />

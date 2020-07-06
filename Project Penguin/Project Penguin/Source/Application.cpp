@@ -88,6 +88,7 @@ int main(void) {
     Shader textureShader("SimpleTexture.vert", "SimpleTexture.frag");
     Shader projectileLightShader("ProjectileLighting.frag");
     Shader themeChangingShader("ThemeChanging.frag");
+    Shader parallaxShader("ParallaxScrolling.frag");
 
 	// Level Texture
 	// TODO: Instead of using 16 different textures use a shader
@@ -170,21 +171,32 @@ int main(void) {
         textureShader.setMat4Uniform("view", view);
         textureShader.setMat4Uniform("projection", projection);    
     	
-        backgrounds.updateLayers(cam.getPosition().x);
+        textureShader.changeStatus(false);
+        parallaxShader.changeStatus(true);
+        parallaxShader.setIntUniform("width", UserInterfaceParameters::Width);
+        parallaxShader.setIntUniform("height", UserInterfaceParameters::Height);
+        parallaxShader.setIntUniform("maxWidth", level.getWidth());
+        parallaxShader.setIntUniform("maxHeight", level.getHeight());
+        parallaxShader.setVec3Uniform("camPos", cam.getPosition());
+
         for(int i = backgrounds.getLayerAmount() - 1; i >= 0; i--) {
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, backgrounds.getPositionForLayer(i));
-            model = glm::scale(model, backgrounds.getScaleForLayer(i));
-            textureShader.setMat4Uniform("model", model);
+            glBindBuffer(GL_ARRAY_BUFFER, quadBuffer);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+            parallaxShader.setIntUniform("layerNo", i);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glBindTexture(GL_TEXTURE_2D, backgrounds.getTextureForLayer(i)->TextureId);
-            glBufferSubData(textBuffer, 0, sizeof(backgrounds.getVerticesForLayer(i)), backgrounds.getVerticesForLayer(i));
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadPos), quadPos, GL_DYNAMIC_DRAW);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
             glDisable(GL_BLEND);
         }
-    	        
+
+        parallaxShader.changeStatus(false);
+        textureShader.changeStatus(true);
+
         ui.processInput(&cam);
         if (ui.hasGameStarted()) {
             float delta = ui.calculateDeltaTime();
@@ -482,6 +494,7 @@ int main(void) {
     textureShader.deleteThisShader();
     projectileLightShader.deleteThisShader();
     themeChangingShader.deleteThisShader();
+    parallaxShader.deleteThisShader();
 
     ui.cleanUp();
     return 0;

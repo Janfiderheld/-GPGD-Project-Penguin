@@ -87,5 +87,6 @@
     <None Include="Shaders\SimpleTexture.vert" />
     <None Include="Shaders\ProjectileLighting.frag" />
     <None Include="Shaders\ThemeChanging.frag" />
+    <None Include="Shaders\ParallaxScrolling.frag" />
   </ItemGroup>
 </Project>
