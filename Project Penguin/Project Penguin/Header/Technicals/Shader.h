@@ -16,11 +16,12 @@ private:
 
 public:
     unsigned int ProgramId;
+    static void DeactivateCurrentShader();
 
     Shader(const char* fragmentFileName);
     Shader(const char* vertexFileName, const char* fragmentFileName, const char* geometryFileName = nullptr);
 
-    void changeStatus(bool activate);
+    void activateThisShader();
     void deleteThisShader();
 
     void setMat4Uniform(const std::string& name, glm::mat4 value) const;

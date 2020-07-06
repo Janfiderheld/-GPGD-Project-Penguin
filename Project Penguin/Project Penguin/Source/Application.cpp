@@ -167,12 +167,11 @@ int main(void) {
         // projection transform
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)UserInterfaceParameters::Width / (float)UserInterfaceParameters::Height, 5.0f, 15.0f);
 
-        textureShader.changeStatus(true);
         textureShader.setMat4Uniform("view", view);
         textureShader.setMat4Uniform("projection", projection);    
     	
-        textureShader.changeStatus(false);
-        parallaxShader.changeStatus(true);
+        Shader::DeactivateCurrentShader();
+        parallaxShader.activateThisShader();
         parallaxShader.setIntUniform("width", UserInterfaceParameters::Width);
         parallaxShader.setIntUniform("height", UserInterfaceParameters::Height);
         parallaxShader.setIntUniform("maxWidth", level.getWidth());
@@ -194,8 +193,8 @@ int main(void) {
             glDisable(GL_BLEND);
         }
 
-        parallaxShader.changeStatus(false);
-        textureShader.changeStatus(true);
+        Shader::DeactivateCurrentShader();
+        textureShader.activateThisShader();
 
         ui.processInput(&cam);
         if (ui.hasGameStarted()) {
@@ -207,11 +206,11 @@ int main(void) {
             textureShader.setFloatUniform("barrierPos", levelBarrier.getCurrentX());
 
             // draw Lighting from projectiles
-            textureShader.changeStatus(false);
-            projectileLightShader.changeStatus(true);
             projectileLightShader.setIntUniform("height", UserInterfaceParameters::Height);
             projectileLightShader.setIntUniform("width", UserInterfaceParameters::Width);
             projectileLightShader.setMat4Uniform("VP", projection * view);
+            Shader::DeactivateCurrentShader();
+            projectileLightShader.activateThisShader();
 
             glBindBuffer(GL_ARRAY_BUFFER, quadBuffer);
             glEnableVertexAttribArray(0);
@@ -232,8 +231,8 @@ int main(void) {
                 }
             }
 
-            projectileLightShader.changeStatus(false);
-            textureShader.changeStatus(true);
+            Shader::DeactivateCurrentShader();
+            textureShader.activateThisShader();
 
             glBindBuffer(GL_ARRAY_BUFFER, textBuffer);
             glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
@@ -442,8 +441,8 @@ int main(void) {
             }
 
             // draw Theme Changing
-            textureShader.changeStatus(false);
-            themeChangingShader.changeStatus(true);
+            Shader::DeactivateCurrentShader();
+            themeChangingShader.activateThisShader();
 
             glBindBuffer(GL_ARRAY_BUFFER, quadBuffer);
             glEnableVertexAttribArray(0);
@@ -471,8 +470,8 @@ int main(void) {
             glDrawArrays(GL_TRIANGLES, 0, 6);
             glDisable(GL_BLEND);
 
-            themeChangingShader.changeStatus(false);
-            textureShader.changeStatus(true);
+            Shader::DeactivateCurrentShader();
+            textureShader.activateThisShader();
 
             glBindBuffer(GL_ARRAY_BUFFER, textBuffer);
             glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);

@@ -56,6 +56,13 @@ const char* Shader::addCurrentDirectory(std::string fileName) {
 }
 
 /// <summary>
+/// Deactivates the current shader
+/// </summary>
+void Shader::DeactivateCurrentShader() {
+	glUseProgram(0);
+}
+
+/// <summary>
 /// Opens, compiles and links the given fragment shader file
 /// </summary>
 /// <param name="fragmentFileName">Name of the fragment shader file</param>
@@ -178,15 +185,10 @@ Shader::Shader(const char* vertexFileName, const char* fragmentFileName, const c
 }
 
 /// <summary>
-/// Activates this shader on true and deactivates all shaders on false
+/// Activates this shader
 /// </summary>
-/// <param name="activate">true to activate</param>
-void Shader::changeStatus(bool activate) {
-	if (activate) {
-		glUseProgram(ProgramId);
-	} else {
-		glUseProgram(0);
-	}	
+void Shader::activateThisShader() {
+	glUseProgram(ProgramId);
 }
 
 /// <summary>
