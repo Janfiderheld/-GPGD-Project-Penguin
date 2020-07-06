@@ -11,14 +11,14 @@ private:
 
 	std::vector<BackgroundLayer> _layers;
 
-	void createLayers(glm::vec3 startPos);
+	void createLayers();
 	
 public:
-	BackgroundManager(glm::vec3 startPos);
+	BackgroundManager();
 
 	int getLayerAmount();
-	Texture* getTextureForLayer(int layerNo);
-	glm::vec3 getPositionForLayer(int layerNo);
+	Texture* getIceTextureForLayer(int layerNo);
+	Texture* getDesertTextureForLayer(int layerNo);
 };
 
 #endif // BACKMAN_HEADER

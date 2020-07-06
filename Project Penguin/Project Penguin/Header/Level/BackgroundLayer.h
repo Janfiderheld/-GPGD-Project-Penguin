@@ -6,16 +6,16 @@
 
 class BackgroundLayer {
 private:	
-	Texture _background;
-	glm::vec3 _position;
+	Texture _ice;
+	Texture _desert;
 	int _layer;
 	
 public:
 	BackgroundLayer();
-	BackgroundLayer(glm::vec3 pos, Texture toUse, int layer);
+	BackgroundLayer(Texture ice, Texture desert, int layer);
 
-	Texture getTexture();
-	glm::vec3 getPosition();
+	Texture* getIceTexture();
+	Texture* getDesertTexture();
 };
 
 #endif // BACKGROUND_HEADER

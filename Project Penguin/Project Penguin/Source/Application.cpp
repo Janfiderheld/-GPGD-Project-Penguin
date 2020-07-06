@@ -77,11 +77,11 @@ int main(void) {
     UserInterface::CollectableManager = &collectables;
 
     // Backgrounds
-    glm::vec3 camPos = glm::vec3(5.6f, 4.9f, 3.0f);
-    BackgroundManager backgrounds(camPos);
+    BackgroundManager backgrounds;
 
     // Camera
     // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
+    glm::vec3 camPos = glm::vec3(5.6f, 4.9f, 3.0f);
     Camera cam = Camera(camPos, glm::vec3(0.0f, 1.0f, 0.0f), &character);
 	
 	// Shader
@@ -172,11 +172,13 @@ int main(void) {
     	
         Shader::DeactivateCurrentShader();
         parallaxShader.activateThisShader();
+        parallaxShader.setMat4Uniform("VP", projection * view);
         parallaxShader.setIntUniform("width", UserInterfaceParameters::Width);
         parallaxShader.setIntUniform("height", UserInterfaceParameters::Height);
         parallaxShader.setIntUniform("maxWidth", level.getWidth());
         parallaxShader.setIntUniform("maxHeight", level.getHeight());
         parallaxShader.setVec3Uniform("camPos", cam.getPosition());
+        parallaxShader.setVec3Uniform("barrierPos", levelBarrier.getPosition());
 
         for(int i = backgrounds.getLayerAmount() - 1; i >= 0; i--) {
             glBindBuffer(GL_ARRAY_BUFFER, quadBuffer);
@@ -184,15 +186,22 @@ int main(void) {
             glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
             parallaxShader.setIntUniform("layerNo", i);
+            parallaxShader.setIntUniform("ice", 0);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, backgrounds.getIceTextureForLayer(i)->TextureId);
+
+            parallaxShader.setIntUniform("desert", 1);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, backgrounds.getDesertTextureForLayer(i)->TextureId);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glBindTexture(GL_TEXTURE_2D, backgrounds.getTextureForLayer(i)->TextureId);
             glBufferData(GL_ARRAY_BUFFER, sizeof(quadPos), quadPos, GL_DYNAMIC_DRAW);
             glDrawArrays(GL_TRIANGLES, 0, 6);
             glDisable(GL_BLEND);
         }
 
+        glActiveTexture(GL_TEXTURE0);
         Shader::DeactivateCurrentShader();
         textureShader.activateThisShader();
 
@@ -206,15 +215,16 @@ int main(void) {
             textureShader.setFloatUniform("barrierPos", levelBarrier.getCurrentX());
 
             // draw Lighting from projectiles
-            projectileLightShader.setIntUniform("height", UserInterfaceParameters::Height);
-            projectileLightShader.setIntUniform("width", UserInterfaceParameters::Width);
-            projectileLightShader.setMat4Uniform("VP", projection * view);
             Shader::DeactivateCurrentShader();
             projectileLightShader.activateThisShader();
+            projectileLightShader.setIntUniform("height", UserInterfaceParameters::Height);
+            projectileLightShader.setIntUniform("width", UserInterfaceParameters::Width);
+            projectileLightShader.setMat4Uniform("VP", projection* view);
 
             glBindBuffer(GL_ARRAY_BUFFER, quadBuffer);
             glEnableVertexAttribArray(0);
             glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+            glBindTexture(GL_TEXTURE_2D, 0);
 
             for (int i = 0; i < enemies.getShooterAndProjectileAmount(); i++) {
                 Projectile* tempProj = enemies.getProjectileAtVectorPos(i);

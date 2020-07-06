@@ -3,19 +3,20 @@
 /// <summary>
 /// Creates the defined amount of layers and gives them the corresponding texture
 /// </summary>
-void BackgroundManager::createLayers(glm::vec3 startPos) {
+void BackgroundManager::createLayers() {
 	for(int i = 0; i < LayerAmount; i++) {
-		Texture layerTex(("BackgroundLayer" + std::to_string(i) + ".png").c_str(), GL_RGBA);
-		_layers.at(i) = BackgroundLayer(startPos, layerTex, i);
+		Texture iceLayerTex(("IceBackground" + std::to_string(i) + ".png").c_str(), GL_RGBA);
+		Texture desertLayerTex(("DesertBackground" + std::to_string(i) + ".png").c_str(), GL_RGBA);
+		_layers.at(i) = BackgroundLayer(iceLayerTex, desertLayerTex, i);
 	}
 }
 
 /// <summary>
 /// Creates the layers and sets the dimension for the vector
 /// </summary>
-BackgroundManager::BackgroundManager(glm::vec3 startPos) {
+BackgroundManager::BackgroundManager() {
 	_layers.resize(LayerAmount);
-	createLayers(startPos);
+	createLayers();
 }
 
 /// <summary>
@@ -26,25 +27,25 @@ int BackgroundManager::getLayerAmount() {
 }
 
 /// <summary>
-/// Returns the texture for a given layer
+/// Returns the ice texture for a given layer
 /// </summary>
 /// <param name="layerNo">number of layer in [0, LayerAmount)</param>
-Texture* BackgroundManager::getTextureForLayer(int layerNo) {
+Texture* BackgroundManager::getIceTextureForLayer(int layerNo) {
 	if (layerNo < 0 || layerNo >= LayerAmount) {
 		return nullptr;
 	}
 
-	return &(_layers.at(layerNo).getTexture());
+	return _layers.at(layerNo).getIceTexture();
 }
 
 /// <summary>
-/// Returns the position for a given layer to draw that layer
+/// Returns the desert texture for a given layer
 /// </summary>
 /// <param name="layerNo">number of layer in [0, LayerAmount)</param>
-glm::vec3 BackgroundManager::getPositionForLayer(int layerNo) {
+Texture* BackgroundManager::getDesertTextureForLayer(int layerNo) {
 	if (layerNo < 0 || layerNo >= LayerAmount) {
-		return glm::vec3(0.0f);
+		return nullptr;
 	}
 
-	return _layers.at(layerNo).getPosition();
+	return _layers.at(layerNo).getDesertTexture();
 }
