@@ -527,6 +527,7 @@ void UserInterface::processInput(Camera* cam) {
         if (PlayerChar->hasReachedEnd()) {
             float dist = PlayerChar->getPosition().x - ThemeChangingManager->getCurrentX();
             HighscoreManager->addToCurrentScore(round(dist) * ThemeChangingManager::PointsPerTile);
+            HighscoreManager->addToCurrentScore(PlayerChar->getCurrentHealth() * Character::PointsPerHeart);
         }
 
         PlayerChar->reset();

@@ -28,6 +28,7 @@ private:
 	void checkForPitBottom();
 	
 public:
+	static int PointsPerHeart;
 	static InputManager* InputManager;
 	static glm::vec3 getScale();
 

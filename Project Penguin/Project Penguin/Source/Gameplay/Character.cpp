@@ -32,6 +32,11 @@ float Character::SideSpeedAir = 1.25f;
 int Character::MaxHealth = 3;
 
 /// <summary>
+/// Points the player gets for each remaining heart at the end of the level
+/// </summary>
+int Character::PointsPerHeart = 10;
+
+/// <summary>
 /// Reference to the InputManager, which saves which key is pressed.
 /// </summary>
 InputManager* Character::InputManager = nullptr;
