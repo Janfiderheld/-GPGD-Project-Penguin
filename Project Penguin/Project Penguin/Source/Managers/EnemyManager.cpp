@@ -121,6 +121,10 @@ void EnemyManager::generateEnemies() {
 				isUsableX = false;
 				positions.push_back(x);
 			}
+			if (LevelFacade->getHeightForXPos(x - 1) == 0 && LevelFacade->getHeightForXPos(x + 1) == 0) {
+				isUsableX = false;
+				positions.push_back(x);
+			}
 		} while (!isUsableX);
 		
 		positions.push_back(x);
