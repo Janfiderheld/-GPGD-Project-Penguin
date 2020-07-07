@@ -529,7 +529,6 @@ void UserInterface::processInput(Camera* cam) {
             HighscoreManager->addToCurrentScore(round(dist) * ThemeChangingManager::PointsPerTile);
         }
 
-        _currentMenu = GAME_OVER;
         PlayerChar->reset();
         cam->reset();
         ThemeChangingManager->reset();
@@ -537,6 +536,8 @@ void UserInterface::processInput(Camera* cam) {
         LevelFacade->generateLevel();
         CollectableManager->generateCollectables();
         EnemyManager->generateEnemies();
+
+        _currentMenu = GAME_OVER;
     }
 	
     if (!PlayerChar->hasReachedEnd() && !PlayerChar->hasDied() && hasGameStarted()) {

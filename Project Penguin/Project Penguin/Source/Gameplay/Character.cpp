@@ -61,11 +61,6 @@ Character::Character(glm::vec3 pos, Texture* texture, AABB boundBox) :
 /// </summary>
 /// <param name="deltaTime">time since last frame</param>
 void Character::calculateSpeed(float deltaTime) {
-	if(hasDied() || hasReachedEnd())	{
-		setCompleteSpeed(glm::vec3(0.0f));
-		return;
-	}
-
 	_atLeftLevelEnd = position.x <= 0.5f;
 	float distToRightTile = floor(position.x) + 1 - getHitbox().getMaxX();
 
@@ -208,6 +203,7 @@ void Character::reset() {
 	MovingObject::reset();
 	_reachedPitBottom = false;
 	_reachedEnd = false;
+	_atLeftLevelEnd = false;
 	_currentHealth = MaxHealth;
 }
 

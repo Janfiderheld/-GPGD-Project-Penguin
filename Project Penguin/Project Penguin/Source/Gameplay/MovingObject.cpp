@@ -159,6 +159,11 @@ void MovingObject::reset() {
 	_hitbox.setOrigin(startPos);
 	position = startPos;
 	status = STAND;
+	wasOnGround = true;
+	isOnGround = true;
+	hasCeiling = false;
+	hasTileLeft = false;
+	hasTileRight = false;
 }
 
 /// <summary>
