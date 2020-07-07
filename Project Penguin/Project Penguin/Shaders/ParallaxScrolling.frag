@@ -35,7 +35,7 @@ void main()
 		texCoords.x = texCoords.x - 1.0;
 	}
 	if(texCoords.y > 1.0) {
-		texCoords.y = texCoords.y - 1.0;
+		texCoords.y = 1.0;
 	}
 
 	if(gl_FragCoord.x <= barrierOnScreen.x) {	

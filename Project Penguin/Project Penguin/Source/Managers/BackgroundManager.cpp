@@ -7,6 +7,8 @@ void BackgroundManager::createLayers() {
 	for(int i = 0; i < LayerAmount; i++) {
 		Texture iceLayerTex(("IceBackground" + std::to_string(i) + ".png").c_str(), GL_RGBA);
 		Texture desertLayerTex(("DesertBackground" + std::to_string(i) + ".png").c_str(), GL_RGBA);
+		iceLayerTex.changeWrapping(GL_REPEAT, GL_CLAMP_TO_EDGE);
+		desertLayerTex.changeWrapping(GL_REPEAT, GL_CLAMP_TO_EDGE);
 		_layers.at(i) = BackgroundLayer(iceLayerTex, desertLayerTex, i);
 	}
 }
