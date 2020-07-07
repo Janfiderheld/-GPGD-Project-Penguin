@@ -58,6 +58,7 @@ void Enemy::calculateSpeed(float deltaTime) {
 	_beforePit = checkForPit(status);
 	_reachedStart = checkForReachedArea(status, true);
 	_reachedEnd = checkForReachedArea(status, false);
+	float distToRightTile = floor(position.x) + 1 - getHitbox().getMaxX();
 
 	switch (status) {
 	case STAND:
@@ -108,7 +109,7 @@ void Enemy::calculateSpeed(float deltaTime) {
 	case WALK_RIGHT:
 		setVerticalSpeed(0.0f);
 
-		if (!hasTileRight && !_beforePit && position.x - startPos.x <= MovementRadius &&
+		if ((!hasTileRight && !_beforePit) || distToRightTile >= 0.0f && position.x - startPos.x <= MovementRadius &&
 			!_reachedEnd && !checkForDoubleWall(WALK_RIGHT)) {
 			setHorizontalSpeed(WalkSpeed);
 		} else if (hasTileRight && !checkForDoubleWall(WALK_RIGHT) && position.x - startPos.x <= MovementRadius) {
@@ -141,8 +142,8 @@ void Enemy::calculateSpeed(float deltaTime) {
 			!checkForPit(WALK_LEFT) && startPos.x - position.x <= MovementRadius &&
 			!_reachedStart) {
 			setHorizontalSpeed(-SideSpeedAir);
-		} else if (_lastDir == WALK_RIGHT && !hasTileRight &&
-			!checkForPit(WALK_RIGHT) && position.x - startPos.x <= MovementRadius &&
+		} else if (_lastDir == WALK_RIGHT && (!hasTileRight && !checkForPit(WALK_RIGHT)) || distToRightTile >= 0.0f
+			&& position.x - startPos.x <= MovementRadius &&
 			!_reachedEnd) {
 			setHorizontalSpeed(SideSpeedAir);
 		} else {
