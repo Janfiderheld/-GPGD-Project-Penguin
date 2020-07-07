@@ -32,6 +32,7 @@ public:
 
 	void calculateSpeed(float deltaTime) override;	
 	bool checkWithCameraArea(glm::mat4 view, glm::mat4 proj);
+	bool checkLastDirectionLeft();
 };
 
 #endif // ENEMY_HEADER 

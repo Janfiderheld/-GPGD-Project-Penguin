@@ -12,6 +12,7 @@ private:
 	static int MaxCountsBetweenShots;
 
 	static glm::vec3 Scale;
+	static glm::vec2 TextureOffset;
 
 	int _shootCounter = 0;
 	Projectile _currProj;
@@ -30,6 +31,7 @@ public:
 	void shootProjectile(glm::vec3 playerPos);
 	void setCurrentProjectile(Projectile proj);
 	Projectile* getCurrentProjectile();
+	glm::vec3 getTexturePosition();
 	AABB* getKillBox();
 	
 	void calculateSpeed(float deltaTime) override;
