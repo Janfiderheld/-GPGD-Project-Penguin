@@ -401,9 +401,9 @@ int main(void) {
 
                 ShootingEnemy* tempShoot = enemies.getShootingEnemyAtVectorPos(i);
                 model = glm::mat4(1.0f);
-                model = glm::translate(model, tempShoot->getPosition());
+                model = glm::translate(model, tempShoot->getTexturePosition());
                 model = glm::scale(model, ShootingEnemy::getScale());
-                if (tempShoot->getCurrentSpeed().x < 0.0f) {
+                if (tempShoot->checkLastDirectionLeft()) {
                     model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
                 }
                 textureShader.setMat4Uniform("model", model);
@@ -421,7 +421,7 @@ int main(void) {
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, tempWalker->getTexturePosition());
                 model = glm::scale(model, WalkingEnemy::getScale());
-                if (tempWalker->getCurrentSpeed().x < 0.0f) {
+                if (tempWalker->checkLastDirectionLeft()) {
                     model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
                 }
                 textureShader.setMat4Uniform("model", model);

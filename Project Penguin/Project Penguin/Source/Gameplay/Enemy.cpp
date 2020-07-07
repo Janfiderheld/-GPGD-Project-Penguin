@@ -177,7 +177,11 @@ void Enemy::calculateSpeed(float deltaTime) {
 	}
 	_posLastFrame = position.x;
 	if(_errorCounter >= StandCountError) {
-		status = STAND;
+		if (status == WALK_LEFT || status == WALK_RIGHT) {
+			_lastDir = status;
+		}
+
+		status = STAND;		
 		_errorCounter = 0;
 	}
 }
@@ -198,4 +202,27 @@ bool Enemy::checkWithCameraArea(glm::mat4 view, glm::mat4 proj) {
 	}
 
 	return false;
+}
+
+/// <summary>
+/// Returns true when the enemies last direction was left
+/// </summary>
+bool Enemy::checkLastDirectionLeft(){
+	switch (status)
+	{
+	case WALK_LEFT:
+		return true;
+		break;
+
+	case WALK_RIGHT:
+		return false;
+		break;
+
+	case STAND:
+	case JUMP:
+	case FALL:
+	default:
+		return _lastDir == WALK_LEFT;
+		break;
+	}
 }

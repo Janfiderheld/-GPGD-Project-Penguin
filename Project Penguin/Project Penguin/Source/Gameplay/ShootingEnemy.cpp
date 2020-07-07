@@ -21,6 +21,12 @@ int ShootingEnemy::MaxCountsBetweenShots = 100;
 glm::vec3 ShootingEnemy::Scale = glm::vec3(0.65f, 0.9f, 1.0f);
 
 /// <summary>
+/// Offset of the texture in relation to the origin.
+/// Can be calculated by subtracting the Scale from 1 and dividing by two
+/// </summary>
+glm::vec2 ShootingEnemy::TextureOffset = glm::vec2(0.1725f, 0.05f);
+
+/// <summary>
 /// Texture for the shooting enemy
 /// </summary>
 Texture* ShootingEnemy::ShooterTex = nullptr;
@@ -118,4 +124,11 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 	_currProj.calculateSpeed(deltaTime);
 	updateKillingBox();
 	_shootCounter++;
+}
+
+/// <summary>
+/// Returns the position with the texture offset for fitting drawing
+/// </summary>
+glm::vec3 ShootingEnemy::getTexturePosition() {
+	return glm::vec3(position.x - TextureOffset.x, position.y - TextureOffset.y, position.z);
 }
