@@ -143,7 +143,7 @@ bool MovingObject::checkForReachedArea(MovingObjectStatus dir, bool start) {
 		return false;
 	}
 
-	int posX = dir == WALK_RIGHT ? ceil(position.x) : floor(position.x);
+	int posX = round(position.x);
 	int currY = ceil(position.y) - 1;
 	int nextY = ceil(position.y) - 2;
 	TileLocation loc = start ? START_AREA : END_AREA;

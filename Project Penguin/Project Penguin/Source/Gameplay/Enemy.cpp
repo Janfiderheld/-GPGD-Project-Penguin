@@ -109,8 +109,8 @@ void Enemy::calculateSpeed(float deltaTime) {
 	case WALK_RIGHT:
 		setVerticalSpeed(0.0f);
 
-		if ((!hasTileRight && !_beforePit) || distToRightTile >= 0.0f && position.x - startPos.x <= MovementRadius &&
-			!_reachedEnd && !checkForDoubleWall(WALK_RIGHT)) {
+		if ((!hasTileRight && !_beforePit && position.x - startPos.x <= MovementRadius &&
+			!_reachedEnd && !checkForDoubleWall(WALK_RIGHT)) || distToRightTile >= 0.0f) {
 			setHorizontalSpeed(WalkSpeed);
 		} else if (hasTileRight && !checkForDoubleWall(WALK_RIGHT) && position.x - startPos.x <= MovementRadius) {
 			_lastDir = WALK_RIGHT;
@@ -138,13 +138,11 @@ void Enemy::calculateSpeed(float deltaTime) {
 		setVerticalSpeed(speed.y + Gravity * deltaTime);
 		setVerticalSpeed(glm::max(speed.y, MaxFallingSpeed));
 
-		if (_lastDir == WALK_LEFT && !hasTileLeft &&
-			!checkForPit(WALK_LEFT) && startPos.x - position.x <= MovementRadius &&
-			!_reachedStart) {
+		if (_lastDir == WALK_LEFT && !hasTileLeft && !_reachedStart &&
+			!checkForPit(WALK_LEFT) && startPos.x - position.x <= MovementRadius) {
 			setHorizontalSpeed(-SideSpeedAir);
-		} else if (_lastDir == WALK_RIGHT && (!hasTileRight && !checkForPit(WALK_RIGHT)) || distToRightTile >= 0.0f
-			&& position.x - startPos.x <= MovementRadius &&
-			!_reachedEnd) {
+		} else if ((_lastDir == WALK_RIGHT && !hasTileRight && !checkForPit(WALK_RIGHT) && !_reachedEnd &&
+			position.x - startPos.x <= MovementRadius ) || distToRightTile >= 0.0f) {
 			setHorizontalSpeed(SideSpeedAir);
 		} else {
 			setHorizontalSpeed(0.0f);

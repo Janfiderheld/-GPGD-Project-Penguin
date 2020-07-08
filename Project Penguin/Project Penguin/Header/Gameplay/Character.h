@@ -22,6 +22,7 @@ private:
 	bool _reachedEnd = false;
 	bool _reachedPitBottom = false;
 	bool _atLeftLevelEnd = false;
+	bool _atRightLevelEnd = false;
 
 	MovingObjectStatus _lastDir = WALK_RIGHT;
 	Texture* _tex;

@@ -67,6 +67,7 @@ Character::Character(glm::vec3 pos, Texture* texture, AABB boundBox) :
 /// <param name="deltaTime">time since last frame</param>
 void Character::calculateSpeed(float deltaTime) {
 	_atLeftLevelEnd = position.x <= 0.5f;
+	_atRightLevelEnd = position.x >= LevelFacade->getLevelWidth() - 1;
 	float distToRightTile = floor(position.x) + 1 - getHitbox().getMaxX();
 
 	switch (status)	{
@@ -129,7 +130,8 @@ void Character::calculateSpeed(float deltaTime) {
 
 		if (!hasTileRight || distToRightTile >= 0.0f) {
 			setHorizontalSpeed(WalkSpeed);
-		} else {
+		}
+		if(_atRightLevelEnd) {
 			setHorizontalSpeed(0.0f);
 		}
 
@@ -166,7 +168,7 @@ void Character::calculateSpeed(float deltaTime) {
 		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) && !hasTileLeft && !_atLeftLevelEnd) {
 			setHorizontalSpeed(-SideSpeedAir);
 			_lastDir = WALK_LEFT;
-		} else if(InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT)) {
+		} else if(InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT) && !_atRightLevelEnd) {
 			if (!hasTileRight || distToRightTile >= 0.0f) {
 				setHorizontalSpeed(SideSpeedAir);
 				_lastDir = WALK_RIGHT;
@@ -213,6 +215,7 @@ void Character::reset() {
 	_reachedPitBottom = false;
 	_reachedEnd = false;
 	_atLeftLevelEnd = false;
+	_atRightLevelEnd = false;
 	_currentHealth = MaxHealth;
 }
 

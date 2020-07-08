@@ -108,6 +108,13 @@ int GridFacade::getHeightForXPos(int x) {
 }
 
 /// <summary>
+/// Returns the width of the level
+/// </summary>
+int GridFacade::getLevelWidth() {
+	return _grid->getWidth();
+}
+
+/// <summary>
 /// Generates a new level for every game
 /// </summary>
 void GridFacade::generateLevel() {

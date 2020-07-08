@@ -26,6 +26,7 @@ public:
 
 	int generateRandomForPlacement();
 	int getHeightForXPos(int x);
+	int getLevelWidth();
 	void generateLevel();
 };
 
