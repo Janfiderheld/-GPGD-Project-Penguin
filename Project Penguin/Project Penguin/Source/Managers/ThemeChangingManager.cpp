@@ -13,9 +13,9 @@ Character* ThemeChangingManager::PlayerChar = nullptr;
 /// <summary>
 /// Sets the starting position based on the parameter
 /// </summary>
-ThemeChangingManager::ThemeChangingManager(glm::vec3 pos) {
-	startPos = pos;
-	_position = pos;
+ThemeChangingManager::ThemeChangingManager(float startX) {
+	startPos = glm::vec3(startX, 0.0f, -10.0f);
+	_position = startPos;
 	setRadius(4);
 	setColorAndBrightness(glm::vec4(1.0, 0.73, 0.2, 0.6));
 }

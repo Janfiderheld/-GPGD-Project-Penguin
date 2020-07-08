@@ -51,7 +51,7 @@ int main(void) {
     EnemyManager::PlayerChar = &character;
 
     // Theme Changing Manager
-    ThemeChangingManager levelBarrier(glm::vec3(-5.0f, 0.0f, -10.0f));
+    ThemeChangingManager levelBarrier(-4.0f);
     UserInterface::ThemeChangingManager = &levelBarrier;
 
 	// Enemies
@@ -206,8 +206,8 @@ int main(void) {
         textureShader.activateThisShader();
 
         ui.processInput(&cam);
+        float delta = ui.calculateDeltaTime();
         if (ui.hasGameStarted()) {
-            float delta = ui.calculateDeltaTime();
             character.calculateSpeed(delta);
             enemies.updateEnemies(delta, levelBarrier.getCurrentX(), view, projection);
             cam.updatePosition(delta);

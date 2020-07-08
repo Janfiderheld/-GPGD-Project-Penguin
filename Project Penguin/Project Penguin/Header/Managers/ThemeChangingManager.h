@@ -16,7 +16,7 @@ public:
 	static int PointsPerTile;
 	static Character* PlayerChar;
 	
-	ThemeChangingManager(glm::vec3 pos);
+	ThemeChangingManager(float startX);
 
 	void updatePosition(float deltaTime);
 	void checkForPlayerCollision();
