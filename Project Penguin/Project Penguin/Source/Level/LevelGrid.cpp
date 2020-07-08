@@ -34,9 +34,8 @@ void LevelGrid::generateBottom() {
 	int currentX = StartingAreaWidth;
 	int currentY = FilledBottomRows - 1;
 	int countPlain = PlainWidth;
-	bool levelEndReached = false;
 
-	while (!levelEndReached) {
+	while (true) {
 		int rndm = rand() % 100;
 		switch (state) {
 		case LVL_START:
@@ -46,7 +45,6 @@ void LevelGrid::generateBottom() {
 			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
-					fillTilesBelow(currentX, currentY);
 				} else {
 					state = LVL_END;
 				}
@@ -61,7 +59,6 @@ void LevelGrid::generateBottom() {
 			if (currentX < LevelWidth - EndAreaWidth - 1) {
 				currentX++;
 				countPlain--;
-				fillTilesBelow(currentX, currentY);
 			} else {
 				state = LVL_END;
 			}			
@@ -72,20 +69,19 @@ void LevelGrid::generateBottom() {
 				if (currentY < MaxBottomHeight) {
 					currentY++;
 					state = DOUBLE_HIGH;
-				} else {
-					continue;
 				}
 			} else if (rndm >= HighGoUp && rndm < HighGoUp + HighGoDown) {
 				if (currentY >= FilledBottomRows) {
-					currentY--;
-					state = LOW;
-				} else {
-					continue;
-				}				
+					if (currentX < LevelWidth - EndAreaWidth - 1) {
+						currentY--;
+						state = LOW;
+					} else {
+						state = LVL_END;
+					}
+				}			
 			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
-					fillTilesBelow(currentX, currentY);
 				} else {
 					state = LVL_END;
 				}
@@ -97,15 +93,12 @@ void LevelGrid::generateBottom() {
 				if (currentY < MaxBottomHeight) {
 					currentY++;
 					state = HIGH;
-				} else {
-					continue;
 				}
 			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
 					countPlain--;
 					state = HIGH;
-					fillTilesBelow(currentX, currentY);
 				} else {
 					state = LVL_END;
 				}
@@ -117,10 +110,9 @@ void LevelGrid::generateBottom() {
 				countPlain = PlainWidth;
 				state = FINISHED_LOW;
 			}
-			if (currentX < LevelWidth - EndAreaWidth) {
+			if (currentX < LevelWidth - EndAreaWidth - 1) {
 				currentX++;
 				countPlain--;
-				fillTilesBelow(currentX, currentY);
 			} else {
 				state = LVL_END;
 			}
@@ -131,20 +123,15 @@ void LevelGrid::generateBottom() {
 				if (currentY < MaxBottomHeight) {
 					currentY++;
 					state = HIGH;
-				} else {
-					continue;
 				}
 			} else if (rndm >= LowGoUp && rndm < LowGoUp + LowGoDown) {
 				if (currentY >= FilledBottomRows) {
 					currentY--;
 					state = DOUBLE_LOW;
-				} else {
-					continue;
 				}
 			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
-					fillTilesBelow(currentX, currentY);
 				} else {
 					state = LVL_END;
 				}
@@ -156,15 +143,12 @@ void LevelGrid::generateBottom() {
 				if (currentY >= FilledBottomRows) {
 					currentY--;
 					state = LOW;
-				} else {
-					continue;
 				}
 			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
 					currentX++;
 					countPlain--;
 					state = LOW;
-					fillTilesBelow(currentX, currentY);
 				} else {
 					state = LVL_END;
 				}
@@ -174,9 +158,8 @@ void LevelGrid::generateBottom() {
 		case LVL_END:
 			if (currentX < LevelWidth - 1) {
 				currentX++;
-				fillTilesBelow(currentX, currentY);
 			} else {
-				levelEndReached = true;
+				return;
 			}
 			break;
 		}
@@ -184,6 +167,8 @@ void LevelGrid::generateBottom() {
 		size_t current = currentY * LevelWidth + currentX;
 		_level.at(current) = LevelGridTile(currentX, currentY);
 		_level.at(current).changeFilling(true);
+		fillTilesBelow(currentX, currentY);
+
 		if (state == LVL_END) {
 			_level.at(current).changeLocation(END_AREA);
 		}
@@ -198,8 +183,10 @@ void LevelGrid::generateBottom() {
 void LevelGrid::fillTilesBelow(int x, int y) {
 	for (int i = y - 1; i >= 0; i--) {
 		size_t current = x + i * LevelWidth;
-		_level.at(current) = LevelGridTile(x, i);
-		_level.at(current).changeFilling(true);
+		if (!_level.at(current).isFilled()) {
+			_level.at(current) = LevelGridTile(x, i);
+			_level.at(current).changeFilling(true);
+		}
 	}
 }
 
