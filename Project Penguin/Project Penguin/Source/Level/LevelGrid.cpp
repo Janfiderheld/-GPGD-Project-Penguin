@@ -279,6 +279,7 @@ void LevelGrid::addPits() {
 			}
 		} while (!isUsableX);
 
+		positions.push_back(x - 2);
 		positions.push_back(x - 1);
 		positions.push_back(x);
 		positions.push_back(x + 1);
