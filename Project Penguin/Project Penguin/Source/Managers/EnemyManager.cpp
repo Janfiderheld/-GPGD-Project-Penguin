@@ -14,7 +14,7 @@ int EnemyManager::MaxCollisionDowntime = 45;
 /// <summary>
 /// Points for killing a shooting enemy
 /// </summary>
-int EnemyManager::ShooterPoints = 50;
+int EnemyManager::ShooterPoints = 25;
 
 /// <summary>
 /// Probability (in %) to spawn a shooting enemy
