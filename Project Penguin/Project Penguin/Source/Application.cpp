@@ -370,7 +370,7 @@ int main(void) {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, character.getTexturePosition());
             model = glm::scale(model, Character::getScale());
-            if (character.getCurrentSpeed().x < 0.0f) {
+            if (character.checkLastDirectionLeft()) {
                 model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));
             }
             textureShader.setMat4Uniform("model", model);

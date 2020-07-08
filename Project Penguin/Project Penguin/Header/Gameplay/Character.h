@@ -2,8 +2,8 @@
 #define CHAR_HEADER
 
 #include <Gameplay/MovingObject.h>
-#include <Technicals/DrawableVertices.h>
 #include <Managers/InputManager.h>
+#include <Technicals/DrawableVertices.h>
 #include <Technicals/Texture.h>
 #include <Technicals/AABB.h>
 
@@ -22,7 +22,8 @@ private:
 	bool _reachedEnd = false;
 	bool _reachedPitBottom = false;
 	bool _atLeftLevelEnd = false;
-	
+
+	MovingObjectStatus _lastDir = WALK_RIGHT;
 	Texture* _tex;
 	
 	void checkForPitBottom();
@@ -38,6 +39,8 @@ public:
 	void reset() override;
 	
 	bool hasReachedEnd();
+	bool checkLastDirectionLeft();
+
 	bool hasDied();
 	void looseHealth();
 	void dieInstantly();

@@ -94,6 +94,7 @@ void Character::calculateSpeed(float deltaTime) {
 
 	case WALK_LEFT:
 		setVerticalSpeed(0.0f);
+		_lastDir = WALK_LEFT;
 
 		if (!hasTileLeft) {
 			setHorizontalSpeed(-WalkSpeed);
@@ -124,6 +125,7 @@ void Character::calculateSpeed(float deltaTime) {
 
 	case WALK_RIGHT:
 		setVerticalSpeed(0.0f);
+		_lastDir = WALK_RIGHT;
 
 		if (!hasTileRight || distToRightTile >= 0.0f) {
 			setHorizontalSpeed(WalkSpeed);
@@ -163,9 +165,11 @@ void Character::calculateSpeed(float deltaTime) {
 
 		if (InputManager->getInputStatus(LEFT) && !InputManager->getInputStatus(RIGHT) && !hasTileLeft && !_atLeftLevelEnd) {
 			setHorizontalSpeed(-SideSpeedAir);
+			_lastDir = WALK_LEFT;
 		} else if(InputManager->getInputStatus(RIGHT) && !InputManager->getInputStatus(LEFT)) {
 			if (!hasTileRight || distToRightTile >= 0.0f) {
 				setHorizontalSpeed(SideSpeedAir);
+				_lastDir = WALK_RIGHT;
 			} else {	
 				setHorizontalSpeed(0.0f);
 			}
@@ -226,6 +230,17 @@ void Character::checkForPitBottom() {
 /// </summary>
 bool Character::hasReachedEnd() {
 	return _reachedEnd && isOnGround;
+}
+
+/// <summary>
+/// Returns true if the character was last facing left
+/// </summary>
+bool Character::checkLastDirectionLeft() {
+	if (_lastDir != WALK_LEFT && _lastDir != WALK_RIGHT) {
+		return false;
+	}
+
+	return _lastDir == WALK_LEFT;
 }
 
 /// <summary>
