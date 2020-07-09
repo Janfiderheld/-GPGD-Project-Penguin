@@ -81,7 +81,7 @@ int main(void) {
 
     // Camera
     // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
-    glm::vec3 camPos = glm::vec3(5.6f, 4.9f, 3.0f);
+    glm::vec3 camPos = glm::vec3(5.6f, 5.5f, 3.0f);
     Camera cam = Camera(camPos, glm::vec3(0.0f, 1.0f, 0.0f), &character);
 	
 	// Shader

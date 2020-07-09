@@ -72,7 +72,7 @@ void Camera::updatePosition(float deltaTime) {
 	}
 
 	glm::vec3 speed = _target->getCurrentSpeed();
-	if (speed.y != 0.0f && _target->getPosition().y <= MaxHeight) {
+	if (speed.y != 0.0f && _target->getPosition().y < MaxHeight) {
 		speed.y = 0.0f;
 	}
 	changePosition(getPosition() + speed * deltaTime);
