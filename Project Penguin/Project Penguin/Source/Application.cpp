@@ -86,32 +86,13 @@ int main(void) {
 	
 	// Shader
     Shader textureShader("SimpleTexture.vert", "SimpleTexture.frag");
+    Shader levelTextureShader("SimpleTexture.vert", "LevelTexture.frag");
     Shader projectileLightShader("ProjectileLighting.frag");
     Shader themeChangingShader("ThemeChanging.frag");
     Shader parallaxShader("ParallaxScrolling.frag");
 
-	// Level Texture
-	// TODO: Instead of using 16 different textures use a shader
-    Texture iceTileStart("IceTileStart.png", GL_RGBA);   
-    Texture iceTileStartBorder("IceTileStartLeftBorder.png", GL_RGBA);
-    Texture iceTileEnd("IceTileEnd.png", GL_RGBA);
-    Texture iceTileEndBorder("IceTileEndBorderRight.png", GL_RGBA);
-    Texture iceTileNormal0("IceTileNormalBorder0.png", GL_RGBA);
-    Texture iceTileNormal1("IceTileNormalBorder1.png", GL_RGBA);
-    Texture iceTileNormal2("IceTileNormalBorder2.png", GL_RGBA);
-    Texture iceTileNormal3("IceTileNormalBorder3.png", GL_RGBA);
-    Texture iceTileNormal4("IceTileNormalBorder4.png", GL_RGBA);
-    Texture iceTileNormal5("IceTileNormalBorder5.png", GL_RGBA);
-    Texture iceTileNormal6("IceTileNormalBorder6.png", GL_RGBA);
-    Texture iceTileNormal7("IceTileNormalBorder7.png", GL_RGBA);
-    Texture iceTileNormal8("IceTileNormalBorder8.png", GL_RGBA);
-    Texture iceTileNormal9("IceTileNormalBorder9.png", GL_RGBA);
-    Texture iceTileNormal10("IceTileNormalBorder10.png", GL_RGBA);
-    Texture iceTileNormal11("IceTileNormalBorder11.png", GL_RGBA);
-    Texture iceTileNormal12("IceTileNormalBorder12.png", GL_RGBA);
-    Texture iceTileNormal13("IceTileNormalBorder13.png", GL_RGBA);
-    Texture iceTileNormal14("IceTileNormalBorder14.png", GL_RGBA);
-    Texture iceTileNormal15("IceTileNormalBorder15.png", GL_RGBA);
+	// Level Textures
+    Texture ice("Ice.png", GL_RGBA);
     Texture desert("Desert.png", GL_RGBA);
 
     // default vertices
@@ -168,7 +149,7 @@ int main(void) {
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)UserInterfaceParameters::Width / (float)UserInterfaceParameters::Height, 5.0f, 15.0f);
 
         textureShader.setMat4Uniform("view", view);
-        textureShader.setMat4Uniform("projection", projection);    
+        textureShader.setMat4Uniform("projection", projection);  
     	
         Shader::DeactivateCurrentShader();
         parallaxShader.activateThisShader();
@@ -212,7 +193,6 @@ int main(void) {
             enemies.updateEnemies(delta, levelBarrier.getCurrentX(), view, projection);
             cam.updatePosition(delta);
             levelBarrier.updatePosition(delta);
-            textureShader.setFloatUniform("barrierPos", levelBarrier.getCurrentX());
 
             // draw Lighting from projectiles
             Shader::DeactivateCurrentShader();
@@ -252,110 +232,35 @@ int main(void) {
             glEnableVertexAttribArray(1);
 
             // draw Level
+            Shader::DeactivateCurrentShader();
+            levelTextureShader.activateThisShader();
+            levelTextureShader.setMat4Uniform("view", view);
+            levelTextureShader.setMat4Uniform("projection", projection);
+            levelTextureShader.setFloatUniform("barrierPos", levelBarrier.getCurrentX());
+
             for (int x = 0; x < level.getWidth(); x++) {
                 for (int y = 0; y < level.getHeight(); y++) {
-                    textureShader.setIntUniform("normal", 0);
-                    glActiveTexture(GL_TEXTURE0);
                     LevelGridTile currTile = level.getTileFromGrid(x, y);
-                    if (currTile.isFilled()) {
-                        switch (currTile.getLocation())
-                        {
-                        case NORMAL:
-                        default:
-                            switch (currTile.getBorderForTexture())
-                            {
-                            case 0x01:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal1.TextureId);
-                                break;
+                    if(currTile.isFilled()) {
+                        levelTextureShader.setIntUniform("ice", 0);
+                        glActiveTexture(GL_TEXTURE0);
+                        glBindTexture(GL_TEXTURE_2D, ice.TextureId);
 
-                            case 0x02:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal2.TextureId);
-                                break;
-
-                            case 0x03:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal3.TextureId);
-                                break;
-
-                            case 0x04:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal4.TextureId);
-                                break;
-
-                            case 0x05:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal5.TextureId);
-                                break;
-
-                            case 0x06:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal6.TextureId);
-                                break;
-
-                            case 0x07:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal7.TextureId);
-                                break;
-
-                            case 0x08:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal8.TextureId);
-                                break;
-
-                            case 0x09:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal9.TextureId);
-                                break;
-
-                            case 0x0A:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal10.TextureId);
-                                break;
-
-                            case 0x0B:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal11.TextureId);
-                                break;
-
-                            case 0x0C:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal12.TextureId);
-                                break;
-
-                            case 0x0D:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal13.TextureId);
-                                break;
-
-                            case 0x0E:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal14.TextureId);
-                                break;
-
-                            case 0x0F:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal15.TextureId);
-                                break;
-
-                            case 0x00:
-                                glBindTexture(GL_TEXTURE_2D, iceTileNormal0.TextureId);
-                                break;
-                            }
-                            break;
-
-                        case START_AREA:
-                            if (currTile.getBorderForTexture() == 0x0A) {
-                                glBindTexture(GL_TEXTURE_2D, iceTileStartBorder.TextureId);
-                            } else {
-                                glBindTexture(GL_TEXTURE_2D, iceTileStart.TextureId);
-                            }
-                            break;
-
-                        case END_AREA:
-                            if (currTile.getBorderForTexture() == 0x06) {
-                                glBindTexture(GL_TEXTURE_2D, iceTileEndBorder.TextureId);
-                            } else {
-                                glBindTexture(GL_TEXTURE_2D, iceTileEnd.TextureId);
-                            }
-                            break;
-                        }
-
-                        // model transform
-                        glm::mat4 model = glm::mat4(1.0f);
-                        model = glm::translate(model, currTile.getPosition());
-                        textureShader.setMat4Uniform("model", model);
-                        textureShader.setIntUniform("changed", 1);
-                        textureShader.setBoolUniform("changeTexture", true);
-
+                        levelTextureShader.setIntUniform("desert", 1);
                         glActiveTexture(GL_TEXTURE1);
                         glBindTexture(GL_TEXTURE_2D, desert.TextureId);
+
+                        glm::mat4 model = glm::mat4(1.0f);
+                        model = glm::translate(model, currTile.getPosition());
+                        levelTextureShader.setMat4Uniform("model", model);
+
+                        levelTextureShader.setBoolUniform("isStart", currTile.getLocation() == START_AREA);
+                        levelTextureShader.setBoolUniform("isEnd", currTile.getLocation() == END_AREA);
+
+                        levelTextureShader.setBoolUniform("borderLeft", currTile.getLeftBorder());
+                        levelTextureShader.setBoolUniform("borderRight", currTile.getRightBorder());
+                        levelTextureShader.setBoolUniform("borderUp", currTile.getTopBorder());
+                        levelTextureShader.setBoolUniform("borderDown", currTile.getBottomBorder());
 
                         glBufferSubData(textBuffer, 0, sizeof(currTile.getVertices()), currTile.getVertices());
                         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -363,7 +268,8 @@ int main(void) {
                 }
             }
 
-            textureShader.setBoolUniform("changeTexture", false);
+            Shader::DeactivateCurrentShader();
+            textureShader.activateThisShader();
             glActiveTexture(GL_TEXTURE0);
 
             // draw character
@@ -501,6 +407,7 @@ int main(void) {
     glDeleteBuffers(1, &quadBuffer);
 
     textureShader.deleteThisShader();
+    levelTextureShader.deleteThisShader();
     projectileLightShader.deleteThisShader();
     themeChangingShader.deleteThisShader();
     parallaxShader.deleteThisShader();

@@ -86,29 +86,31 @@ void LevelGridTile::setBottomBorder(bool bottom) {
 }
 
 /// <summary>
-/// Returns which borders this tile has coded in a byte: xxxx3210
-/// last Bit (0) = bottom border
-/// seventh bit (1) = top border
-/// sixth bit (2) = right border
-/// fifth bit (3) = left border
+/// Returns true if this tile has a border to the left side
 /// </summary>
-unsigned char LevelGridTile::getBorderForTexture() {
-	unsigned char toReturn = 0;
+bool LevelGridTile::getLeftBorder() {
+	return _left;
+}
 
-	if (_left) {
-		toReturn |= 0x08;
-	}
-	if (_right) {
-		toReturn |= 0x04;
-	}
-	if (_top) {
-		toReturn |= 0x02;
-	}
-	if (_bottom) {
-		toReturn |= 0x01;
-	}
+/// <summary>
+/// Returns true if this tile has a border to the right side
+/// </summary>
+bool LevelGridTile::getRightBorder() {
+	return _right;
+}
 
-	return toReturn;
+/// <summary>
+/// Returns true if this tile has a border at the top
+/// </summary>
+bool LevelGridTile::getTopBorder() {
+	return _top;
+}
+
+/// <summary>
+/// Returns true if this tile has a border to the bottom
+/// </summary>
+bool LevelGridTile::getBottomBorder() {
+	return _bottom;
 }
 
 /// <summary>

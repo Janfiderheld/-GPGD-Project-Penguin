@@ -34,7 +34,11 @@ public:
 	void setRightBorder(bool right);
 	void setTopBorder(bool top);
 	void setBottomBorder(bool bottom);
-	unsigned char getBorderForTexture();
+
+	bool getLeftBorder();
+	bool getRightBorder();
+	bool getTopBorder();
+	bool getBottomBorder();
 
 	glm::vec3 getPosition();
 	AABB getHitbox();

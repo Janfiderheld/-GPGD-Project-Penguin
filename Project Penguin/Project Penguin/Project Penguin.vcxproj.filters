@@ -88,5 +88,6 @@
     <None Include="Shaders\ProjectileLighting.frag" />
     <None Include="Shaders\ThemeChanging.frag" />
     <None Include="Shaders\ParallaxScrolling.frag" />
+    <None Include="Shaders\LevelTexture.frag" />
   </ItemGroup>
 </Project>
