@@ -25,8 +25,8 @@ void main()
 	float widthScreen = 0.4;
 	float heightScreen = widthScreen / ratio;
 
-	float currentCamX = (camPos.x / maxWidth) * (1.0 - (layerNo * 0.1));
-	float currentCamY = (camPos.y / maxHeight) + 0.25;
+	float currentCamX = (camPos.x / maxWidth) * (1.0 - (layerNo * 0.2));
+	float currentCamY = (camPos.y / maxHeight) + 0.08;
 	vec2 texCoords = vec2(gl_FragCoord.x / (width - 1), gl_FragCoord.y / (height - 1));	
 	texCoords.x = widthScreen * texCoords.x + currentCamX - (widthScreen / 2);
 	texCoords.y = heightScreen * texCoords.y + currentCamY - (heightScreen / 2);

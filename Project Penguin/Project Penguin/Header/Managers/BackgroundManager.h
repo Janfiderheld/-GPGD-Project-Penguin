@@ -7,7 +7,7 @@
 
 class BackgroundManager {
 private:
-	const int LayerAmount = 2;
+	const int LayerAmount = 3;
 
 	std::vector<BackgroundLayer> _layers;
 
