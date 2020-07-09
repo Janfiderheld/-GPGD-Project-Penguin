@@ -160,12 +160,12 @@ bool EnemyManager::checkForCollisionWithPlayer(int index, EnemyType type) {
 			if (hurtfulColl || killingColl) {
 				if (!killingColl) {
 					PlayerChar->looseHealth();
+					_collCounter = 0;
 				}
 				if (killingColl) {
 					HighscoreManager->addToCurrentScore(ShooterPoints);
 				}
 				_shooters.erase(_shooters.begin() + index);
-				_collCounter = 0;
 				return true;
 			}
 
