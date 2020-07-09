@@ -42,6 +42,7 @@ private:
 	void addPits();
 
 	void fillTilesBelow(int x, int y);
+	void deleteTilesAbove(int x, int y);
 	void setUpperTileBorders();
 	void generateRemainingTiles();
 

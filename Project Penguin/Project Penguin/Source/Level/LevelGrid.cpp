@@ -152,10 +152,7 @@ void LevelGrid::generateBottom() {
 			break;
 
 		case LVL_END:
-			size_t tileAbove = currentX + (currentY + 1) * LevelWidth;
-			if (_level.at(tileAbove).isFilled()) {
-				_level.at(tileAbove).changeFilling(false);
-			}
+			deleteTilesAbove(currentX, currentY);
 
 			if (currentX < LevelWidth - 1) {
 				currentX++;
@@ -187,6 +184,20 @@ void LevelGrid::fillTilesBelow(int x, int y) {
 		if (!_level.at(current).isFilled()) {
 			_level.at(current) = LevelGridTile(x, i);
 			_level.at(current).changeFilling(true);
+		}
+	}
+}
+
+/// <summary>
+/// Deletes all tiles above the given point
+/// </summary>
+/// <param name="x">Position of starting tile on x-axis</param>
+/// <param name="y">Position of starting tile on y-axis</param>
+void LevelGrid::deleteTilesAbove(int x, int y) {
+	for (int i = y + 1; i < LevelHeight; i++) {
+		size_t current = x + i * LevelWidth;
+		if (!_level.at(current).isFilled()) {
+			_level.at(current).changeFilling(false);
 		}
 	}
 }
