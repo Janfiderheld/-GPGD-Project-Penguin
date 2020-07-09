@@ -130,6 +130,8 @@ void Character::calculateSpeed(float deltaTime) {
 
 		if (!hasTileRight || distToRightTile >= 0.0f) {
 			setHorizontalSpeed(WalkSpeed);
+		} else {
+			setHorizontalSpeed(0.0f);
 		}
 		if(_atRightLevelEnd) {
 			setHorizontalSpeed(0.0f);
