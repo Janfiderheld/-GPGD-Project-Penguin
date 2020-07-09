@@ -71,13 +71,9 @@ void LevelGrid::generateBottom() {
 					state = DOUBLE_HIGH;
 				}
 			} else if (rndm >= HighGoUp && rndm < HighGoUp + HighGoDown) {
-				if (currentY >= FilledBottomRows) {
-					if (currentX < LevelWidth - EndAreaWidth - 1) {
-						currentY--;
-						state = LOW;
-					} else {
-						state = LVL_END;
-					}
+				if (currentY >= FilledBottomRows) {					
+					currentY--;
+					state = LOW;
 				}			
 			} else {
 				if (currentX < LevelWidth - EndAreaWidth - 1) {
@@ -156,6 +152,11 @@ void LevelGrid::generateBottom() {
 			break;
 
 		case LVL_END:
+			size_t tileAbove = currentX + (currentY + 1) * LevelWidth;
+			if (_level.at(tileAbove).isFilled()) {
+				_level.at(tileAbove).changeFilling(false);
+			}
+
 			if (currentX < LevelWidth - 1) {
 				currentX++;
 			} else {
