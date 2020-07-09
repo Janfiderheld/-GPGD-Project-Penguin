@@ -297,10 +297,10 @@ void LevelGrid::addPits() {
 }
 
 /// <summary>
-/// Iterates over the finished level and checks for each tile if it has a border,
-/// without a filles neighbour. If so, that border is marked, so it can be drawn differently.
+/// Iterates over the finished level and checks for each tile if the tile above is filled.
+/// If so, that tile is marked, so the border can be drawn differently.
 /// </summary>
-void LevelGrid::setTileBorders() {
+void LevelGrid::setUpperTileBorders() {
 	for (int currentX = 0; currentX < LevelWidth; currentX++) {
 		for (int currentY = 0; currentY < LevelHeight; currentY++) {
 			size_t current = currentX + currentY * LevelWidth;
@@ -309,41 +309,11 @@ void LevelGrid::setTileBorders() {
 				continue;
 			}
 
-			bool isBorder = false;
-
-			if (currentX - 1 >= 0) {
-				isBorder = !_level.at(current - 1).isFilled();
-			} else {
-				isBorder = true;
-			}
-			_level.at(current).setLeftBorder(isBorder);
-			isBorder = false;
-
-			if (currentX + 1 < LevelWidth) {
-				isBorder = !_level.at(current + 1).isFilled();
-			}
-			else {
-				isBorder = true;
-			}
-			_level.at(current).setRightBorder(isBorder);
-			isBorder = false;
-
-			if (currentY - 1 >= 0) {
-				isBorder = !_level.at(current - LevelWidth).isFilled();
-			}
-			else {
-				isBorder = true;
-			}
-			_level.at(current).setBottomBorder(isBorder);
-			isBorder = false;
-
 			if (currentY + 1 < LevelHeight) {
-				isBorder = !_level.at(current + LevelWidth).isFilled();
+				_level.at(current).setTopBorder(!_level.at(current + LevelWidth).isFilled());
+			} else {
+				_level.at(current).setTopBorder(true);
 			}
-			else {
-				isBorder = true;
-			}
-			_level.at(current).setTopBorder(isBorder);
 		}
 	}
 }
@@ -428,7 +398,7 @@ void LevelGrid::generateWholeLevel() {
 	addPits();
 
 	generateRemainingTiles();
-	setTileBorders();
+	setUpperTileBorders();
 	_generationFinished = true;
 }
 

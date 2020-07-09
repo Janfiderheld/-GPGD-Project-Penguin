@@ -4,44 +4,43 @@ in vec4 worldPos;
 
 uniform sampler2D ice;
 uniform sampler2D desert;
+uniform sampler2D iceBorder;
+uniform sampler2D desertBorder;
 
 uniform float barrierPos;
 uniform bool isStart;
 uniform bool isEnd;
-
-uniform bool borderLeft;
-uniform bool borderRight;
 uniform bool borderUp;
-uniform bool borderDown;
 
 out vec4 FragColor;
 
 void main()
 {
-	float upperStart = 0.96;
-	float lowerEnd = 0.04;
+	vec4 fullTexture = vec4(1.0);
+	vec4 borderTexture = vec4(1.0);
 
 	// draw either ice or desert texture
-	if(worldPos.x < barrierPos) {		
-		FragColor = texture(desert, texCoord);
+	if(worldPos.x >= barrierPos) {		
+		fullTexture = texture(ice, texCoord);
+		borderTexture = texture(iceBorder, texCoord);
 	} else {
-		FragColor = texture(ice, texCoord);
-	}	
+		fullTexture = texture(desert, texCoord);		
+		borderTexture = texture(desertBorder, texCoord);
+	}		
 
-	// draw borders
-	if((borderLeft && texCoord.x <= lowerEnd) ||
-	   (borderRight && texCoord.x >= upperStart) ||
-	   (borderUp && texCoord.y >= upperStart) ||
-	   (borderDown && texCoord.y <= lowerEnd)) {
-		FragColor = vec4(0.0, 0.0, 0.9, 1.0);
+	// draw border with alpha blending
+	if(borderUp && !isStart && !isEnd) {
+		FragColor = fullTexture * (1 - borderTexture.a) + borderTexture * borderTexture.a;
+	} else {
+		FragColor = fullTexture;
 	}
 
 	// draw start & end markings
-	if(isStart && texCoord.y >= upperStart) {
+	if(isStart && texCoord.y >= 0.96) {
 		FragColor = vec4(1.0, 0.84, 0.0, 1.0);
 	}
 
-	if(isEnd && texCoord.y >= upperStart) {
+	if(isEnd && texCoord.y >= 0.96) {
 		FragColor = vec4(0.0, 1.0, 0.16, 1.0);
 	}	
 }

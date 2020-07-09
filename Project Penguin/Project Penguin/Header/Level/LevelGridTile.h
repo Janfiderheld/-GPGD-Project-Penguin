@@ -13,10 +13,7 @@ private:
 
 	bool _generated = false;
 	bool _filled = false;
-	bool _left = false;
-	bool _right = false;
-	bool _top = false;
-	bool _bottom = false;
+	bool _topBorder = false;
 
 	TileLocation _loc = NORMAL;
 	AABB _hitbox;
@@ -30,15 +27,8 @@ public:
 	void changeFilling(bool status);
 	void changeLocation(TileLocation newLoc);
 
-	void setLeftBorder(bool left);
-	void setRightBorder(bool right);
 	void setTopBorder(bool top);
-	void setBottomBorder(bool bottom);
-
-	bool getLeftBorder();
-	bool getRightBorder();
 	bool getTopBorder();
-	bool getBottomBorder();
 
 	glm::vec3 getPosition();
 	AABB getHitbox();

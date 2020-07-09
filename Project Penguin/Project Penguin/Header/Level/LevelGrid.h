@@ -42,7 +42,7 @@ private:
 	void addPits();
 
 	void fillTilesBelow(int x, int y);
-	void setTileBorders();
+	void setUpperTileBorders();
 	void generateRemainingTiles();
 
 public:

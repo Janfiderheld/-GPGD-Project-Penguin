@@ -58,59 +58,17 @@ TileLocation LevelGridTile::getLocation() {
 }
 
 /// <summary>
-/// Sets bool indicating if this tile has an outline border to the left
-/// </summary>
-void LevelGridTile::setLeftBorder(bool left) {
-	_left = left;
-}
-
-/// <summary>
 /// Sets bool indicating if this tile has an outline border to the top
 /// </summary>
 void LevelGridTile::setTopBorder(bool top) {
-	_top = top;
-}
-
-/// <summary>
-/// Sets bool indicating if this tile has an outline border to the right
-/// </summary>
-void LevelGridTile::setRightBorder(bool right) {
-	_right = right;
-}
-
-/// <summary>
-/// Sets bool indicating if this tile has an outline border to the ground
-/// </summary>
-void LevelGridTile::setBottomBorder(bool bottom) {
-	_bottom = bottom;
-}
-
-/// <summary>
-/// Returns true if this tile has a border to the left side
-/// </summary>
-bool LevelGridTile::getLeftBorder() {
-	return _left;
-}
-
-/// <summary>
-/// Returns true if this tile has a border to the right side
-/// </summary>
-bool LevelGridTile::getRightBorder() {
-	return _right;
+	_topBorder = top;
 }
 
 /// <summary>
 /// Returns true if this tile has a border at the top
 /// </summary>
 bool LevelGridTile::getTopBorder() {
-	return _top;
-}
-
-/// <summary>
-/// Returns true if this tile has a border to the bottom
-/// </summary>
-bool LevelGridTile::getBottomBorder() {
-	return _bottom;
+	return _topBorder;
 }
 
 /// <summary>

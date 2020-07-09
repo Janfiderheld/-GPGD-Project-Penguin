@@ -93,7 +93,9 @@ int main(void) {
 
 	// Level Textures
     Texture ice("Ice.png", GL_RGBA);
+    Texture iceBorder("IceBorder.png", GL_RGBA);
     Texture desert("Desert.png", GL_RGBA);
+    Texture desertBorder("DesertBorder.png", GL_RGBA);
 
     // default vertices
     float vertices[] = {
@@ -238,29 +240,33 @@ int main(void) {
             levelTextureShader.setMat4Uniform("projection", projection);
             levelTextureShader.setFloatUniform("barrierPos", levelBarrier.getCurrentX());
 
+            levelTextureShader.setIntUniform("ice", 0);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, ice.TextureId);
+
+            levelTextureShader.setIntUniform("desert", 1);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, desert.TextureId);
+
+            levelTextureShader.setIntUniform("iceBorder", 2);
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, iceBorder.TextureId);
+
+            levelTextureShader.setIntUniform("desertBorder", 3);
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, desertBorder.TextureId);
+
             for (int x = 0; x < level.getWidth(); x++) {
                 for (int y = 0; y < level.getHeight(); y++) {
                     LevelGridTile currTile = level.getTileFromGrid(x, y);
                     if(currTile.isFilled()) {
-                        levelTextureShader.setIntUniform("ice", 0);
-                        glActiveTexture(GL_TEXTURE0);
-                        glBindTexture(GL_TEXTURE_2D, ice.TextureId);
-
-                        levelTextureShader.setIntUniform("desert", 1);
-                        glActiveTexture(GL_TEXTURE1);
-                        glBindTexture(GL_TEXTURE_2D, desert.TextureId);
-
                         glm::mat4 model = glm::mat4(1.0f);
                         model = glm::translate(model, currTile.getPosition());
                         levelTextureShader.setMat4Uniform("model", model);
 
                         levelTextureShader.setBoolUniform("isStart", currTile.getLocation() == START_AREA);
                         levelTextureShader.setBoolUniform("isEnd", currTile.getLocation() == END_AREA);
-
-                        levelTextureShader.setBoolUniform("borderLeft", currTile.getLeftBorder());
-                        levelTextureShader.setBoolUniform("borderRight", currTile.getRightBorder());
                         levelTextureShader.setBoolUniform("borderUp", currTile.getTopBorder());
-                        levelTextureShader.setBoolUniform("borderDown", currTile.getBottomBorder());
 
                         glBufferSubData(textBuffer, 0, sizeof(currTile.getVertices()), currTile.getVertices());
                         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
