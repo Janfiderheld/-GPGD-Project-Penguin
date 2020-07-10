@@ -26,9 +26,7 @@ protected:
 	bool hasTileLeft = false;
 	bool hasTileRight = false;
 	
-	void updateBoundaries(float deltaTime);
 	void updatePosition(float deltaTime);
-
 	bool checkForPit(MovingObjectStatus dir);	
 	bool checkForDoubleWall(MovingObjectStatus dir);
 	bool checkForReachedArea(MovingObjectStatus dir, bool start);
@@ -40,7 +38,8 @@ public:
 
 	void calculateSpeed(float deltaTime) override = 0;
 	void reset() override;	
-	
+	virtual void updateBoundaries(float deltaTime);
+
 	AABB getHitbox();
 	glm::vec3 getPosition();
 	MovingObjectStatus getCurrentStatus();

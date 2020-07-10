@@ -31,9 +31,9 @@ public:
 	void shootProjectile(glm::vec3 playerPos);
 	void setCurrentProjectile(Projectile proj);
 	Projectile* getCurrentProjectile();
-	glm::vec3 getTexturePosition();
 	AABB* getKillBox();
-	
+
+	glm::vec3 getTexturePosition() override;	
 	void calculateSpeed(float deltaTime) override;
 };
 

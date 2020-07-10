@@ -94,6 +94,12 @@ void MovingObject::updateBoundaries(float deltaTime) {
 /// <param name="deltaTime">Time since last frame to normalize calculation</param>
 void MovingObject::updatePosition(float deltaTime) {
 	position += speed * deltaTime;
+	if (abs(position.x - round(position.x)) <= 0.002f) {
+		position.x = round(position.x);
+	}
+	if (abs(position.y - round(position.y)) <= 0.002f) {
+		position.y = round(position.y);
+	}
 	_hitbox.setOrigin(position);
 }
 

@@ -49,3 +49,14 @@ WalkingEnemy::WalkingEnemy(glm::vec3 pos, AABB boundBox) :
 glm::vec3 WalkingEnemy::getTexturePosition() {
 	return glm::vec3(position.x - TextureOffset.x, position.y - TextureOffset.y, position.z);
 }
+
+/// <summary>
+/// Updates the boundaries for the walking enemy specifically
+/// </summary>
+/// <param name="deltaTime">time since last frame</param>
+void WalkingEnemy::updateBoundaries(float deltaTime){
+	MovingObject::updateBoundaries(deltaTime);
+	if (status == FALL) {
+		hasTileRight = LevelFacade->checkForWall(floor(position.x) + 1, floor(position.y));
+	}
+}

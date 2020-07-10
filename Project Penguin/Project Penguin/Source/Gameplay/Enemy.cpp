@@ -3,7 +3,7 @@
 /// <summary>
 /// Initial speed in y direction for jumping
 /// </summary>
-float Enemy::JumpSpeed = 1.5f;
+float Enemy::JumpSpeed = 1.75f;
 
 /// <summary>
 /// speed for walking in x direction
@@ -13,27 +13,27 @@ float Enemy::WalkSpeed = 1.25f;
 /// <summary>
 /// speed for moving the object in x direction in the air
 /// </summary>
-float Enemy::SideSpeedAir = 0.85f;
+float Enemy::SideSpeedAir = 0.9f;
 
 /// <summary>
 /// Minimum counter to see how long an enemy keeps standing
 /// </summary>
-int Enemy::StandCountMin = 60;
+int Enemy::StandCountMin = 50;
 
 /// <summary>
 /// Maxmimum counter to see how long an enemy keeps standing
 /// </summary>
-int Enemy::StandCountMax = 120;
+int Enemy::StandCountMax = 110;
 
 /// <summary>
 /// Counting towards this number when no movement in x-direction is done and resetting the character as a fall back.
 /// </summary>
-int Enemy::StandCountError = 230;
+int Enemy::StandCountError = 240;
 
 /// <summary>
 /// Maximum amount of tiles in any direction the enemy can move from its starting position
 /// </summary>
-int Enemy::MovementRadius = 12;
+int Enemy::MovementRadius = 13;
 
 /// <summary>
 /// Describes the area of the View Frustum (in NDC) in which calculations are allowed
@@ -157,10 +157,6 @@ void Enemy::calculateSpeed(float deltaTime) {
 				status = WALK_RIGHT;
 				break;
 			}
-			if (hasTileLeft || hasTileRight) {
-				status = JUMP;
-				break;
-			}
 			if (checkForPit(_lastDir)) {
 				status = STAND;
 				break;
@@ -170,7 +166,7 @@ void Enemy::calculateSpeed(float deltaTime) {
 	}
 
 	updateBoundaries(deltaTime);
-	if(abs(_posLastFrame - position.x) <= 0.1f) {
+	if(abs(_posLastFrame - position.x) <= 0.05f) {
 		_errorCounter++;
 	}
 	_posLastFrame = position.x;

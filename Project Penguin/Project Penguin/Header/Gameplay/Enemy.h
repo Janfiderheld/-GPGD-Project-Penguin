@@ -27,6 +27,8 @@ protected:
 	MovingObjectStatus _lastDir = WALK_LEFT;
 	float _posLastFrame;
 
+	virtual glm::vec3 getTexturePosition() = 0;
+
 public:
 	Enemy(glm::vec3 pos, AABB boundBox);
 

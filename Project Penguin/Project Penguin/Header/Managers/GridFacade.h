@@ -8,7 +8,7 @@
 
 class GridFacade {
 private:
-	const float OverlapFactor = 1.15f;
+	const float OverlapFactor = 1.1f;
 	const float RoundUpDiff = 0.05f;
 
 	LevelGrid* _grid;
