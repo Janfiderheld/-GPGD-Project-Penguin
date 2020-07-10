@@ -29,18 +29,15 @@ void main()
 	}		
 
 	// draw border with alpha blending
-	if(borderUp && !isStart && !isEnd) {
+	if(borderUp) {
+		if(isStart) {
+			borderTexture = borderTexture * vec4(0.17, 0.0, 1.0, 1.0);
+		}
+		if(isEnd) {
+			borderTexture = borderTexture * vec4(0.0, 1.0, 0.16, 1.0);
+		}
 		FragColor = fullTexture * (1 - borderTexture.a) + borderTexture * borderTexture.a;
 	} else {
 		FragColor = fullTexture;
-	}
-
-	// draw start & end markings
-	if(isStart && texCoord.y >= 0.96) {
-		FragColor = vec4(1.0, 0.84, 0.0, 1.0);
-	}
-
-	if(isEnd && texCoord.y >= 0.96) {
-		FragColor = vec4(0.0, 1.0, 0.16, 1.0);
 	}	
 }
