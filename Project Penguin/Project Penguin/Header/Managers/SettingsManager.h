@@ -5,7 +5,7 @@
 #define ASCII_BIG_Z 90
 #define ASCII_SMALL_A 97
 #define ASCII_SMALL_Z 122
-#define RESOLUTIONS_NO 4
+#define RESOLUTIONS_NO 3
 #define STRING_NO 19
 
 #include <string>
@@ -27,7 +27,7 @@ struct Settings {
 	/// </summary>
 	Settings() {
 		language = 0;
-		resolution = 3;
+		resolution = 2;
 		jumpBtn = GLFW_KEY_W;
 		rightBtn = GLFW_KEY_D;
 		leftBtn = GLFW_KEY_A;
@@ -50,8 +50,8 @@ private:
 	
 	Settings _settings;
 
-	int _widths[RESOLUTIONS_NO] = { 800, 1024, 1440, 1920 };
-	int _heights[RESOLUTIONS_NO] = { 400, 768, 900, 1080 };
+	int _widths[RESOLUTIONS_NO] = { 1024, 1440, 1920 };
+	int _heights[RESOLUTIONS_NO] = { 768, 900, 1080 };
 
 	std::map<std::string, std::string> _strings;
 	

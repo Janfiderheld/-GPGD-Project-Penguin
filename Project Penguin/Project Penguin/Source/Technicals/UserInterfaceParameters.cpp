@@ -109,24 +109,8 @@ void UserInterfaceParameters::Recalculate() {
 	Height = SettingsManager->getResolutionHeight();
 
 	switch(resolution) {
-	// 800 x 400
-	case 0:
-		BigWindowPos = ImVec2(180, 50);
-		SmallWindowPos = ImVec2(190, 50);
-		
-		MainMenuUiSize = ImVec2(300, 350);
-		SmallUiSize = ImVec2(310,  325);
-		SettingsUiSize = ImVec2(380, 420);
-		
-		BigScreenMiddle = 80;
-		SmallScreenMiddle = 55;
-		ScreenMiddleFlags = 40;
-		ScreenMiddleInput = 20;
-		
-		break;
-
 	// 1024 x 768
-	case 1:
+	case 0:
 		BigWindowPos = ImVec2(300, 190);
 		SmallWindowPos = ImVec2(350, 190);
 
@@ -142,7 +126,7 @@ void UserInterfaceParameters::Recalculate() {
 		break;
 
 	// 1440 x 900
-	case 2:
+	case 1:
 		BigWindowPos = ImVec2(510, 260);
 		SmallWindowPos = ImVec2(575, 260);
 
@@ -158,7 +142,7 @@ void UserInterfaceParameters::Recalculate() {
 		break;
 
 	// 1920 x 1080
-	case 3:
+	case 2:
 		BigWindowPos = ImVec2(750, 350);
 		SmallWindowPos = ImVec2(800, 350);
 
