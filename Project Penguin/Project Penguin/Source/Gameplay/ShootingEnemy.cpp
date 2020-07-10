@@ -18,7 +18,7 @@ int ShootingEnemy::MaxCountsBetweenShots = 100;
 /// <summary>
 /// Scale of all shooting enemies
 /// </summary>
-glm::vec3 ShootingEnemy::Scale = glm::vec3(0.65f, 0.9f, 1.0f);
+glm::vec3 ShootingEnemy::Scale = glm::vec3(0.50f, 0.9f, 1.0f);
 
 /// <summary>
 /// Offset of the texture in relation to the origin.
