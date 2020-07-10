@@ -35,6 +35,7 @@ public:
 
 	glm::vec3 getTexturePosition() override;	
 	void calculateSpeed(float deltaTime) override;
+	void updateBoundaries(float deltaTime) override;
 };
 
 #endif // SHOOTENEMY_HEADER

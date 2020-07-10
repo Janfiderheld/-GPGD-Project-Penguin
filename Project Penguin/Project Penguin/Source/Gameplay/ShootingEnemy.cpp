@@ -127,6 +127,17 @@ void ShootingEnemy::calculateSpeed(float deltaTime) {
 }
 
 /// <summary>
+/// Updates the boundaries for the shooting enemy specifically
+/// </summary>
+/// <param name="deltaTime">time since last frame</param>
+void ShootingEnemy::updateBoundaries(float deltaTime) {
+	MovingObject::updateBoundaries(deltaTime);
+	if (checkForPit(WALK_RIGHT) && (status == WALK_RIGHT || status == FALL)) {
+		isOnGround = LevelFacade->checkForWall(ceil(position.x) - 1, floor(position.y));
+	}
+}
+
+/// <summary>
 /// Returns the position with the texture offset for fitting drawing
 /// </summary>
 glm::vec3 ShootingEnemy::getTexturePosition() {
