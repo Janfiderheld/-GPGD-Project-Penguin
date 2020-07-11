@@ -33,15 +33,16 @@ Every 3 weeks a new milestone should be reached. The current progress can be see
 
 ### 3rd Milestone (22.06.20):
 
-- 2 enemies with distinct behaviour
+- 2 enemies with different behaviour
 - Collectables
 - Scoring System
 - User Interface
-- Parallax Scrolling
+- Parallax Scrolling 1/2
 
 ### Final Milestone (13.07.20):
 
-- get & create Textures
-- Deferred Rendering
+- update Textures
 - Level Theme changing from antarctica to desert
 - Settings Menu
+- Parallax Scrolling 2/2
+- different optimizations
