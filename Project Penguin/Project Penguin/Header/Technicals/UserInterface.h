@@ -1,7 +1,7 @@
 #ifndef UI_HEADER
 #define UI_HEADER
 
-#include <GL/glew.h>
+#include <Technicals/GLEW.h>
 #include <GL/glfw3.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>

@@ -8,8 +8,7 @@ This Project is part of the "Graphics and Game Development" Lab in Summerterm 20
 
 ## Setup
 
-You need visual studio to open the .sln-file. The only other dependency currently needed is that [GLEW](http://glew.sourceforge.net/) should be installed.
-To do that, you need to copy the "glew32.dll" from the Dependencies-Folder to %SystemRoot%/system32 (see [here](http://glew.sourceforge.net/install.html) for more information).
+You need visual studio to open the .sln-file.
 In visual studio, the configuration used by me for development is "Debug" & "x64". If there still are problems running the program, please [contact me](mailto:<uexdy@stud.kit.edu>).
 
 ## Milestones

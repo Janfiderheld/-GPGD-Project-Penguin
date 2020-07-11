@@ -79,6 +79,7 @@
     <ClInclude Include="Header\Managers\ThemeChangingManager.h" />
     <ClInclude Include="Enums\EnemyType.h" />
     <ClInclude Include="Interfaces\ILighting.h" />
+    <ClInclude Include="Header\Technicals\GLEW.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\BasicVertexShader.glsl" />
