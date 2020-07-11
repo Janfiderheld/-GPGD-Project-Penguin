@@ -11,7 +11,6 @@
 
 class Shader {
 private:
-    const char* addCurrentDirectory(std::string fileName);
     void checkAndPrintErrors(unsigned int id, bool checkCompilation);
 
 public:

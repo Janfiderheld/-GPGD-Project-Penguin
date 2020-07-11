@@ -30,32 +30,6 @@ void Shader::checkAndPrintErrors(unsigned int id, bool checkCompilation) {
 }
 
 /// <summary>
-/// Returns the current directory appended by the given filename.
-/// Since the std::ifstream::open-Method in the constructor can not open the files from this directory,
-/// this method is currently not used. Instead, the shader files are copied in the main directory.
-/// </summary>
-/// <param name="fileName">filename to append to the current directory</param>
-/// <returns>directory as a path string</returns>
-const char* Shader::addCurrentDirectory(std::string fileName) {
-	char buff[FILENAME_MAX];
-	GetCurrentDirectoryA(FILENAME_MAX, buff);
-	std::string directory = buff;
-
-	std::string toReplace = "\\";
-	std::string replace = "/";
-
-	size_t pos = directory.find(toReplace);
-	while (pos != std::string::npos)
-	{
-		directory.replace(pos, toReplace.size(), replace);
-		pos = directory.find(toReplace, pos + replace.size());
-	}
-
-	directory.append("/Shaders/" + fileName);
-	return directory.c_str();
-}
-
-/// <summary>
 /// Deactivates the current shader
 /// </summary>
 void Shader::DeactivateCurrentShader() {
@@ -117,8 +91,6 @@ Shader::Shader(const char* vertexFileName, const char* fragmentFileName, const c
 
 	// read Shaders from files
 	try {
-		/*vertexFile.open(addCurrentDirectory(vertexFileName));
-		fragmentFile.open(addCurrentDirectory(fragmentFileName));*/
 		vertexFile.open(vertexFileName);
 		fragmentFile.open(fragmentFileName);
 		std::stringstream vertexStream, fragmentStream, geometryStream;
