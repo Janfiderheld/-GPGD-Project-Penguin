@@ -44,7 +44,8 @@ struct Settings {
 class SettingsManager {
 private:
 	const std::string FileName = "Settings.set";
-	const std::string Location = "../Assets/Localization/";
+	const std::string LocalizationLocationDebug = "../Assets/Localization/";
+	const std::string LocalizationLocationRelease = "./Assets/Localization/";
 	const std::string GermanFileName = "Deutsch.loc";
 	const std::string EnglishFileName = "English.loc";
 	

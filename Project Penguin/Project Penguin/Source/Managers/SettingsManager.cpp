@@ -74,7 +74,12 @@ bool SettingsManager::saveToFile() {
 /// </summary>
 /// <returns>true if reading was successful</returns>
 bool SettingsManager::readFromLocalizationFile() {
-	std::string tempLocation = Location + (_settings.language == 0 ? EnglishFileName : GermanFileName);
+#if _DEBUG
+	std::string tempLocation = LocalizationLocationDebug + (_settings.language == 0 ? EnglishFileName : GermanFileName);
+#else
+	std::string tempLocation = LocalizationLocationRelease + (_settings.language == 0 ? EnglishFileName : GermanFileName);
+#endif
+
 	std::ifstream in(tempLocation.c_str(), std::ios::in);
 	if (!in) {
 		return false;

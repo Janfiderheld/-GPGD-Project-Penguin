@@ -17,7 +17,11 @@ Texture::Texture(const char* fileName, GLint format) {
 	glBindTexture(GL_TEXTURE_2D, TextureId);
 	
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char* imageData = stbi_load(_location.append(fileName).c_str(), &_width, &_height, &_noColorChannels, 0);
+#if _DEBUG
+	unsigned char* imageData = stbi_load(_locDebug.append(fileName).c_str(), &_width, &_height, &_noColorChannels, 0);
+#else
+	unsigned char* imageData = stbi_load(_locRelease.append(fileName).c_str(), &_width, &_height, &_noColorChannels, 0);
+#endif
 	if (imageData) {
 		glTexImage2D(GL_TEXTURE_2D, 0, format, _width, _height, 0, format, GL_UNSIGNED_BYTE, imageData);
 		glGenerateMipmap(GL_TEXTURE_2D);

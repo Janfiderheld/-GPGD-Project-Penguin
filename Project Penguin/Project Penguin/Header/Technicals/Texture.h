@@ -12,7 +12,9 @@ private:
 	int _height;
 	int _noColorChannels;
 
-	std::string _location = "../Assets/Textures/";
+	std::string _locDebug = "../Assets/Textures/";
+	std::string _locRelease = "./Assets/Textures/";
+
 public:
 	unsigned int TextureId;
 
