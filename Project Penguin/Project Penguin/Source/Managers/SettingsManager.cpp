@@ -23,7 +23,7 @@ int SettingsManager::checkAsciiConversion(int input) {
 /// </summary>
 /// <returns>true if the settings could be loaded</returns>
 bool SettingsManager::loadFromFile() {
-	std::ifstream in(FileName, std::ios::in | std::ios::binary);
+	std::ifstream in(File, std::ios::in | std::ios::binary);
 	if (!in) {
 		return false;
 	}
@@ -50,7 +50,7 @@ bool SettingsManager::loadFromFile() {
 /// </summary>
 /// <returns>true if saving was successful</returns>
 bool SettingsManager::saveToFile() {
-	std::ofstream out(FileName, std::ios::out | std::ios::binary);
+	std::ofstream out(File, std::ios::out | std::ios::binary);
 	if (!out) {
 		return false;
 	}
@@ -109,7 +109,7 @@ bool SettingsManager::readFromLocalizationFile() {
 /// If a settings file exists, it will be loaded
 /// </summary>
 SettingsManager::SettingsManager() {
-	std::ifstream loadFrom(FileName);
+	std::ifstream loadFrom(File);
 	if ((bool)loadFrom) {
 		loadFromFile();
 	}

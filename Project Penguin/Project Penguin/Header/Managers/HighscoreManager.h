@@ -41,8 +41,11 @@ struct Highscore {
 class HighscoreManager {
 private:
 	const int MaxHighscores = 10;
-	const std::string FileName = "Highscore.hsc";
-	
+#if _DEBUG
+	const std::string File = "Highscore.hsc";
+#else
+	const std::string File = "./Assets/Highscore.hsc";
+#endif
 	int _currentScore = 0;
 	std::vector<Highscore> _highscores;
 

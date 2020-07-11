@@ -5,7 +5,7 @@
 /// </summary>
 /// <returns>true if saving was successful</returns>
 bool HighscoreManager::saveToFile() {
-	std::ofstream out(FileName, std::ios::out | std::ios::binary);
+	std::ofstream out(File, std::ios::out | std::ios::binary);
 	if(!out) {
 		return false;
 	}
@@ -31,7 +31,7 @@ bool HighscoreManager::saveToFile() {
 /// </summary>
 /// <returns>true if loading was successful</returns>
 bool HighscoreManager::loadFromFile() {
-	std::ifstream in(FileName, std::ios::in | std::ios::binary);
+	std::ifstream in(File, std::ios::in | std::ios::binary);
 	if(!in)	{
 		return false;
 	}
@@ -80,7 +80,7 @@ void HighscoreManager::sortAndChangeRanks() {
 /// Loads the highscores from a highscore file, if one exists
 /// </summary>
 HighscoreManager::HighscoreManager() {
-	std::ifstream loadFrom(FileName);
+	std::ifstream loadFrom(File);
 	if((bool)loadFrom) {
 		loadFromFile();
 	}
