@@ -8,7 +8,7 @@ This Project is part of the "Graphics and Game Development" Lab in Summerterm 20
 
 ## Playing the game
 
-You can find a playable version under ["Release"](https://github.com/Janfiderheld/-GPGD-Project-Penguin/releases).
+You can find a playable version under ["Releases"](https://github.com/Janfiderheld/-GPGD-Project-Penguin/releases).
 This version can be played without the need to install anything. It was compiled and tested on windows platforms.
 
 ## Project Setup
@@ -54,10 +54,17 @@ During the Lab, every 3 weeks a new milestone should be reached. Here are the go
 # Licenses for Images
 
 [Character](https://opengameart.org/content/penguin-character-walk-and-jump) by PWL
+
 [Walker Enemy](https://opengameart.org/content/spiky-monster-obstacle) by [bevouliin.com](bevouliin.com)
-[Shooter Enemy](https://www.vecteezy.com/vector-art/552705-snowman-cartoon-vector-illustration) [Isolated Vectors by Vecteezy](https://www.vecteezy.com/free-vector/isolated)
+
+[Shooter Enemy](https://www.vecteezy.com/vector-art/552705-snowman-cartoon-vector-illustration) Isolated Vectors by [Vecteezy](https://www.vecteezy.com/free-vector/isolated)
+
 [Snowball](https://freshinbox.com/blog/snowball-surprise-shaking-email/) by Justin from FreshInbox
+
 [Yeti (Background)](https://stevenchasestudios.files.wordpress.com/2012/10/yeti-2.jpg) by scresig
+
 [Pyramids (Background)](https://www.cleanpng.com/png-great-sphinx-of-giza-great-pyramid-of-giza-egyptia-570884/download-png.html) by unknown
-[Desert Tiles](https://opengameart.org/content/2d-platformer-desert-pack) by Tio Aimar @ opengameart.org
-[Ice Tiles](https://opengameart.org/content/2d-platformer-snow-pack) by Tio Aimar @ opengameart.org
+
+[Desert Tiles](https://opengameart.org/content/2d-platformer-desert-pack) by Tio Aimar @ [opengameart.org](opengameart.org)
+
+[Ice Tiles](https://opengameart.org/content/2d-platformer-snow-pack) by Tio Aimar @ [opengameart.org](opengameart.org)
