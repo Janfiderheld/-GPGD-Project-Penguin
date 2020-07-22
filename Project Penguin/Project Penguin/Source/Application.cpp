@@ -80,7 +80,6 @@ int main(void) {
     BackgroundManager backgrounds;
 
     // Camera
-    // TODO: Calculate camera direction so that the origin is the bottom left corner of the screen
     glm::vec3 camPos = glm::vec3(5.6f, 5.5f, 3.0f);
     Camera cam = Camera(camPos, glm::vec3(0.0f, 1.0f, 0.0f), &character);
 	
@@ -297,6 +296,11 @@ int main(void) {
             // draw enemies
             for (int i = 0; i < enemies.getShooterAndProjectileAmount(); i++) {
                 Projectile* tempProj = enemies.getProjectileAtVectorPos(i);
+                ShootingEnemy* tempShoot = enemies.getShootingEnemyAtVectorPos(i);
+                if (!tempShoot->getCullingStatus()) {
+                    continue;
+                }
+
                 if (tempProj != NULL && tempProj->getStatus()) {
                     model = glm::mat4(1.0f);
                     model = glm::translate(model, tempProj->getPosition());
@@ -309,9 +313,8 @@ int main(void) {
                     glBufferSubData(textBuffer, 0, sizeof(tempProj->getVertices()), tempProj->getVertices());
                     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
                     glDisable(GL_BLEND);
-                }
+                }                      
 
-                ShootingEnemy* tempShoot = enemies.getShootingEnemyAtVectorPos(i);
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, tempShoot->getTexturePosition());
                 model = glm::scale(model, ShootingEnemy::getScale());
@@ -330,6 +333,10 @@ int main(void) {
 
             for (int i = 0; i < enemies.getWalkerAmount(); i++) {
                 WalkingEnemy* tempWalker = enemies.getWalkingEnemyAtVectorPos(i);
+                if (!tempWalker->getCullingStatus()) {
+                    continue;
+                }
+
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, tempWalker->getTexturePosition());
                 model = glm::scale(model, WalkingEnemy::getScale());

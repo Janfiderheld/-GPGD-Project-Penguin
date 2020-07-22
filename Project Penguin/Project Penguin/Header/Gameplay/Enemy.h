@@ -21,6 +21,7 @@ protected:
 	int _errorCounter = 0;
 	
 	bool _beforePit = false;
+	bool _cullingStatus = false;
 	bool _reachedStart = false;
 	bool _reachedEnd = false;
 
@@ -33,8 +34,10 @@ public:
 	Enemy(glm::vec3 pos, AABB boundBox);
 
 	void calculateSpeed(float deltaTime) override;	
-	bool checkWithCameraArea(glm::mat4 view, glm::mat4 proj);
+	void checkWithCameraArea(glm::mat4 view, glm::mat4 proj);
+
 	bool checkLastDirectionLeft();
+	bool getCullingStatus();
 };
 
 #endif // ENEMY_HEADER 

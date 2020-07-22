@@ -185,17 +185,16 @@ void Enemy::calculateSpeed(float deltaTime) {
 /// This is used to optimize the performance and only calculate the position and collision for enemies who can be seen/// <summary>
 /// <param name="view">view matrix of the camera</param>
 /// <param name="proj">projection matrix of the application</param>
-/// <returns>true if this enemy is inside the view frustum</returns>
-bool Enemy::checkWithCameraArea(glm::mat4 view, glm::mat4 proj) {
+void Enemy::checkWithCameraArea(glm::mat4 view, glm::mat4 proj) {
 	glm::vec4 posInClip = proj * view * glm::vec4(position, 1.0f);
 	glm::vec3 posDehom = glm::vec3(posInClip.x / posInClip.w, posInClip.y / posInClip.w, posInClip.z / posInClip.w);
 
 	if (posDehom.x <= FrustumCullingRadius && posDehom.x >= -FrustumCullingRadius &&
 		posDehom.y <= FrustumCullingRadius && posDehom.y >= -FrustumCullingRadius) {
-		return true;
+		_cullingStatus = true;
+	} else {
+		_cullingStatus = false;
 	}
-
-	return false;
 }
 
 /// <summary>
@@ -219,4 +218,11 @@ bool Enemy::checkLastDirectionLeft(){
 		return _lastDir == WALK_LEFT;
 		break;
 	}
+}
+
+/// <summary>
+/// Returns true if this enemy is inside the view frustum
+/// </summary>
+bool Enemy::getCullingStatus() {
+	return _cullingStatus;
 }

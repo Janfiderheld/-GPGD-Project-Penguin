@@ -54,7 +54,8 @@ void EnemyManager::updateEnemies(float delta, float barrierPos, glm::mat4 view, 
 	}
 	
 	for(int i = 0; i < _shooters.size(); i++) {
-		if(_shooters.at(i).checkWithCameraArea(view, proj))	{
+		_shooters.at(i).checkWithCameraArea(view, proj);
+		if(_shooters.at(i).getCullingStatus()) {
 			if(!checkForCollisionWithPlayer(i, SHOOTER))	{
 				if(!checkForCollisionWithBarrier(i, SHOOTER, barrierPos)) {
 					_shooters.at(i).calculateSpeed(delta);
@@ -80,7 +81,8 @@ void EnemyManager::updateEnemies(float delta, float barrierPos, glm::mat4 view, 
 	}
 	
 	for (int i = 0; i < _walkers.size(); i++) {
-		if(_walkers.at(i).checkWithCameraArea(view, proj)) {
+		_walkers.at(i).checkWithCameraArea(view, proj);
+		if (_walkers.at(i).getCullingStatus()) {
 			if (!checkForCollisionWithPlayer(i, WALKER)) {
 				if (!checkForCollisionWithBarrier(i, WALKER, barrierPos)) {
 					_walkers.at(i).calculateSpeed(delta);
