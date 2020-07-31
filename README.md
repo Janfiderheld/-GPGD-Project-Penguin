@@ -1,5 +1,7 @@
 # [GPGD] Project Penguin
 
+![Example Gameplay Image](https://github.com/Janfiderheld/-GPGD-Project-Penguin/blob/master/Project%20Penguin/Assets/Documentation/ExampleImage.png)
+
 ## Description
 
 Project Penguin is a 2D-Sidescrolling Jump’n’Run about a Penguin, who is collecting fish and avoiding enemies at the Antarctica.
